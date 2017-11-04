@@ -16,6 +16,10 @@ namespace TLIB.Model
         IO.FileInfoClass FileInfo { get; set; }
 
         event EventHandler SaveRequest;
+        #region AUTO_SAVE_STUFF 
+        [Newtonsoft.Json.JsonIgnore]
+        bool HasChanges { get; set; }
+        #endregion
 
     }
 }

@@ -104,8 +104,9 @@ namespace TLIB.IO
                 {
                     File = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Info.Filepath + Info.Filename));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    throw ex;
                 }
                 return File;
             }
@@ -292,7 +293,7 @@ namespace TLIB.IO
         /// <param name="newName"></param>
         /// <returns></returns>
         public async Task Copy(FileInfoClass Target, FileInfoClass Source, string newName = null)
-        {//TODO Test it
+        {
             StorageFile SourceFile = await GetFile(Source);
             StorageFolder TargetFolder = await GetFolder(Target, UserDecision.ThrowError);
             await SourceFile.CopyAsync(TargetFolder, newName ?? SourceFile.Name, NameCollisionOption.ReplaceExisting);

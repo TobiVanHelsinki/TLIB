@@ -45,6 +45,8 @@ namespace TLIB.Model
     }
     public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new() //where Inheritor : SharedAppModel<MainType, Inheritor>, new()
     {
+        public event EventHandler MainObjectSaved;
+
         protected static new SharedAppModel<MainType> instance;
         public static new SharedAppModel<MainType> Instance
         {
@@ -99,14 +101,21 @@ namespace TLIB.Model
 
         private void SharedAppModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            async void save(object sender2, EventArgs e2)
+            {
+                await IO.SharedIO<MainType>.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
+                MainObjectSaved?.Invoke(this, new EventArgs());
+            }
+
             if (e.PropertyName.Contains("MainObject"))
             {
                 if (MainObject != null)
                 {
-                    MainObject.SaveRequest += async (x, y) => await IO.SharedIO<MainType>.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
+                    MainObject.SaveRequest += save;
                 }
             }
         }
+
 
         public MainType NewMainType()
         {
