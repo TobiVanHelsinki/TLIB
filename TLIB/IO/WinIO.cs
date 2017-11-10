@@ -286,7 +286,7 @@ namespace TLIB.IO
             }
         }
         /// <summary>
-        /// simples kopieren, bei fehlern wird abgebrochen, dateien werden überschrieben
+        /// simples kopieren, bei fehlern wird abgebrochen, dateien werden ueberschrieben
         /// </summary>
         /// <param name="Target"></param>
         /// <param name="Source"></param>

@@ -6,7 +6,7 @@ using System;
 
 namespace TLIB
 {
-    static class CrossPlatformHelper
+    public static class CrossPlatformHelper
     {
         public static string GetString(string strID)
         {

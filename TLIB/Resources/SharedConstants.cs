@@ -29,7 +29,7 @@ namespace TLIB
 
 
         /// <summary>
-        /// Variablen Namen für Versionen
+        /// Variablen Namen fuer Versionen
         /// </summary>
         public const string STRING_APP_VERSION_NUMBER = "APP_VERSION_NUMBER";
         public const string STRING_FILE_VERSION_NUMBER = "FILE_VERSION_NUMBER";
