@@ -38,10 +38,23 @@ namespace TLIB.Model
         {
             get
             {
+                if (instance == null)
+                {
+                    instance = new SharedAppModel();
+                }
                 return instance;
             }
         }
 
+        public void SetDependencies(CoreDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher;
+        }
+        /// <summary>
+        /// for future multithreading
+        /// </summary>
+        /// <param name="dispatcher"></param>
+        public CoreDispatcher Dispatcher;
     }
     public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new() //where Inheritor : SharedAppModel<MainType, Inheritor>, new()
     {
