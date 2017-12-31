@@ -4,7 +4,7 @@
 using Windows.ApplicationModel;
 #endif
 
-namespace TLIB
+namespace TLIB_UWPFRAME
 {
     public class SharedConstants
     {

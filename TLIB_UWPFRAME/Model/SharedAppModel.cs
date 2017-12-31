@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 
-namespace TLIB.Model
+namespace TLIB_UWPFRAME.Model
 {
     public class SharedAppModel : INotifyPropertyChanged
     {
@@ -14,6 +14,7 @@ namespace TLIB.Model
         public event PropertyChangedEventHandler PropertyChanged;
         protected async void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
+            //TODO use TLIB_UWPFRAME thread helper
             if (null == Task.CurrentId)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

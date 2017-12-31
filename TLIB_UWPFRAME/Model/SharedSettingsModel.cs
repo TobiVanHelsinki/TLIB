@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using TLIB.Settings;
+using TLIB_UWPFRAME.Settings;
 
-namespace TLIB.Model
+namespace TLIB_UWPFRAME.Model
 {
     public class SharedSettingsModel : INotifyPropertyChanged
     {

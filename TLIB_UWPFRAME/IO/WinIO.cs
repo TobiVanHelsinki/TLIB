@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TLIB.Model;
+using TLIB_UWPFRAME.Model;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
-namespace TLIB.IO
+namespace TLIB_UWPFRAME.IO
 {
     internal class WinIO : IGeneralIO
     {
@@ -159,7 +159,7 @@ namespace TLIB.IO
             }
             catch (Exception ex)
             {
-                //TLIB.Model.SharedAppModel.Instance.NewNotification("test", ex);
+                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test", ex);
             }
             try
             {
@@ -167,7 +167,7 @@ namespace TLIB.IO
             }
             catch (Exception ex)
             {
-                //TLIB.Model.SharedAppModel.Instance.NewNotification("test2", ex);
+                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test2", ex);
             }
             return File;
         }
@@ -243,7 +243,7 @@ namespace TLIB.IO
             }
             catch (Exception ex)
             {
-                //TLIB.Model.SharedAppModel.Instance.NewNotification("test", ex);
+                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test", ex);
             }
             try
             {
@@ -251,7 +251,7 @@ namespace TLIB.IO
             }
             catch (Exception ex)
             {
-                //TLIB.Model.SharedAppModel.Instance.NewNotification("test2", ex);
+                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test2", ex);
             }
             return Folder;
         }

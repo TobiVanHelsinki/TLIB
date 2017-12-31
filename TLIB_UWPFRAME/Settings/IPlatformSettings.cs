@@ -1,5 +1,5 @@
 ﻿
-namespace TLIB.Settings
+namespace TLIB_UWPFRAME.Settings
 {
     public interface IPlatformSettings
     {

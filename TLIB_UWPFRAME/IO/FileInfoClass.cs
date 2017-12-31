@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TLIB.IO
+namespace TLIB_UWPFRAME.IO
 {
     public class FileInfoClass : INotifyPropertyChanged
     {
@@ -98,7 +98,7 @@ namespace TLIB.IO
         public event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Model.ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
         }
     }
 }

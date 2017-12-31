@@ -3,7 +3,7 @@ using System.ComponentModel;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 
-namespace TLIB.Model
+namespace TLIB_UWPFRAME.Model
 {
     class ModelHelper
     {

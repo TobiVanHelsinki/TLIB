@@ -1,5 +1,5 @@
 ﻿using System;
-namespace TLIB.Settings
+namespace TLIB_UWPFRAME.Settings
 {
     public class DroidSettings : IPlatformSettings
     {

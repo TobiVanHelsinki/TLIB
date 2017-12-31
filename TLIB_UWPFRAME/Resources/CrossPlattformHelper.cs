@@ -4,7 +4,7 @@
 
 using System;
 
-namespace TLIB
+namespace TLIB_UWPFRAME
 {
     public static class CrossPlatformHelper
     {

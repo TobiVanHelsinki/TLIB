@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TLIB.IO
+namespace TLIB_UWPFRAME_UWPFRAME.IO
 {
     internal class DroidIO : IGeneralIO
     {

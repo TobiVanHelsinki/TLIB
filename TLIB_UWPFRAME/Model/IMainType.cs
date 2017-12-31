@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TLIB.Model
+namespace TLIB_UWPFRAME.Model
 {
     public interface IMainType
     {

@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TLIB.Model;
+using TLIB_UWPFRAME_UWPFRAME.Model;
 
-namespace TLIB.IO
+namespace TLIB_UWPFRAME_UWPFRAME.IO
 {
     public enum Place
     {
@@ -97,7 +97,7 @@ namespace TLIB.IO
 
     public class SharedIO<MainType> : SharedIO where MainType : IMainType, new()
     {
-        //class X : TLIB.Model.SharedAppModel<MainType, X> { };
+        //class X : TLIB_UWPFRAME.Model.SharedAppModel<MainType, X> { };
         protected static void NewNotification(Notification not)
         {
             SharedAppModel<MainType>.Instance.lstNotifications.Add(not);
