@@ -26,7 +26,7 @@ namespace TLIB_UWPFRAME.IO
         /// <param name="ePlace"></param>
         /// <param name="strSaveName"></param>
         /// <param name="strSavePath"></param>
-        Task SaveFileContent(string saveChar, FileInfoClass Info);
+        Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser);
 
         /// <summary>
         /// Remove a string from the specified target file

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TLIB_UWPFRAME_UWPFRAME.IO
+namespace TLIB_UWPFRAME.IO
 {
     internal class DroidIO : IGeneralIO
     {
@@ -41,7 +41,7 @@ namespace TLIB_UWPFRAME_UWPFRAME.IO
             throw new NotImplementedException();
         }
 
-        public Task SaveFileContent(string saveChar, FileInfoClass Info)
+        public Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
             throw new NotImplementedException();
         }

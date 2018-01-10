@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TLIB_UWPFRAME_UWPFRAME.Model;
+using TLIB_UWPFRAME.Model;
 
-namespace TLIB_UWPFRAME_UWPFRAME.IO
+namespace TLIB_UWPFRAME.IO
 {
     public enum Place
     {
@@ -87,10 +87,10 @@ namespace TLIB_UWPFRAME_UWPFRAME.IO
         public async static void SaveTextesToFilees(List<(string Name, string Content)> FileContents, FileInfoClass Info)
         {
             Info = await GetIO().GetFolderInfo(Info);
-            foreach (var item in FileContents)
+            foreach (var (Name, Content) in FileContents)
             {
-                Info.Filename = item.Name;
-                await GetIO().SaveFileContent(item.Content, Info);
+                Info.Filename = Name;
+                await GetIO().SaveFileContent(Content, Info);
             }
         }
     }
@@ -269,7 +269,7 @@ namespace TLIB_UWPFRAME_UWPFRAME.IO
                 CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
             }
             CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename)? "$$":"" + CurrentInfo.Filename;
-            await GetIO().SaveFileContent(Serialize(Object), CurrentInfo);
+            await GetIO().SaveFileContent(Serialize(Object), CurrentInfo, eUD);
         }
         /// <summary>
         /// Can throw

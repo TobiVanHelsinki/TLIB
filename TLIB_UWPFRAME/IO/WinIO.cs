@@ -11,7 +11,7 @@ namespace TLIB_UWPFRAME.IO
     internal class WinIO : IGeneralIO
     {
         // ##############################
-        public async Task SaveFileContent(string saveChar, FileInfoClass Info)
+        public async Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
             if (Info.Fileplace != Place.Extern)
             {
@@ -24,7 +24,7 @@ namespace TLIB_UWPFRAME.IO
                     Info.Fileplace = Place.Local;
                 }
             }
-            StorageFile x = await GetFile(Info);
+            StorageFile x = await GetFile(Info, eUser:eUD);
             await FileIO.WriteTextAsync(x, saveChar);
         }
 

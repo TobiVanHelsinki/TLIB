@@ -39,11 +39,20 @@ namespace TLIB_UWPFRAME.Model
 
         public static async void AtGui(Action x, CoreDispatcherPriority Priority = CoreDispatcherPriority.Low)
         {
-            //await Windows.UI.Xaml.Window.Current.Dispatcher.RunAsync(
-            await SharedAppModel.Instance.Dispatcher.RunAsync(
-                Priority, () => {
-                    x();
-                });
+            try
+            {
+                await SharedAppModel.Instance.Dispatcher.RunAsync(Priority, () => x());
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    await Windows.UI.Xaml.Window.Current.Dispatcher.RunAsync(Priority, () => x());
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
     }
 }

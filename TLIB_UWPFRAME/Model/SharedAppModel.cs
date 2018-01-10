@@ -14,10 +14,9 @@ namespace TLIB_UWPFRAME.Model
         public event PropertyChangedEventHandler PropertyChanged;
         protected async void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            //TODO use TLIB_UWPFRAME thread helper
             if (null == Task.CurrentId)
             {
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                TLIB_UWPFRAME.Model.ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
             }
             else
             {
@@ -117,8 +116,20 @@ namespace TLIB_UWPFRAME.Model
         {
             async void save(object sender2, EventArgs e2)
             {
-                await IO.SharedIO<MainType>.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
-                MainObjectSaved?.Invoke(this, new EventArgs());
+                try
+                {
+                    await IO.SharedIO<MainType>.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
+                    MainObjectSaved?.Invoke(this, new EventArgs());
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine("Char Saved Internaly");
+#endif
+                }
+                catch (Exception)
+                {
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine("Error Saving Internaly");
+#endif
+                }
             }
 
             if (e.PropertyName.Contains("MainObject"))

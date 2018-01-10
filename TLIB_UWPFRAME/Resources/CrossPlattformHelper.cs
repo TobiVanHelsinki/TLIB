@@ -3,6 +3,8 @@
 #endif
 
 using System;
+using System.Globalization;
+using System.Linq;
 
 namespace TLIB_UWPFRAME
 {
@@ -18,13 +20,13 @@ namespace TLIB_UWPFRAME
 #endif
             return strReturn;
         }
-        public static string GetSimpleCountryCode()
+        public static string GetSimpleCountryCode(string[] filter, string fallback)
         {
             string strReturn = "";
 #if __ANDROID__
             strReturn = "NotImplemented";
-#else 
-            strReturn = "de"; //TODO
+#else
+            strReturn = filter.Contains(CultureInfo.CurrentCulture.TwoLetterISOLanguageName) ? CultureInfo.CurrentCulture.TwoLetterISOLanguageName : fallback;
 #endif
             return strReturn;
         }
