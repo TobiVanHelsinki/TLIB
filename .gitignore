@@ -10,6 +10,7 @@
 _pkginfo.txt
 BundleArtifacts
 Properties
+BuildProcessTemplates
 
 # User-specific files
 *.suo
