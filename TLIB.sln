@@ -1,15 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TLIB_UWPFRAME", "TLIB_UWPFRAME\TLIB_UWPFRAME.shproj", "{C43E2365-5678-4E72-A123-71383DE9B2DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TLIB", "TLIB\TLIB.csproj", "{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TLIB", "TLIB\TLIB.shproj", "{E3EB87FF-2421-48B9-BE86-A87E9CA0C533}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TLIB_UWPFRAME\TLIB_UWPFRAME.projitems*{c43e2365-5678-4e72-a123-71383de9b2dc}*SharedItemsImports = 13
+		TLIB\TLIB.projitems*{e3eb87ff-2421-48b9-be86-a87e9ca0c533}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,24 +21,6 @@ Global
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|ARM.Build.0 = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|x64.Build.0 = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Debug|x86.Build.0 = Debug|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|ARM.ActiveCfg = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|ARM.Build.0 = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|x64.ActiveCfg = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|x64.Build.0 = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|x86.ActiveCfg = Release|Any CPU
-		{A19A8E2E-108A-44F8-98CF-97AD43C9ACFC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
