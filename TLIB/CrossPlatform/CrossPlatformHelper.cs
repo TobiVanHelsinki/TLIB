@@ -10,9 +10,9 @@ namespace TLIB.CrossPlatformHelper
     {
         public static async Task SleepMilliSeconds(int ms)
         {
-#if UWP
+#if WINDOWS_UWP
             await Task.Delay(TimeSpan.FromMilliseconds(ms));
-#else
+#elif WINDOWS_DESKTOP
             Thread.Sleep(ms);
 #endif
 
@@ -22,9 +22,9 @@ namespace TLIB.CrossPlatformHelper
     {
         public static void WriteLine( string s)
         {
-#if UWP
+#if WINDOWS_UWP
             System.Diagnostics.Debug.WriteLine(s);
-#else
+#elif WINDOWS_DESKTOP
             Console.Write(s);
 #endif
 

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.IO;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks; //UWP
 using TLIB.Net;
 using static TLIB.CrossPlatformHelper.Threading;
@@ -14,7 +13,7 @@ namespace TLIB.Server
     {
         public TcpClient socket;
         public HttpServer srv;
-
+        
         private Stream inputStream;
         public StreamWriter outputStream;
 
@@ -61,8 +60,16 @@ namespace TLIB.Server
         }
         public void process()
         {
-            inputStream = /*new BufferedStream*/(socket.GetStream());
-            outputStream = new StreamWriter(/*new BufferedStream*/(socket.GetStream()));
+            try
+            {
+                inputStream = /*new BufferedStream*/(socket.GetStream());
+                outputStream = new StreamWriter(/*new BufferedStream*/(socket.GetStream()));
+            }
+            catch (Exception)
+            {
+                WriteLine("EmerExit");
+                return;
+            }
             try
             {
                 parseRequest();
@@ -91,8 +98,19 @@ namespace TLIB.Server
             }
             // bs.Flush(); // flush any remaining output
             inputStream = null;
-            outputStream = null; // bs = null;            
+            outputStream = null; // bs = null;         
+            try
+            {
+#if WINDOWS_UWP
+#elif WINDOWS_DESKTOP
             socket.Close();
+#endif
+            }
+            catch (Exception)
+            {
+                WriteLine("EmerExit");
+                return;
+            }
             WriteLine("Exit");
         }
 
@@ -143,7 +161,7 @@ namespace TLIB.Server
 
         public void handleGETRequest()
         {
-            srv.handleGETRequest(this);
+            srv.HandleGETRequest(this);
         }
 
         private const int BUF_SIZE = 4096;
@@ -192,7 +210,7 @@ namespace TLIB.Server
                 ms.Seek(0, SeekOrigin.Begin);
             }
             WriteLine("get post data end");
-            srv.handlePOSTRequest(this, new StreamReader(ms));
+            srv.HandlePOSTRequest(this, new StreamReader(ms));
 
         }
 
