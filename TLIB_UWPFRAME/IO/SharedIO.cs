@@ -84,7 +84,7 @@ namespace TLIB_UWPFRAME.IO
             await GetIO().CopyLocalRoaming(NewTarget, SharedConstants.INTERN_SAVE_CONTAINER);
         }
 
-        public async static void SaveTextesToFilees(List<(string Name, string Content)> FileContents, FileInfoClass Info)
+        public async static void SaveTextesToFilees(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass Info)
         {
             Info = await GetIO().GetFolderInfo(Info);
             foreach (var (Name, Content) in FileContents)
