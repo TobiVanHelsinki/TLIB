@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace TLIB_UWPFRAME.Settings
 {
     public class WinSettings : IPlatformSettings
@@ -15,7 +17,7 @@ namespace TLIB_UWPFRAME.Settings
             {
             }
         }
-        public bool getBool(string place, bool fallback = false)
+        public bool getBool(string place, bool fallback = default)
         {
             try
             {
@@ -26,7 +28,7 @@ namespace TLIB_UWPFRAME.Settings
             }
             return fallback;
         }
-        public string getString(string place, string fallback = "")
+        public string getString(string place, string fallback = default)
         {
             try
             {
@@ -38,7 +40,7 @@ namespace TLIB_UWPFRAME.Settings
             return fallback;
         }
 
-        public int getInt(string place, int fallback = 0)
+        public int getInt(string place, int fallback = default)
         {
             try
             {
@@ -48,6 +50,12 @@ namespace TLIB_UWPFRAME.Settings
             {
             }
             return fallback;
+        }
+
+        public IEnumerable<T> getIEnumerable<T>(string place, T fallback = default)
+        {
+            var val = Settings.Values[place];
+            throw new NotImplementedException();
         }
     }
 }

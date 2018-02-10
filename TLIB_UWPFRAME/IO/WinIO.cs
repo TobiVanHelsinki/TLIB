@@ -15,17 +15,19 @@ namespace TLIB_UWPFRAME.IO
         {
             if (Info.Fileplace != Place.Extern)
             {
-                if (SharedSettingsModel.I.InternSync)
-                {
-                    Info.Fileplace = Place.Roaming;
-                }
-                else
-                {
-                    Info.Fileplace = Place.Local;
-                }
+                Info.Fileplace = SharedSettingsModel.I.InternSync ? Place.Roaming : Place.Local;
             }
             StorageFile x = await GetFile(Info, eUser:eUD);
-            await FileIO.WriteTextAsync(x, saveChar);
+            await Task.Delay(TimeSpan.FromMilliseconds(100));
+            try
+            {
+                await FileIO.WriteTextAsync(x, saveChar);
+            }
+            catch (Exception ex)
+            {
+                SharedAppModel.Instance.NewNotification("Writingerror", ex);
+            }
+            await Task.Delay(TimeSpan.FromMilliseconds(50));
         }
 
         public async Task RemoveFile(FileInfoClass Info)

@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\SharedAppModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resources\CrossPlattformHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resources\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Helper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resources\SharedConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\IPlatformSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\DroidSettings.cs" />

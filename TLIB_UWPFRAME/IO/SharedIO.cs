@@ -84,20 +84,38 @@ namespace TLIB_UWPFRAME.IO
             await GetIO().CopyLocalRoaming(NewTarget, SharedConstants.INTERN_SAVE_CONTAINER);
         }
 
-        public async static void SaveTextesToFilees(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass Info)
+        public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
         {
-            Info = await GetIO().GetFolderInfo(Info);
+            FileInfo = await GetIO().GetFolderInfo(FileInfo);
             foreach (var (Name, Content) in FileContents)
             {
-                Info.Filename = Name;
-                await GetIO().SaveFileContent(Content, Info);
+                FileInfo.Filename = Name;
+                try
+                {
+                    await GetIO().SaveFileContent(Content, FileInfo);
+                }
+                catch (Exception x)
+                {
+                    SharedAppModel.Instance.NewNotification("Writing Error", x);
+                }
             }
+        }
+
+
+        public async static void SaveTextToFile(FileInfoClass FileInfo, string Content)
+        {
+            await GetIO().SaveFileContent(Content, FileInfo);
+        }
+
+        public static async Task<string> ReadTextFromFile(FileInfoClass FileInfo, List<string> lST_FILETYPES_CSV, UserDecision askUser)
+        {
+            var res = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
+            return res.strFileContent;
         }
     }
 
     public class SharedIO<MainType> : SharedIO where MainType : IMainType, new()
     {
-        //class X : TLIB_UWPFRAME.Model.SharedAppModel<MainType, X> { };
         protected static void NewNotification(Notification not)
         {
             SharedAppModel<MainType>.Instance.lstNotifications.Add(not);

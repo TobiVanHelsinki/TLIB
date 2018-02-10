@@ -1,9 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace TLIB_UWPFRAME.Settings
 {
     public class DroidSettings : IPlatformSettings
     {
         public bool getBool(string place, bool fallback = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> getIEnumerable<T>(string place, T fallback = default)
         {
             throw new NotImplementedException();
         }

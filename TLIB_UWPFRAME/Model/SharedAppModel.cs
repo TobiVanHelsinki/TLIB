@@ -46,6 +46,23 @@ namespace TLIB_UWPFRAME.Model
             }
         }
 
+        public SharedAppModel()
+        {
+            lstNotifications = new ObservableCollection<Notification>();
+#if DEBUG
+            //Exception EX1 = new Exception("Test 1");
+            //EX1.Source = "ich";
+            //Exception EX2 = new Exception("Test 2");
+            //Exception EX3 = new Exception("Test 3");
+            //Exception EX4 = new Exception("Test 4");
+            //NewNotification("Not 0");
+            //NewNotification("Not 1", EX1);
+            //NewNotification("Not 2", EX2);
+            //NewNotification("Not 3", EX3);
+            //NewNotification("Not 4", EX4);
+#endif
+        }
+
         public void SetDependencies(CoreDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
@@ -60,12 +77,12 @@ namespace TLIB_UWPFRAME.Model
     {
         public event EventHandler MainObjectSaved;
 
-        protected static new SharedAppModel<MainType> instance;
+        //protected static new SharedAppModel<MainType> instance;
         public static new SharedAppModel<MainType> Instance
         {
             get
             {
-                return instance;
+                return (SharedAppModel < MainType > )instance;
             }
         }
         MainType _MainObject;
@@ -94,22 +111,9 @@ namespace TLIB_UWPFRAME.Model
             }
         }
 
-        public SharedAppModel()
+        public SharedAppModel() : base()
         {
             PropertyChanged += SharedAppModel_PropertyChanged;
-            lstNotifications = new ObservableCollection<Notification>();
-#if DEBUG
-            //Exception EX1 = new Exception("Test 1");
-            //EX1.Source = "ich";
-            //Exception EX2 = new Exception("Test 2");
-            //Exception EX3 = new Exception("Test 3");
-            //Exception EX4 = new Exception("Test 4");
-            //NewNotification("Not 0");
-            //NewNotification("Not 1", EX1);
-            //NewNotification("Not 2", EX2);
-            //NewNotification("Not 3", EX3);
-            //NewNotification("Not 4", EX4);
-#endif
         }
 
         private void SharedAppModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
