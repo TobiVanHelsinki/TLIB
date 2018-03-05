@@ -16,6 +16,7 @@
     <Import_RootNamespace>TLIB_UWPFRAME</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IO\Definitions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\DroidIO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\FileInfoClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\IGeneralIO.cs" />

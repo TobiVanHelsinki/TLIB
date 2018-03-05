@@ -189,6 +189,10 @@ namespace TLIB_UWPFRAME.IO
             }
 
             StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file == null)
+            {
+                throw new IsOKException();
+            }
             return file;
         }
 
@@ -231,9 +235,14 @@ namespace TLIB_UWPFRAME.IO
                         if (eUser == UserDecision.AskUser)
                         {
                             Folder = await FolderPicker();
+                            if (Folder == null)
+                            {
+                                throw new IsOKException();
+                            }
                         }
                         else
                         {
+                            SharedAppModel.Instance.NewNotification(CrossPlatformHelper.GetString("Error_GetFolder"), ex);
                             throw;
                         }
                     }
@@ -321,5 +330,6 @@ namespace TLIB_UWPFRAME.IO
             }
             return ReturnValue;
         }
+
     }
 }

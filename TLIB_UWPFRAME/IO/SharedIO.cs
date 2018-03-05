@@ -116,17 +116,13 @@ namespace TLIB_UWPFRAME.IO
 
     public class SharedIO<MainType> : SharedIO where MainType : IMainType, new()
     {
-        protected static void NewNotification(Notification not)
-        {
-            SharedAppModel<MainType>.Instance.lstNotifications.Add(not);
-        }
         //#####################################################################
         protected static void SerializationErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
 #if DEBUG
             //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
 #endif
-            NewNotification(new Notification(
+            SharedAppModel.Instance.NewNotification(
                 CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
                 "ErrorContextData: " + a.ErrorContext.Error.Message +
                 "ErrorContextData: " + a.ErrorContext.Error.Data +
@@ -136,7 +132,7 @@ namespace TLIB_UWPFRAME.IO
 #else
                 + "Path: " + a.ErrorContext.Path
 #endif
-                ));
+                );
             a.ErrorContext.Handled = true;
         }
         /// <summary>
@@ -167,7 +163,7 @@ namespace TLIB_UWPFRAME.IO
 #if DEBUG
             //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
 #endif
-            NewNotification(new Notification(
+            SharedAppModel.Instance.NewNotification(
                 CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
                 "ErrorContextData: " + a.ErrorContext.Error.Data +
                 "CurrentObject: " + a.CurrentObject +
@@ -176,7 +172,7 @@ namespace TLIB_UWPFRAME.IO
 #else
                 + "Path: " + a.ErrorContext.Path
 #endif
-                ));
+                );
             a.ErrorContext.Handled = true;
         }
         protected static MainType Deserialize(string fileContent)
