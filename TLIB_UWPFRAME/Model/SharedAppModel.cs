@@ -32,6 +32,10 @@ namespace TLIB_UWPFRAME.Model
         {
             lstNotifications.Insert(0, new Notification(Message, x));
         }
+        public void NewNotification(Notification Message)
+        {
+            lstNotifications.Insert(0, Message);
+        }
 
         protected static SharedAppModel instance;
         public static SharedAppModel Instance

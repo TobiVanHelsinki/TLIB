@@ -14,5 +14,16 @@ namespace TLIB_UWPFRAME.Resources
                 source.Add(item);
             }
         }
+        public static int MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+        {
+            try
+            {
+                return source.Max(selector);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }  
+        }
     }
 }
