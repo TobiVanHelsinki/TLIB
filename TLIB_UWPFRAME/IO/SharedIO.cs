@@ -149,6 +149,9 @@ namespace TLIB_UWPFRAME.IO
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 //settings.NullValueHandling = NullValueHandling.Include; 
+#if DEBUG
+                Formatting = Formatting.Indented,
+#endif
                 PreserveReferencesHandling = PreserveReferencesHandling.All, //war vorher objects
                 Error = ErrorHandler
             };

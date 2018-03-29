@@ -61,8 +61,8 @@ namespace TLIB.Net
             }
         }
 
-        public abstract void HandleGETRequest(HttpProcessor p);
-        public abstract void HandlePOSTRequest(HttpProcessor p, StreamReader inputData);
+        public abstract Task HandleGETRequest(HttpProcessor p);
+        public abstract Task HandlePOSTRequest(HttpProcessor p, StreamReader inputData);
 
 #if WINDOWS_UWP
         public static async Task UDPBroadcast(byte[] magicPacket, int sendPort, DatagramSocket datagramSocketSend)

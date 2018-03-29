@@ -58,7 +58,7 @@ namespace TLIB.Server
             }
             return data;
         }
-        public void process()
+        public async void process()
         {
             try
             {
@@ -76,11 +76,11 @@ namespace TLIB.Server
                 readHeaders();
                 if (http_method.Equals("GET"))
                 {
-                    handleGETRequest();
+                    await handleGETRequest();
                 }
                 else if (http_method.Equals("POST"))
                 {
-                    handlePOSTRequest();
+                    await handlePOSTRequest();
                 }
             }
             catch (Exception e)
@@ -159,13 +159,13 @@ namespace TLIB.Server
             }
         }
 
-        public void handleGETRequest()
+        public async Task handleGETRequest()
         {
-            srv.HandleGETRequest(this);
+            await srv.HandleGETRequest(this);
         }
 
         private const int BUF_SIZE = 4096;
-        public void handlePOSTRequest()
+        public async Task handlePOSTRequest()
         {
             // this post data processing just reads everything into a memory stream.
             // this is fine for smallish things, but for large stuff we should really
@@ -210,7 +210,7 @@ namespace TLIB.Server
                 ms.Seek(0, SeekOrigin.Begin);
             }
             WriteLine("get post data end");
-            srv.HandlePOSTRequest(this, new StreamReader(ms));
+            await srv.HandlePOSTRequest(this, new StreamReader(ms));
 
         }
 
