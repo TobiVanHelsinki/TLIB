@@ -23,7 +23,18 @@ namespace TLIB
             catch (Exception)
             {
                 return 0;
-            }  
+            }
+        }
+        public static int MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+        {
+            try
+            {
+                return source.Min(selector);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }
