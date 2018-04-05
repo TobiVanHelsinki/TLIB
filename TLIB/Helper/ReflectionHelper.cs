@@ -12,6 +12,9 @@ namespace TLIB
             return obj.GetType().GetProperties().Where(p => p.CustomAttributes.Any(c => c.AttributeType == type));
         }
 
-
+        public static IEnumerable<PropertyInfo> GetProperties(object obj)
+        {
+            return obj.GetType().GetProperties();
+        }
     }
 }

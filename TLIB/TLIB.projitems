@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Helper\CollectionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\NumberHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\ReflectionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\StringHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SystemHelper.cs" />

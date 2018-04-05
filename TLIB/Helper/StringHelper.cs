@@ -13,10 +13,14 @@ namespace TLIB
         public static string GetString(string strID)
         {
             string strReturn = "";
+#if UWP
 #if __ANDROID__
             strReturn = "NotImplemented";
-#else 
+#else
             strReturn = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID);
+#endif
+#else
+            strReturn = null;
 #endif
             return strReturn;
         }
