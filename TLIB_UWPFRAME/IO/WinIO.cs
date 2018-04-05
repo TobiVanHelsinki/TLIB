@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TLIB;
 using TLIB_UWPFRAME.Model;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -242,7 +243,7 @@ namespace TLIB_UWPFRAME.IO
                         }
                         else
                         {
-                            SharedAppModel.Instance.NewNotification(CrossPlatformHelper.GetString("Error_GetFolder"), ex);
+                            SharedAppModel.Instance.NewNotification(StringHelper.GetString("Error_GetFolder"), ex);
                             throw;
                         }
                     }

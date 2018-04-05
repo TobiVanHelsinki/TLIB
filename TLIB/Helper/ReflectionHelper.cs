@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace TLIB_UWPFRAME.Resources
+namespace TLIB
 {
-    public class Helper
+    public static class ReflectionHelper
     {
         public static IEnumerable<PropertyInfo> GetProperties(object obj, Type type)
         {

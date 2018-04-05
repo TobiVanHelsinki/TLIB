@@ -6,9 +6,9 @@ using System;
 using System.Globalization;
 using System.Linq;
 
-namespace TLIB_UWPFRAME
+namespace TLIB
 {
-    public static class CrossPlatformHelper
+    public static class StringHelper
     {
         public static string GetString(string strID)
         {

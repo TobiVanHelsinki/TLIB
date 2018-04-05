@@ -9,7 +9,10 @@
     <Import_RootNamespace>TLIB</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CrossPlatform\CrossPlatformHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\CollectionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\ReflectionHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\StringHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\SystemHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\HttpProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\HttpServer.cs" />
   </ItemGroup>

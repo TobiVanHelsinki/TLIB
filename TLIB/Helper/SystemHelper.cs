@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TLIB.CrossPlatformHelper
+namespace TLIB
 {
-    internal static class Threading
+    public static class SystemHelper
     {
         public static async Task SleepMilliSeconds(int ms)
         {
@@ -15,19 +15,15 @@ namespace TLIB.CrossPlatformHelper
 #elif WINDOWS_DESKTOP
             Thread.Sleep(ms);
 #endif
-
         }
-    }
-    internal static class PrintOut
-    {
-        public static void WriteLine( string s)
+
+        public static void WriteLine(string s)
         {
 #if WINDOWS_UWP
             System.Diagnostics.Debug.WriteLine(s);
 #elif WINDOWS_DESKTOP
             Console.Write(s);
 #endif
-
         }
     }
 }

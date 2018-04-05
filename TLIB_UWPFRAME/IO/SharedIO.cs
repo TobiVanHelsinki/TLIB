@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TLIB;
 using TLIB_UWPFRAME.Model;
 
 namespace TLIB_UWPFRAME.IO
@@ -162,7 +163,7 @@ namespace TLIB_UWPFRAME.IO
             return JsonConvert.SerializeObject(SaveChar, settings);
 #endif
         }
-        static Notification JSON_Error_Notification = new Notification(CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text"));
+        static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
 
         protected static MainType Deserialize(string fileContent)
         {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TLIB_UWPFRAME.Resources
+namespace TLIB
 {
-    public static class CollectionExtension
+    public static class CollectionHelper
     {
         public static void AddRange<T>(this ICollection<T> source, IEnumerable<T> param)
         {

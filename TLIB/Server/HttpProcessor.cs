@@ -4,8 +4,8 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks; //UWP
 using TLIB.Net;
-using static TLIB.CrossPlatformHelper.Threading;
-using static TLIB.CrossPlatformHelper.PrintOut;
+using static TLIB.SystemHelper;
+using static TLIB.SystemHelper;
 
 namespace TLIB.Server
 {

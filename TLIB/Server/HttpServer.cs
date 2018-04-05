@@ -57,7 +57,7 @@ namespace TLIB.Net
                 catch (Exception)
                 {
                 }
-                await CrossPlatformHelper.Threading.SleepMilliSeconds(1);
+                await SystemHelper.SleepMilliSeconds(1);
             }
         }
 
