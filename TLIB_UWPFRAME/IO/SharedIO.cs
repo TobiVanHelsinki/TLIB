@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ShadowRunHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ namespace TLIB_UWPFRAME.IO
         Extern = 2,
         Roaming = 3,
         Local = 4,
-        Assets = 5
+        Assets = 5,
+        Temp = 6
     }
 
     public enum SaveType
@@ -22,7 +24,8 @@ namespace TLIB_UWPFRAME.IO
         Unknown = 0,
         Manually = 1,
         Auto = 2,
-        Emergency = 3
+        Emergency = 3,
+        Temp = 4
     }
     public class SharedIO 
     {
@@ -113,39 +116,117 @@ namespace TLIB_UWPFRAME.IO
             var (strFileContent, Info) = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
             return strFileContent;
         }
-    }
 
-    public class SharedIO<MainType> : SharedIO where MainType : IMainType, new()
-    {
+        /// <summary>
+        /// Can Throw
+        /// </summary>
+        /// <param name="strDelChar"></param>
+        /// <returns></returns>
+        public async static Task Remove(FileInfoClass Info)
+        {
+            await GetIO().RemoveFile(Info);
+        }
+        #region Saving
+
+        /// <summary>
+        /// Can Throw
+        /// </summary>
+        /// <param name="Object"></param>
+        /// <param name="eSaveType"></param>
+        /// <returns></returns>
+        public static async Task SaveAtOriginPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
+        {
+            if (Object.FileInfo.Fileplace != Place.NotDefined)
+            {
+                await Save(Object, eUD, eSaveType: eSaveType);
+            }
+            else
+            {
+                await SaveAtCurrentPlace(Object, eUD, eSaveType: eSaveType);
+            }
+        }
+        /// <summary>
+        /// Can Throw
+        /// </summary>
+        /// <param name="strDelChar"></param>
+        /// <returns></returns>
+        public static async Task SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
+        {
+            Object.FileInfo.Fileplace = GetCurrentSavePlace();
+            Object.FileInfo.Filepath = GetCurrentSavePath();
+            await Save(Object, eUD, Object.FileInfo);
+        }
+
+        public static async Task SaveAtTempPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
+        {
+            Object.FileInfo.Fileplace = Place.Temp;
+            Object.FileInfo.Filepath = GetCurrentSavePath();
+            await Save(Object, eUD, Object.FileInfo);
+        }
+
+        public static async Task Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null, SaveType eSaveType = SaveType.Unknown)
+        {
+            if (Object == null)
+            {
+                throw new ArgumentNullException("Char was Empty");
+            }
+            string strAdditionalName = "";
+            switch (eSaveType)
+            {
+                case SaveType.Temp:
+                    strAdditionalName = "Temp_";
+                    break;
+                case SaveType.Emergency:
+                    strAdditionalName = "EmergencySave_";
+                    break;
+                case SaveType.Unknown:
+                case SaveType.Manually:
+                case SaveType.Auto:
+                default:
+                    break;
+            }
+            FileInfoClass CurrentInfo = Info ?? Object.FileInfo;
+            CurrentInfo.Filename = Object.MakeName();
+            if (!CurrentInfo.Filename.StartsWith(strAdditionalName))
+            {
+                CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
+            }
+            CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename) ? "$$" : "" + CurrentInfo.Filename;
+            await GetIO().SaveFileContent(Serialize(Object), CurrentInfo, eUD);
+        }
+
+        #endregion
         #region Serialization
         protected static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
-//#if DEBUG
+            //#if DEBUG
             //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
-//#endif
-//            SharedAppModel.Instance.NewNotification(
-//                CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
-//                "ErrorContextData: " + a.ErrorContext.Error.Message +
-//                "ErrorContextData: " + a.ErrorContext.Error.Data +
-//                "CurrentObject: " + a.CurrentObject +
-//                "OriginalObject: " + a.ErrorContext.OriginalObject
-//#if __ANDROID__
-//#else
-//                + "Path: " + a.ErrorContext.Path
-//#endif
-//                );
+            //#endif
+            //            SharedAppModel.Instance.NewNotification(
+            //                CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
+            //                "ErrorContextData: " + a.ErrorContext.Error.Message +
+            //                "ErrorContextData: " + a.ErrorContext.Error.Data +
+            //                "CurrentObject: " + a.CurrentObject +
+            //                "OriginalObject: " + a.ErrorContext.OriginalObject
+            //#if __ANDROID__
+            //#else
+            //                + "Path: " + a.ErrorContext.Path
+            //#endif
+            //                );
             if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
             {
                 SharedAppModel.Instance.NewNotification(JSON_Error_Notification);
             }
             a.ErrorContext.Handled = true;
         }
+
+
         /// <summary>
         /// can throw
         /// </summary>
         /// <param name="SaveChar"></param>
         /// <returns></returns>
-        protected static string Serialize(MainType SaveChar)
+        protected static string Serialize(IMainType SaveChar)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
@@ -166,13 +247,20 @@ namespace TLIB_UWPFRAME.IO
         }
         static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
 
-        protected static MainType Deserialize(string fileContent)
+        #endregion
+    }
+
+    public class SharedIO<CurrentType> : SharedIO where CurrentType : IMainType, new()
+    {
+        #region Deserialization
+
+        protected static CurrentType Deserialize(string fileContent)
         {
             JObject o = JObject.Parse(fileContent);
             string strAppVersion = o.Value<string>(SharedConstants.STRING_APP_VERSION_NUMBER);
             string strFileVersion = o.Value<string>(SharedConstants.STRING_FILE_VERSION_NUMBER);
 
-            return (MainType)(new MainType().Converter ?? STDConvert)(strAppVersion, strFileVersion, fileContent);
+            return (CurrentType)(new CurrentType().Converter ?? STDConvert)(strAppVersion, strFileVersion, fileContent);
         }
         /// <summary>
         /// Can throw
@@ -188,88 +276,17 @@ namespace TLIB_UWPFRAME.IO
                     Error = ErrorHandler,
                     PreserveReferencesHandling = PreserveReferencesHandling.All
                 };
-                return JsonConvert.DeserializeObject<MainType>(fileContent, settings);
+                return JsonConvert.DeserializeObject<CurrentType>(fileContent, settings);
             };
 
         #endregion
-        #region FileOperations
+        #region Loading
 
-        public static async Task<MainType> LoadAtCurrentPlace(string strLoadChar, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<CurrentType> LoadAtCurrentPlace(string strLoadChar, UserDecision eUD = UserDecision.AskUser)
         {
             return await Load(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strLoadChar, FolderToken = SharedConstants.ACCESSTOKEN_FOLDERMODE}, null, eUD);
         }
-        /// <summary>
-        /// Can Throw
-        /// </summary>
-        /// <param name="Object"></param>
-        /// <param name="eSaveType"></param>
-        /// <returns></returns>
-        public static async Task SaveAtOriginPlace(MainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
-        {
-            if (Object.FileInfo.Fileplace != Place.NotDefined)
-            {
-                await Save(Object, eUD, eSaveType: eSaveType);
-            }
-            else
-            {
-                await SaveAtCurrentPlace(Object, eUD, eSaveType: eSaveType);
-            }
-        }
-        /// <summary>
-        /// Can Throw
-        /// </summary>
-        /// <param name="strDelChar"></param>
-        /// <returns></returns>
-        public static async Task SaveAtCurrentPlace(MainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
-        {
-            Object.FileInfo.Fileplace = GetCurrentSavePlace();
-            Object.FileInfo.Filepath = GetCurrentSavePath();
-            await Save(Object, eUD, Object.FileInfo);
-        }
-        /// <summary>
-        /// Can Throw
-        /// </summary>
-        /// <param name="strDelChar"></param>
-        /// <returns></returns>
-        public async static Task RemoveAtCurrentPlace(string strDelChar)
-        {
-            await GetIO().RemoveFile(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strDelChar});
-        }
-        public async static Task Remove(FileInfoClass Info)
-        {
-            await GetIO().RemoveFile(Info);
-        }
-        public static async Task Save(MainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null, SaveType eSaveType = SaveType.Unknown)
-        {
-            if (Object == null)
-            {
-                throw new ArgumentNullException("Char was Empty");
-            }
-            string strAdditionalName = "";
-            switch (eSaveType)
-            {
-                case SaveType.Unknown:
-                    break;
-                case SaveType.Manually:
-                    break;
-                case SaveType.Auto:
-                    strAdditionalName = "AutoSave_";
-                    break;
-                case SaveType.Emergency:
-                    strAdditionalName = "EmergencySave_";
-                    break;
-                default:
-                    break;
-            }
-            FileInfoClass CurrentInfo = Info ?? Object.FileInfo;
-            CurrentInfo.Filename = Object.MakeName();
-            if (!CurrentInfo.Filename.StartsWith(strAdditionalName))
-            {
-                CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
-            }
-            CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename)? "$$":"" + CurrentInfo.Filename;
-            await GetIO().SaveFileContent(Serialize(Object), CurrentInfo, eUD);
-        }
+
         /// <summary>
         /// Can throw
         /// </summary>
@@ -279,7 +296,7 @@ namespace TLIB_UWPFRAME.IO
         /// <param name="FileTypes"></param>
         /// <param name="eUD"></param>
         /// <returns></returns>
-        public static async Task<MainType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             var File = await GetIO().LoadFileContent(Info, FileTypes, eUD);
             var NewMainObject = Deserialize(File.strFileContent);

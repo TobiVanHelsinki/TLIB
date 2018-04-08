@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using TLIB;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 
@@ -126,16 +127,16 @@ namespace TLIB_UWPFRAME.Model
             {
                 try
                 {
-                    await IO.SharedIO<MainType>.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
+                    await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
                     MainObjectSaved?.Invoke(this, new EventArgs());
 #if DEBUG
-                    System.Diagnostics.Debug.WriteLine("Char Saved Internaly");
+                    SystemHelper.WriteLine("Char Saved Internaly");
 #endif
                 }
                 catch (Exception)
                 {
 #if DEBUG
-                    System.Diagnostics.Debug.WriteLine("Error Saving Internaly");
+                    SystemHelper.WriteLine("Error Saving Internaly");
 #endif
                 }
             }
