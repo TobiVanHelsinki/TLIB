@@ -112,103 +112,15 @@ namespace TLIB_UWPFRAME.IO
             var res = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
             return res.strFileContent;
         }
-    }
+        #region Saving
 
-    public class SharedIO<MainType> : SharedIO where MainType : IMainType, new()
-    {
-        #region Serialization
-        protected static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
-        {
-//#if DEBUG
-            //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
-//#endif
-//            SharedAppModel.Instance.NewNotification(
-//                CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
-//                "ErrorContextData: " + a.ErrorContext.Error.Message +
-//                "ErrorContextData: " + a.ErrorContext.Error.Data +
-//                "CurrentObject: " + a.CurrentObject +
-//                "OriginalObject: " + a.ErrorContext.OriginalObject
-//#if __ANDROID__
-//#else
-//                + "Path: " + a.ErrorContext.Path
-//#endif
-//                );
-            if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
-            {
-                SharedAppModel.Instance.NewNotification(JSON_Error_Notification);
-            }
-            a.ErrorContext.Handled = true;
-        }
-        /// <summary>
-        /// can throw
-        /// </summary>
-        /// <param name="SaveChar"></param>
-        /// <returns></returns>
-        protected static string Serialize(MainType SaveChar)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings()
-            {
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                //settings.NullValueHandling = NullValueHandling.Include; 
-#if DEBUG
-                Formatting = Formatting.Indented,
-#endif
-                PreserveReferencesHandling = PreserveReferencesHandling.All, //war vorher objects
-                Error = ErrorHandler
-            };
-#if __ANDROID__
-            throw new NotImplementedException();
-            //return JsonConvert.SerializeObject(SaveChar, null, settings);
-#else
-            return JsonConvert.SerializeObject(SaveChar, settings);
-#endif
-        }
-        static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
-
-        protected static MainType Deserialize(string fileContent)
-        {
-            string strAppVersion = "";
-            string strFileVersion = "";
-
-            int nAppVersionPos = fileContent.IndexOf(SharedConstants.STRING_APP_VERSION_NUMBER);
-            strAppVersion = fileContent.Substring(nAppVersionPos + SharedConstants.STRING_APP_VERSION_NUMBER.Length + SharedConstants.JSON_FILE_GAP, SharedConstants.STRING_VERSION_LENGTH);
-
-            int nFileVersionPos = fileContent.IndexOf(SharedConstants.STRING_FILE_VERSION_NUMBER);
-            strFileVersion = fileContent.Substring(nFileVersionPos + SharedConstants.STRING_FILE_VERSION_NUMBER.Length + SharedConstants.JSON_FILE_GAP, SharedConstants.STRING_VERSION_LENGTH);
-
-            return (MainType)(new MainType().Converter ?? STDConvert)(strAppVersion, strFileVersion, fileContent);
-        }
-        /// <summary>
-        /// Can throw
-        /// </summary>
-        /// <param name="strFileVersion"></param>
-        /// <param name="fileContent"></param>
-        /// <returns></returns>
-        static Func<string, string, string, IMainType> STDConvert =
-            (string strFileVersion, string strAppVersion, string fileContent) =>
-            {
-                JsonSerializerSettings settings = new JsonSerializerSettings()
-                {
-                    Error = ErrorHandler,
-                    PreserveReferencesHandling = PreserveReferencesHandling.All
-                };
-                return JsonConvert.DeserializeObject<MainType>(fileContent, settings);
-            };
-
-        #endregion
-        #region FileOperations
-
-        public static async Task<MainType> LoadAtCurrentPlace(string strLoadChar, UserDecision eUD = UserDecision.AskUser)
-        {
-            return await Load(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strLoadChar, FolderToken = SharedConstants.ACCESSTOKEN_FOLDERMODE}, null, eUD);
-        }
         /// <summary>
         /// Can Throw
         /// </summary>
         /// <param name="Object"></param>
         /// <param name="eSaveType"></param>
         /// <returns></returns>
-        public static async Task SaveAtOriginPlace(MainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
+        public static async Task SaveAtOriginPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
         {
             if (Object.FileInfo.Fileplace != Place.NotDefined)
             {
@@ -224,7 +136,7 @@ namespace TLIB_UWPFRAME.IO
         /// </summary>
         /// <param name="strDelChar"></param>
         /// <returns></returns>
-        public static async Task SaveAtCurrentPlace(MainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
+        public static async Task SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
@@ -237,13 +149,13 @@ namespace TLIB_UWPFRAME.IO
         /// <returns></returns>
         public async static Task RemoveAtCurrentPlace(string strDelChar)
         {
-            await GetIO().RemoveFile(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strDelChar});
+            await GetIO().RemoveFile(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strDelChar });
         }
         public async static Task Remove(FileInfoClass Info)
         {
             await GetIO().RemoveFile(Info);
         }
-        public static async Task Save(MainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null, SaveType eSaveType = SaveType.Unknown)
+        public static async Task Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null, SaveType eSaveType = SaveType.Unknown)
         {
             if (Object == null)
             {
@@ -271,9 +183,105 @@ namespace TLIB_UWPFRAME.IO
             {
                 CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
             }
-            CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename)? "$$":"" + CurrentInfo.Filename;
+            CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename) ? "$$" : "" + CurrentInfo.Filename;
             await GetIO().SaveFileContent(Serialize(Object), CurrentInfo, eUD);
         }
+
+        #endregion
+        #region Serialization
+        protected static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
+        {
+            //#if DEBUG
+            //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+            //#endif
+            //            SharedAppModel.Instance.NewNotification(
+            //                CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
+            //                "ErrorContextData: " + a.ErrorContext.Error.Message +
+            //                "ErrorContextData: " + a.ErrorContext.Error.Data +
+            //                "CurrentObject: " + a.CurrentObject +
+            //                "OriginalObject: " + a.ErrorContext.OriginalObject
+            //#if __ANDROID__
+            //#else
+            //                + "Path: " + a.ErrorContext.Path
+            //#endif
+            //                );
+            if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
+            {
+                SharedAppModel.Instance.NewNotification(JSON_Error_Notification);
+            }
+            a.ErrorContext.Handled = true;
+        }
+        /// <summary>
+        /// can throw
+        /// </summary>
+        /// <param name="SaveChar"></param>
+        /// <returns></returns>
+        protected static string Serialize(IMainType SaveChar)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                //settings.NullValueHandling = NullValueHandling.Include; 
+#if DEBUG
+                Formatting = Formatting.Indented,
+#endif
+                PreserveReferencesHandling = PreserveReferencesHandling.All, //war vorher objects
+                Error = ErrorHandler
+            };
+#if __ANDROID__
+            throw new NotImplementedException();
+            //return JsonConvert.SerializeObject(SaveChar, null, settings);
+#else
+            return JsonConvert.SerializeObject(SaveChar, settings);
+#endif
+        }
+        static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
+
+        #endregion
+    }
+
+    public class SharedIO<CurrentType> : SharedIO where CurrentType : IMainType, new()
+    {
+        #region Deserialization
+
+        protected static CurrentType Deserialize(string fileContent)
+        {
+            string strAppVersion = "";
+            string strFileVersion = "";
+
+            int nAppVersionPos = fileContent.IndexOf(SharedConstants.STRING_APP_VERSION_NUMBER);
+            strAppVersion = fileContent.Substring(nAppVersionPos + SharedConstants.STRING_APP_VERSION_NUMBER.Length + SharedConstants.JSON_FILE_GAP, SharedConstants.STRING_VERSION_LENGTH);
+
+            int nFileVersionPos = fileContent.IndexOf(SharedConstants.STRING_FILE_VERSION_NUMBER);
+            strFileVersion = fileContent.Substring(nFileVersionPos + SharedConstants.STRING_FILE_VERSION_NUMBER.Length + SharedConstants.JSON_FILE_GAP, SharedConstants.STRING_VERSION_LENGTH);
+
+            return (CurrentType)(new CurrentType().Converter ?? STDConvert)(strAppVersion, strFileVersion, fileContent);
+        }
+        /// <summary>
+        /// Can throw
+        /// </summary>
+        /// <param name="strFileVersion"></param>
+        /// <param name="fileContent"></param>
+        /// <returns></returns>
+        static Func<string, string, string, IMainType> STDConvert =
+            (string strFileVersion, string strAppVersion, string fileContent) =>
+            {
+                JsonSerializerSettings settings = new JsonSerializerSettings()
+                {
+                    Error = ErrorHandler,
+                    PreserveReferencesHandling = PreserveReferencesHandling.All
+                };
+                return JsonConvert.DeserializeObject<CurrentType>(fileContent, settings);
+            };
+
+        #endregion
+        #region Loading
+
+        public static async Task<CurrentType> LoadAtCurrentPlace(string strLoadChar, UserDecision eUD = UserDecision.AskUser)
+        {
+            return await Load(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strLoadChar, FolderToken = SharedConstants.ACCESSTOKEN_FOLDERMODE}, null, eUD);
+        }
+
         /// <summary>
         /// Can throw
         /// </summary>
@@ -283,7 +291,7 @@ namespace TLIB_UWPFRAME.IO
         /// <param name="FileTypes"></param>
         /// <param name="eUD"></param>
         /// <returns></returns>
-        public static async Task<MainType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             var File = await GetIO().LoadFileContent(Info, FileTypes, eUD);
             var NewMainObject = Deserialize(File.strFileContent);
