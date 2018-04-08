@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -109,8 +110,8 @@ namespace TLIB_UWPFRAME.IO
 
         public static async Task<string> ReadTextFromFile(FileInfoClass FileInfo, List<string> lST_FILETYPES_CSV, UserDecision askUser)
         {
-            var res = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
-            return res.strFileContent;
+            var (strFileContent, Info) = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
+            return strFileContent;
         }
     }
 
@@ -167,14 +168,9 @@ namespace TLIB_UWPFRAME.IO
 
         protected static MainType Deserialize(string fileContent)
         {
-            string strAppVersion = "";
-            string strFileVersion = "";
-
-            int nAppVersionPos = fileContent.IndexOf(SharedConstants.STRING_APP_VERSION_NUMBER);
-            strAppVersion = fileContent.Substring(nAppVersionPos + SharedConstants.STRING_APP_VERSION_NUMBER.Length + SharedConstants.JSON_FILE_GAP, SharedConstants.STRING_VERSION_LENGTH);
-
-            int nFileVersionPos = fileContent.IndexOf(SharedConstants.STRING_FILE_VERSION_NUMBER);
-            strFileVersion = fileContent.Substring(nFileVersionPos + SharedConstants.STRING_FILE_VERSION_NUMBER.Length + SharedConstants.JSON_FILE_GAP, SharedConstants.STRING_VERSION_LENGTH);
+            JObject o = JObject.Parse(fileContent);
+            string strAppVersion = o.Value<string>(SharedConstants.STRING_APP_VERSION_NUMBER);
+            string strFileVersion = o.Value<string>(SharedConstants.STRING_FILE_VERSION_NUMBER);
 
             return (MainType)(new MainType().Converter ?? STDConvert)(strAppVersion, strFileVersion, fileContent);
         }

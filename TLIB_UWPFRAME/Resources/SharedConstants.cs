@@ -36,12 +36,12 @@ namespace TLIB_UWPFRAME
         /// <summary>
         /// exact length of a version, as string at file
         /// </summary>
-        public const int STRING_VERSION_LENGTH = 3;
+        //public const int STRING_VERSION_LENGTH = 3;
 
         /// <summary>
         /// Die Anzahl Zeichen Zwischen der Variable der Nummer und der Nummer ansich
         /// </summary>
-        internal const int JSON_FILE_GAP = 3;
+        //internal const int JSON_FILE_GAP = 3;
 
         /// <summary>
         /// Speicher Constants

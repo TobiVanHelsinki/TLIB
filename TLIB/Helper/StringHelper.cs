@@ -13,7 +13,7 @@ namespace TLIB
         public static string GetString(string strID)
         {
             string strReturn = "";
-#if UWP
+#if WINDOWS_UWP
 #if __ANDROID__
             strReturn = "NotImplemented";
 #else
