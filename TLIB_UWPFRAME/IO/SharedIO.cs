@@ -29,6 +29,8 @@ namespace TLIB_UWPFRAME.IO
     }
     public class SharedIO 
     {
+        const string Prefix_Temp = "Temp_";
+        const string Prefix_Emergency = "EmergencySave_";
 
         //#####################################################################
         internal static string GetCurrentSavePath()
@@ -138,11 +140,11 @@ namespace TLIB_UWPFRAME.IO
         {
             if (Object.FileInfo.Fileplace != Place.NotDefined)
             {
-                await Save(Object, eUD, eSaveType: eSaveType);
+                await Save(Object, eUD, eSaveType);
             }
             else
             {
-                await SaveAtCurrentPlace(Object, eUD, eSaveType: eSaveType);
+                await SaveAtCurrentPlace(Object, eUD, eSaveType);
             }
         }
         /// <summary>
@@ -154,38 +156,34 @@ namespace TLIB_UWPFRAME.IO
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
-            await Save(Object, eUD, Object.FileInfo);
+            await Save(Object, eUD, eSaveType, Object.FileInfo);
         }
-
-        public static async Task SaveAtTempPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
+        public static async Task SaveAtTempPlace(IMainType Object)
         {
-            Object.FileInfo.Fileplace = Place.Temp;
-            Object.FileInfo.Filepath = GetCurrentSavePath();
-            await Save(Object, eUD, Object.FileInfo);
+            await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass() { Fileplace = Place.Temp, Filename = Object.FileInfo.Filename});
         }
-
-        public static async Task Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null, SaveType eSaveType = SaveType.Unknown)
+        public static async Task Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
         {
             if (Object == null)
             {
                 throw new ArgumentNullException("Char was Empty");
             }
+            FileInfoClass CurrentInfo = Info ?? Object.FileInfo;
             string strAdditionalName = "";
             switch (eSaveType)
             {
                 case SaveType.Temp:
-                    strAdditionalName = "Temp_";
                     break;
                 case SaveType.Emergency:
-                    strAdditionalName = "EmergencySave_";
+                    strAdditionalName = Prefix_Emergency;
                     break;
                 case SaveType.Unknown:
                 case SaveType.Manually:
                 case SaveType.Auto:
+                    break;
                 default:
                     break;
             }
-            FileInfoClass CurrentInfo = Info ?? Object.FileInfo;
             CurrentInfo.Filename = Object.MakeName();
             if (!CurrentInfo.Filename.StartsWith(strAdditionalName))
             {
@@ -199,27 +197,12 @@ namespace TLIB_UWPFRAME.IO
         #region Serialization
         protected static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
-            //#if DEBUG
-            //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
-            //#endif
-            //            SharedAppModel.Instance.NewNotification(
-            //                CrossPlatformHelper.GetString("Notification_Error_Loader_Error1/Text") +
-            //                "ErrorContextData: " + a.ErrorContext.Error.Message +
-            //                "ErrorContextData: " + a.ErrorContext.Error.Data +
-            //                "CurrentObject: " + a.CurrentObject +
-            //                "OriginalObject: " + a.ErrorContext.OriginalObject
-            //#if __ANDROID__
-            //#else
-            //                + "Path: " + a.ErrorContext.Path
-            //#endif
-            //                );
             if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
             {
                 SharedAppModel.Instance.NewNotification(JSON_Error_Notification);
             }
             a.ErrorContext.Handled = true;
         }
-
 
         /// <summary>
         /// can throw
@@ -281,11 +264,6 @@ namespace TLIB_UWPFRAME.IO
 
         #endregion
         #region Loading
-
-        public static async Task<CurrentType> LoadAtCurrentPlace(string strLoadChar, UserDecision eUD = UserDecision.AskUser)
-        {
-            return await Load(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strLoadChar, FolderToken = SharedConstants.ACCESSTOKEN_FOLDERMODE}, null, eUD);
-        }
 
         /// <summary>
         /// Can throw

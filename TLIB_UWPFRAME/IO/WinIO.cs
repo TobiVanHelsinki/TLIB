@@ -14,7 +14,7 @@ namespace TLIB_UWPFRAME.IO
         // ##############################
         public async Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
-            if (Info.Fileplace != Place.Extern)
+            if (Info.Fileplace != Place.Extern && Info.Fileplace != Place.Temp)
             {
                 Info.Fileplace = SharedSettingsModel.I.InternSync ? Place.Roaming : Place.Local;
             }
@@ -125,7 +125,7 @@ namespace TLIB_UWPFRAME.IO
                 }
                 catch (Exception ex)
                 {
-                    if (Info.Filename == null && Info.Filepath == null || Info.Filename == "" && Info.Filepath == "")
+                    if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
                     {
                         throw new Exception();
                     }
@@ -220,8 +220,11 @@ namespace TLIB_UWPFRAME.IO
             StorageFolder Folder = null;
             switch (Info.Fileplace)
             {
+                case Place.Temp:
+                    Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Temp", CreationCollisionOption.OpenIfExists);
+                    break;
                 case Place.Local:
-                    Folder= await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                    Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
                     break;
                 case Place.Roaming:
                     Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);

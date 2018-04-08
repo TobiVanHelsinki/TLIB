@@ -85,6 +85,11 @@ namespace TLIB_UWPFRAME.Model
         {
             PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH, SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH_STD);
         }
+        public bool CharInTempStore { get; set; }
+        public void CharInTempStoreReset()
+        {
+            CharInTempStore = false;
+        }
         #endregion
         #region Methods
         public void ResetAllSettings()
