@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ShadowRunHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,7 +14,8 @@ namespace TLIB_UWPFRAME.IO
         Extern = 2,
         Roaming = 3,
         Local = 4,
-        Assets = 5
+        Assets = 5,
+        Temp = 6
     }
 
     public enum SaveType
@@ -21,7 +23,8 @@ namespace TLIB_UWPFRAME.IO
         Unknown = 0,
         Manually = 1,
         Auto = 2,
-        Emergency = 3
+        Emergency = 3,
+        Temp = 4
     }
     public class SharedIO 
     {
@@ -112,6 +115,16 @@ namespace TLIB_UWPFRAME.IO
             var res = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
             return res.strFileContent;
         }
+
+        /// <summary>
+        /// Can Throw
+        /// </summary>
+        /// <param name="strDelChar"></param>
+        /// <returns></returns>
+        public async static Task Remove(FileInfoClass Info)
+        {
+            await GetIO().RemoveFile(Info);
+        }
         #region Saving
 
         /// <summary>
@@ -142,19 +155,14 @@ namespace TLIB_UWPFRAME.IO
             Object.FileInfo.Filepath = GetCurrentSavePath();
             await Save(Object, eUD, Object.FileInfo);
         }
-        /// <summary>
-        /// Can Throw
-        /// </summary>
-        /// <param name="strDelChar"></param>
-        /// <returns></returns>
-        public async static Task RemoveAtCurrentPlace(string strDelChar)
+
+        public static async Task SaveAtTempPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
         {
-            await GetIO().RemoveFile(new FileInfoClass() { Fileplace = GetCurrentSavePlace(), Filepath = GetCurrentSavePath(), Filename = strDelChar });
+            Object.FileInfo.Fileplace = Place.Temp;
+            Object.FileInfo.Filepath = GetCurrentSavePath();
+            await Save(Object, eUD, Object.FileInfo);
         }
-        public async static Task Remove(FileInfoClass Info)
-        {
-            await GetIO().RemoveFile(Info);
-        }
+
         public static async Task Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null, SaveType eSaveType = SaveType.Unknown)
         {
             if (Object == null)
@@ -164,16 +172,15 @@ namespace TLIB_UWPFRAME.IO
             string strAdditionalName = "";
             switch (eSaveType)
             {
-                case SaveType.Unknown:
-                    break;
-                case SaveType.Manually:
-                    break;
-                case SaveType.Auto:
-                    strAdditionalName = "AutoSave_";
+                case SaveType.Temp:
+                    strAdditionalName = "Temp_";
                     break;
                 case SaveType.Emergency:
                     strAdditionalName = "EmergencySave_";
                     break;
+                case SaveType.Unknown:
+                case SaveType.Manually:
+                case SaveType.Auto:
                 default:
                     break;
             }
@@ -211,6 +218,8 @@ namespace TLIB_UWPFRAME.IO
             }
             a.ErrorContext.Handled = true;
         }
+
+
         /// <summary>
         /// can throw
         /// </summary>
