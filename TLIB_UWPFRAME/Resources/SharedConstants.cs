@@ -1,57 +1,23 @@
-﻿#if __ANDROID__
-
-#else
-using Windows.ApplicationModel;
-#endif
-
-namespace TLIB_UWPFRAME
+﻿namespace TLIB_UWPFRAME
 {
     public class SharedConstants
     {
-        
 
-        /// <summary>
-        /// App Versionen
-        /// </summary>
-        /// 
-        public static string APP_VERSION_BUILD = string.Format("{0}{1}{2}{3}",
-#if __ANDROID__
-            null;
-#else
-             Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision);
-#endif
-        public static string APP_VERSION_BUILD_DELIM = string.Format("{0}.{1}.{2}.{3}",
-#if __ANDROID__
-            null;
-#else
-             Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision);
-#endif
-
-
-        /// <summary>
-        /// Variablen Namen fuer Versionen
-        /// </summary>
+        #region TOKEN
         public const string STRING_APP_VERSION_NUMBER = "APP_VERSION_NUMBER";
         public const string STRING_FILE_VERSION_NUMBER = "FILE_VERSION_NUMBER";
-        /// <summary>
-        /// exact length of a version, as string at file
-        /// </summary>
-        //public const int STRING_VERSION_LENGTH = 3;
+        public const string ERROR_TOKEN = "ERROR";
 
-        /// <summary>
-        /// Die Anzahl Zeichen Zwischen der Variable der Nummer und der Nummer ansich
-        /// </summary>
-        //internal const int JSON_FILE_GAP = 3;
+        #endregion
 
-        /// <summary>
-        /// Speicher Constants
-        /// </summary>
+        #region Speicher Container
 
-        /// <summary>
-        /// Speicher Container
-        /// </summary>
         public const string INTERN_SAVE_CONTAINER = "Char_Store";
         public const string CONTAINER_SETTINGS = "Char_Settings";
+
+        public const string ACCESSTOKEN_FOLDERMODE = "ACCESSTOKEN_FOLDERMODE";
+        public const string ACCESSTOKEN_FILEACTIVATED = "ACCESSTOKEN_FILEACTIVATED";
+        #endregion
 
         #region Speicher Einstellungen
         public const string CONTAINER_SETTINGS_DISPLAY_REQUEST = "SETTINGS_DISPLAY_REQUEST";
@@ -67,15 +33,30 @@ namespace TLIB_UWPFRAME
         public const string CONTAINER_SETTINGS_FOLDERMODE_PATH_STD = "";
         #endregion
 
-        public const string AUTHOR = "Tobi van Helsinki";
-        public const string APP_CONTACT_MAIL = "TobiVanHelsik@live.de";
 
-        public const string APP_CONTACT_MAILTO = "mailto:TobiVanHelsinki @live.de";
-        public const string APP_MORE_APPS = "ms-windows-store://publisher/?name=Tobi van Helsinki";
+        #region AppStore Constants
+        #region Shapes
 
-        public const string ACCESSTOKEN_FOLDERMODE = "ACCESSTOKEN_FOLDERMODE";
-        public const string ACCESSTOKEN_FILEACTIVATED = "ACCESSTOKEN_FILEACTIVATED";
+        public const string APP_MORE_APPS_SHAPE = "ms-windows-store://publisher/?name=";
+        public const string APP_STORE_LINK_SHAPE = "ms-windows-store://pdp/?productid=";
+        public const string APP_STORE_REVIEW_LINK_SHAPE = "ms-windows-store://review/?ProductId=";
+        public const string APP_CONTACT_MAILTO_SHAPE = "mailto:";
 
+        #endregion
+
+        #region SetByApp
+        public static string APP_VERSION_BUILD_DELIM { get; set; }
+        public static string APP_PUBLISHER { get; set; }
+        public static string APP_PUBLISHER_MAILTO { get; set; }
+        public static string APP_STORE_ID { get; set; }
+        #endregion
+
+        public static string APP_STORE_LINK { get => APP_STORE_LINK_SHAPE + APP_STORE_ID; }
+        public static string APP_STORE_REVIEW_LINK { get => APP_STORE_REVIEW_LINK_SHAPE + APP_STORE_ID; }
+        public static string APP_MORE_APPS { get => APP_MORE_APPS_SHAPE + APP_PUBLISHER; }
+        public static string APP_PUBLISHER_MAIL { get => APP_PUBLISHER_MAILTO.Remove(0, APP_CONTACT_MAILTO_SHAPE.Length); }
+
+        #endregion
 
     }
 }
