@@ -4,15 +4,24 @@ namespace TAPPLICATION.Model
 {
     public class Notification
     {
-        public string strMessage;
-        public bool bIsRead;
+        public string Message;
+        public bool IsRead;
         public Exception ThrownException;
-        public DateTime DateTime = DateTime.Now;
+        public DateTime OccuredAt = DateTime.Now;
 
-        public Notification(string istrMessage, Exception iExeption = null)
+        public Notification(string mess)
         {
-            strMessage = istrMessage;
-            ThrownException = iExeption;
+            Message = mess;
+        }
+        public Notification(string mess, Exception ex) : this(mess)
+        {
+            ThrownException = ex;
+        }
+        public Notification(string format, params string[] args) : this(string.Format(format, args))
+        {
+        }
+        public Notification(string format, Exception ex, params string[] args) : this(string.Format(format, args), ex)
+        {
         }
     }
 }
