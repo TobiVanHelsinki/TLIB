@@ -67,18 +67,15 @@ namespace TAMARIN.IO
         Task<List<FileInfoClass>> GetListofFiles(FileInfoClass Info, UserDecision eUser, List<string> FileTypes = null);
 
         /// <summary>
-        /// Copys a File to a Folder with the new Name (do not forget the fileextension!)
+        /// Copys a File to a Folder with the new Name (if provided in Target) (do not forget the fileextension!)
         /// </summary>
         /// <param name="Target"></param>
         /// <param name="Source"></param>
-        /// <param name="newName"></param>
         /// <returns></returns>
-        Task Copy(FileInfoClass Target, FileInfoClass Source, string newName = null);
+        Task Copy(FileInfoClass Target, FileInfoClass Source);
 
         Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source);
         
-        Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
-
         Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
     }
 }

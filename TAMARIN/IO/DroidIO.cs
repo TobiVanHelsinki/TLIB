@@ -6,7 +6,7 @@ namespace TAMARIN.IO
 {
     internal class DroidIO : IGeneralIO
     {
-        public Task Copy(FileInfoClass Target, FileInfoClass Source, string newName = null)
+        public Task Copy(FileInfoClass Target, FileInfoClass Source)
         {
             throw new NotImplementedException();
         }
@@ -16,15 +16,6 @@ namespace TAMARIN.IO
             throw new NotImplementedException();
         }
 
-        public Task CopyLocalRoaming(Place Target, string Path)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {

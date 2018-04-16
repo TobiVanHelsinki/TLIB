@@ -65,11 +65,6 @@ namespace TAMARIN.IO
             return ReturnList;
         }
 
-        public async Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
-        {
-            var info = (await GetFile(Info, eUser:UserDecision.AskUser));
-            return new FileInfoClass() { Filepath = info.Path, Filename = info.Name, Fileplace = Info.Fileplace };
-        }
 
         /// <summary>
         /// Extern:
@@ -295,13 +290,12 @@ namespace TAMARIN.IO
         /// </summary>
         /// <param name="Target"></param>
         /// <param name="Source"></param>
-        /// <param name="newName"></param>
         /// <returns></returns>
-        public async Task Copy(FileInfoClass Target, FileInfoClass Source, string newName = null)
+        public async Task Copy(FileInfoClass Target, FileInfoClass Source)
         {
             StorageFile SourceFile = await GetFile(Source);
             StorageFolder TargetFolder = await GetFolder(Target, UserDecision.ThrowError);
-            await SourceFile.CopyAsync(TargetFolder, newName ?? SourceFile.Name, NameCollisionOption.ReplaceExisting);
+            await SourceFile.CopyAsync(TargetFolder, Target.Filename ?? SourceFile.Name, NameCollisionOption.ReplaceExisting);
         }
         /// <summary>
         /// converts the name to an allowd string
