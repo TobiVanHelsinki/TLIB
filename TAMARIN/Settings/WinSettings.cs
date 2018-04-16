@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TAPPLICATION.Settings
+namespace TAMARIN.Settings
 {
     public class WinSettings : IPlatformSettings
     {

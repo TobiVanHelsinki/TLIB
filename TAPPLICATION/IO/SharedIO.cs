@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ShadowRunHelper.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TLIB;
 using TAPPLICATION.Model;
+using TLIB;
 
 namespace TAPPLICATION.IO
 {
@@ -31,6 +30,13 @@ namespace TAPPLICATION.IO
     {
         const string Prefix_Temp = "Temp_";
         const string Prefix_Emergency = "EmergencySave_";
+
+        public static IGeneralIO CurrentIO =
+#if __ANDROID__
+                new DroidIO();
+#else
+                new WinIO();
+#endif
 
         //#####################################################################
         internal static string GetCurrentSavePath()
@@ -66,21 +72,6 @@ namespace TAPPLICATION.IO
             }
         }
 
-        protected static IGeneralIO GetIO()
-        {
-            return
-#if __ANDROID__
-                new DroidIO();
-#else
-                new WinIO();
-#endif
-        }
-
-        public static async Task<List<FileInfoClass>> GetListOfFiles(FileInfoClass Info, UserDecision eUD = UserDecision.AskUser, List<string> FileTypes = null)
-        {
-            return await GetIO().GetListofFiles(Info, eUD, FileTypes);
-        }
-
         public async static Task CopyLocalRoaming(Place NewTarget = Place.NotDefined)
         {
             if (NewTarget == Place.NotDefined)
@@ -88,18 +79,18 @@ namespace TAPPLICATION.IO
                 NewTarget = GetCurrentSavePlace();
             }
 
-            await GetIO().CopyLocalRoaming(NewTarget, SharedConstants.INTERN_SAVE_CONTAINER);
+            await CurrentIO.CopyLocalRoaming(NewTarget, SharedConstants.INTERN_SAVE_CONTAINER);
         }
 
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
         {
-            FileInfo = await GetIO().GetFolderInfo(FileInfo);
+            FileInfo = await CurrentIO.GetFolderInfo(FileInfo);
             foreach (var (Name, Content) in FileContents)
             {
                 FileInfo.Filename = Name;
                 try
                 {
-                    await GetIO().SaveFileContent(Content, FileInfo);
+                    await CurrentIO.SaveFileContent(Content, FileInfo);
                 }
                 catch (Exception x)
                 {
@@ -108,26 +99,6 @@ namespace TAPPLICATION.IO
             }
         }
 
-        public async static void SaveTextToFile(FileInfoClass FileInfo, string Content)
-        {
-            await GetIO().SaveFileContent(Content, FileInfo);
-        }
-
-        public static async Task<string> ReadTextFromFile(FileInfoClass FileInfo, List<string> lST_FILETYPES_CSV, UserDecision askUser)
-        {
-            var (strFileContent, Info) = await GetIO().LoadFileContent(FileInfo, lST_FILETYPES_CSV, askUser);
-            return strFileContent;
-        }
-
-        /// <summary>
-        /// Can Throw
-        /// </summary>
-        /// <param name="strDelChar"></param>
-        /// <returns></returns>
-        public async static Task Remove(FileInfoClass Info)
-        {
-            await GetIO().RemoveFile(Info);
-        }
         #region Saving
 
         /// <summary>
@@ -190,7 +161,7 @@ namespace TAPPLICATION.IO
                 CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
             }
             CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename) ? "$$" : "" + CurrentInfo.Filename;
-            await GetIO().SaveFileContent(Serialize(Object), CurrentInfo, eUD);
+            await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
         }
 
         #endregion
@@ -276,7 +247,7 @@ namespace TAPPLICATION.IO
         /// <returns></returns>
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
-            var File = await GetIO().LoadFileContent(Info, FileTypes, eUD);
+            var File = await CurrentIO.LoadFileContent(Info, FileTypes, eUD);
             var NewMainObject = Deserialize(File.strFileContent);
             NewMainObject.FileInfo = File.Info;
             return NewMainObject;

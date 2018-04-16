@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TAPPLICATION.IO
+namespace TLIB
 {
     [Serializable]
     public class IsOKException : Exception

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using TAPPLICATION.Settings;
+using TAMARIN.Settings;
 
 namespace TAPPLICATION.Model
 {
