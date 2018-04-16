@@ -151,7 +151,7 @@ namespace TAPPLICATION.IO
 
         #endregion
         #region Serialization
-        protected static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
+        public static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
             if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
             {
@@ -165,7 +165,7 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="SaveChar"></param>
         /// <returns></returns>
-        protected static string Serialize(IMainType SaveChar)
+        public static string Serialize(IMainType SaveChar)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
@@ -193,13 +193,13 @@ namespace TAPPLICATION.IO
     {
         #region Deserialization
 
-        protected static CurrentType Deserialize(string fileContent)
+        public static CurrentType Deserialize(string fileContent)
         {
             JObject o = JObject.Parse(fileContent);
             string strAppVersion = o.Value<string>(SharedConstants.STRING_APP_VERSION_NUMBER);
             string strFileVersion = o.Value<string>(SharedConstants.STRING_FILE_VERSION_NUMBER);
 
-            return (CurrentType)STDConvert(strAppVersion, strFileVersion, fileContent);
+            return MainTypeConvert(strAppVersion, strFileVersion, fileContent);
         }
         /// <summary>
         /// Can throw
@@ -207,7 +207,7 @@ namespace TAPPLICATION.IO
         /// <param name="strFileVersion"></param>
         /// <param name="fileContent"></param>
         /// <returns></returns>
-        internal static Func<string, string, string, IMainType> STDConvert =
+        internal static Func<string, string, string, CurrentType> MainTypeConvert =
             (string strFileVersion, string strAppVersion, string fileContent) =>
             {
                 JsonSerializerSettings settings = new JsonSerializerSettings()
