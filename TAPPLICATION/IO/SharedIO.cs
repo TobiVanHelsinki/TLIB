@@ -199,7 +199,7 @@ namespace TAPPLICATION.IO
             string strAppVersion = o.Value<string>(SharedConstants.STRING_APP_VERSION_NUMBER);
             string strFileVersion = o.Value<string>(SharedConstants.STRING_FILE_VERSION_NUMBER);
 
-            return (CurrentType)(new CurrentType().Converter ?? STDConvert)(strAppVersion, strFileVersion, fileContent);
+            return (CurrentType)STDConvert(strAppVersion, strFileVersion, fileContent);
         }
         /// <summary>
         /// Can throw
@@ -207,7 +207,7 @@ namespace TAPPLICATION.IO
         /// <param name="strFileVersion"></param>
         /// <param name="fileContent"></param>
         /// <returns></returns>
-        static Func<string, string, string, IMainType> STDConvert =
+        internal static Func<string, string, string, IMainType> STDConvert =
             (string strFileVersion, string strAppVersion, string fileContent) =>
             {
                 JsonSerializerSettings settings = new JsonSerializerSettings()
