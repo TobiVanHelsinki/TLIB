@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TAPPLICATION.IO
+namespace TAMARIN.IO
 {
     internal class DroidIO : IGeneralIO
     {

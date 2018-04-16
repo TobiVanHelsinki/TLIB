@@ -23,7 +23,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\WinIO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\HelpEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\IMainType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\ModelHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\SharedSettingsModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Notification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\SharedAppModel.cs" />

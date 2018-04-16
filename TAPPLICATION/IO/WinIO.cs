@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TLIB;
-using TAPPLICATION.Model;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
-namespace TAPPLICATION.IO
+namespace TAMARIN.IO
 {
     internal class WinIO : IGeneralIO
     {
         // ##############################
         public async Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
-            if (Info.Fileplace != Place.Extern && Info.Fileplace != Place.Temp)
-            {
-                Info.Fileplace = SharedSettingsModel.I.InternSync ? Place.Roaming : Place.Local;
-            }
             StorageFile x = await GetFile(Info, eUser:eUD);
             await Task.Delay(TimeSpan.FromMilliseconds(100));
             try
@@ -26,7 +21,7 @@ namespace TAPPLICATION.IO
             }
             catch (Exception ex)
             {
-                SharedAppModel.Instance.NewNotification("Writingerror", ex);
+                throw new Exception("Writingerror", ex);
             }
             await Task.Delay(TimeSpan.FromMilliseconds(50));
         }
@@ -39,17 +34,13 @@ namespace TAPPLICATION.IO
 
         public async Task<(string strFileContent, FileInfoClass Info)> LoadFileContent(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
-            StorageFile x = await GetFile(Info, FileTypes, eUD, FileNotFoundDecision.NotCreate);
-            if (x == null)
-            {
-                x = await FilePicker(FileTypes);
-            }
+            StorageFile x = await GetFile(Info, FileTypes, UserDecision.AskUser, FileNotFoundDecision.NotCreate);
             return (await FileIO.ReadTextAsync(x), new FileInfoClass()
             {
                 Filename = x.Name,
                 Fileplace = Info.Fileplace,
                 FolderToken = Info.FolderToken,
-                Filepath = Info.Fileplace == Place.Extern? x.Path.Substring(0,x.Path.Length-x.Name.Length) : SharedIO.GetCurrentSavePath()
+                Filepath = x.Path.Substring(0,x.Path.Length-x.Name.Length) 
             });
         }
 
@@ -69,7 +60,7 @@ namespace TAPPLICATION.IO
             foreach (var item in Liste.Where(x=> FileTypes.Contains (x.FileType)))
             {
                 Windows.Storage.FileProperties.BasicProperties props = await item.GetBasicPropertiesAsync();
-                ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Info.Fileplace == Place.Extern ? Folder.Path : SharedIO.GetCurrentSavePath(), Fileplace = Info.Fileplace, DateModified = props.DateModified, Size = props.Size });
+                ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Folder.Path , Fileplace = Info.Fileplace, DateModified = props.DateModified, Size = props.Size });
             }
             return ReturnList;
         }
@@ -246,8 +237,7 @@ namespace TAPPLICATION.IO
                         }
                         else
                         {
-                            SharedAppModel.Instance.NewNotification(StringHelper.GetString("Error_GetFolder"), ex);
-                            throw;
+                            throw new Exception(StringHelper.GetString("Error_GetFolder"), ex);
                         }
                     }
                     break;

@@ -1,4 +1,5 @@
 ﻿using System;
+using TAMARIN.IO;
 
 namespace TAPPLICATION.Model
 {
@@ -13,7 +14,7 @@ namespace TAPPLICATION.Model
         string APP_VERSION_NUMBER { get; } 
         string FILE_VERSION_NUMBER { get; }
 
-        IO.FileInfoClass FileInfo { get; set; }
+        FileInfoClass FileInfo { get; set; }
 
         event EventHandler SaveRequest;
         #region AUTO_SAVE_STUFF 

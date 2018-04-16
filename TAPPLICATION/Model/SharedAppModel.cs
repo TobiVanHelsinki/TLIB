@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using TAMARIN.IO;
 using TLIB;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -17,7 +18,7 @@ namespace TAPPLICATION.Model
         {
             if (null == Task.CurrentId)
             {
-                TAPPLICATION.Model.ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
+                ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
             }
             else
             {
@@ -127,7 +128,7 @@ namespace TAPPLICATION.Model
             {
                 try
                 {
-                    await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: IO.UserDecision.ThrowError);
+                    await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
                     MainObjectSaved?.Invoke(this, new EventArgs());
 #if DEBUG
                     SystemHelper.WriteLine("Char Saved Internaly");

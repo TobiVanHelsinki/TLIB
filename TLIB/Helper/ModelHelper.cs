@@ -1,14 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
+#if WINDOWS_UWP
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+#endif
 
-namespace TAPPLICATION.Model
+namespace TLIB
 {
-    class ModelHelper
+    public static class ModelHelper
     {
         public static async void CallPropertyChangedAtDispatcher(PropertyChangedEventHandler Event, object o, string property, CoreDispatcherPriority Prio = CoreDispatcherPriority.Normal)
         {
+#if WINDOWS_UWP
             try
             {
                 await Windows.UI.Xaml.Window.Current?.Dispatcher?.RunAsync(Prio,
@@ -31,17 +34,20 @@ namespace TAPPLICATION.Model
                     System.Diagnostics.Debug.Write("Exception at property changed");
                 }
             }
-
-
-
-
+#else
+            throw new NotImplementedException();
+#endif
         }
-
+#if WINDOWS_UWP
+        static CoreDispatcher CDispatcher;
+#endif
         public static async void AtGui(Action x, CoreDispatcherPriority Priority = CoreDispatcherPriority.Low)
         {
+#if WINDOWS_UWP
+
             try
             {
-                await SharedAppModel.Instance.Dispatcher.RunAsync(Priority, () => x());
+                await CDispatcher.RunAsync(Priority, () => x());
             }
             catch (Exception)
             {
@@ -53,6 +59,9 @@ namespace TAPPLICATION.Model
                 {
                 }
             }
+#else
+            throw new NotImplementedException();
+#endif
         }
     }
 }

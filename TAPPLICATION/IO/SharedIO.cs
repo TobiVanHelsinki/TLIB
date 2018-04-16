@@ -3,20 +3,13 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TAMARIN.IO;
 using TAPPLICATION.Model;
 using TLIB;
 
 namespace TAPPLICATION.IO
 {
-    public enum Place
-    {
-        NotDefined = 0,
-        Extern = 2,
-        Roaming = 3,
-        Local = 4,
-        Assets = 5,
-        Temp = 6
-    }
+
 
     public enum SaveType
     {
@@ -161,6 +154,10 @@ namespace TAPPLICATION.IO
                 CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
             }
             CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename) ? "$$" : "" + CurrentInfo.Filename;
+            if (CurrentInfo.Fileplace != Place.Extern && CurrentInfo.Fileplace != Place.Temp)
+            {
+                CurrentInfo.Fileplace = SharedSettingsModel.I.InternSync ? Place.Roaming : Place.Local;
+            }
             await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
         }
 
@@ -248,6 +245,10 @@ namespace TAPPLICATION.IO
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             var File = await CurrentIO.LoadFileContent(Info, FileTypes, eUD);
+            if (Info.Fileplace == Place.Extern)
+            {
+                File.Info.Filepath = SharedIO.GetCurrentSavePath();
+            }
             var NewMainObject = Deserialize(File.strFileContent);
             NewMainObject.FileInfo = File.Info;
             return NewMainObject;

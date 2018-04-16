@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TLIB;
 
-namespace TAPPLICATION.IO
+namespace TAMARIN.IO
 {
     public class FileInfoClass : INotifyPropertyChanged
     {
@@ -98,7 +99,7 @@ namespace TAPPLICATION.IO
         public event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            Model.ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
+            ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
         }
     }
 }
