@@ -11,6 +11,11 @@ namespace TAMARIN.IO
             throw new NotImplementedException();
         }
 
+        public Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task CopyLocalRoaming(Place Target, string Path)
         {
             throw new NotImplementedException();

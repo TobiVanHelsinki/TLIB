@@ -16,12 +16,7 @@
     <Import_RootNamespace>TAPPLICATION</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)IO\DroidIO.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IO\FileInfoClass.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IO\IGeneralIO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\SharedIO.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IO\WinIO.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\HelpEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\IMainType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\SharedSettingsModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Notification.cs" />

@@ -9,8 +9,6 @@ using TLIB;
 
 namespace TAPPLICATION.IO
 {
-
-
     public enum SaveType
     {
         Unknown = 0,
@@ -63,16 +61,6 @@ namespace TAPPLICATION.IO
                 }
 
             }
-        }
-
-        public async static Task CopyLocalRoaming(Place NewTarget = Place.NotDefined)
-        {
-            if (NewTarget == Place.NotDefined)
-            {
-                NewTarget = GetCurrentSavePlace();
-            }
-
-            await CurrentIO.CopyLocalRoaming(NewTarget, SharedConstants.INTERN_SAVE_CONTAINER);
         }
 
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)

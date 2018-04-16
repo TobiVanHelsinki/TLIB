@@ -83,6 +83,8 @@ namespace TAMARIN.IO
         }
 
         string _FolderToken;
+
+
         public string FolderToken
         {
             get { return _FolderToken; }
@@ -100,6 +102,23 @@ namespace TAMARIN.IO
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
+        }
+
+
+        public FileInfoClass()
+        {
+        }
+
+        public FileInfoClass(Place place)
+        {
+            Fileplace = place;
+        }
+
+        public FileInfoClass(Place fileplace, string filename, string filepath)
+        {
+            Filename = filename;
+            Filepath = filepath;
+            Fileplace = fileplace;
         }
     }
 }

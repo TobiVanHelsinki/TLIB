@@ -67,15 +67,6 @@ namespace TAMARIN.IO
         Task<List<FileInfoClass>> GetListofFiles(FileInfoClass Info, UserDecision eUser, List<string> FileTypes = null);
 
         /// <summary>
-        /// Copys all Data from local to roaming space
-        /// </summary>
-        /// <param name="Target"></param>
-        /// <param name="Source"></param>
-        /// <param name="newName"></param>
-        /// <returns></returns>
-        Task CopyLocalRoaming(Place Target, string Path);
-
-        /// <summary>
         /// Copys a File to a Folder with the new Name (do not forget the fileextension!)
         /// </summary>
         /// <param name="Target"></param>
@@ -84,6 +75,8 @@ namespace TAMARIN.IO
         /// <returns></returns>
         Task Copy(FileInfoClass Target, FileInfoClass Source, string newName = null);
 
+        Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source);
+        
         Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
 
         Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);

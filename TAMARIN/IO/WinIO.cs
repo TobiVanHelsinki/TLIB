@@ -275,10 +275,10 @@ namespace TAMARIN.IO
             return await folderPicker.PickSingleFolderAsync();
         }
 
-        public async Task CopyLocalRoaming(Place Target, string Path)
+        public async Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source)
         {
-            StorageFolder TargetFolder = await GetFolder(new FileInfoClass() { Fileplace = Target, Filepath = Path });
-            StorageFolder SourceFolder = await GetFolder(new FileInfoClass() { Fileplace = Target == Place.Local? Place.Roaming : Place.Local, Filepath = Path });
+            StorageFolder TargetFolder = await GetFolder(Target);
+            StorageFolder SourceFolder = await GetFolder(Source);
             foreach (var item in await SourceFolder.GetFilesAsync())
             {
                 try
