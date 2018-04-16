@@ -91,15 +91,7 @@ namespace TAMARIN.IO
             StorageFile File = null;
             if (Info.Fileplace == Place.Assets)
             {
-                try
-                {
-                    File = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Info.Filepath + Info.Filename));
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                return File;
+                return File = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Info.Filepath + Info.Filename));
             }
             try
             {
@@ -115,7 +107,7 @@ namespace TAMARIN.IO
                 {
                     if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
                     {
-                        throw new Exception();
+                        throw new IsOKException();
                     }
                     StorageFolder Folder = await GetFolder(Info, eUser);
                     switch (eCreation)
