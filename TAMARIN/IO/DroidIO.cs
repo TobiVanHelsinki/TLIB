@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TAMARIN.IO
 {
-    internal class DroidIO : IGeneralIO
+    internal class DroidIO : IPlatformIO
     {
         public Task Copy(FileInfoClass Target, FileInfoClass Source)
         {

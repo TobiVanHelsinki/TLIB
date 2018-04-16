@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 #if WINDOWS_UWP
+using System.ComponentModel;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 #endif
@@ -39,7 +39,7 @@ namespace TLIB
 #endif
         }
 #if WINDOWS_UWP
-        static CoreDispatcher CDispatcher;
+        public static CoreDispatcher CDispatcher;
 #endif
         public static async void AtGui(Action x, CoreDispatcherPriority Priority = CoreDispatcherPriority.Low)
         {

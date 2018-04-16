@@ -21,11 +21,11 @@ namespace TAPPLICATION.IO
     {
         const string Prefix_Emergency = "EmergencySave_";
 
-        public static IGeneralIO CurrentIO =
+        public static IPlatformIO CurrentIO =
 #if __ANDROID__
                 new DroidIO();
-#else
-                new WinIO();
+#elif WINDOWS_UWP
+                new UwpIO();
 #endif
 
         //#####################################################################
