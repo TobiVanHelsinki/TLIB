@@ -7,7 +7,7 @@ using TLIB;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 
-namespace TLIB_UWPFRAME.Model
+namespace TAPPLICATION.Model
 {
     public class SharedAppModel : INotifyPropertyChanged
     {
@@ -17,7 +17,7 @@ namespace TLIB_UWPFRAME.Model
         {
             if (null == Task.CurrentId)
             {
-                TLIB_UWPFRAME.Model.ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
+                TAPPLICATION.Model.ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
             }
             else
             {

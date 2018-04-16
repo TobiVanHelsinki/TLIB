@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace TLIB_UWPFRAME.Settings
+namespace TAPPLICATION.Settings
 {
     public interface IPlatformSettings
     {

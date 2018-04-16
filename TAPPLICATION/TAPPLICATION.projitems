@@ -13,7 +13,7 @@
     <SharedGUID>c43e2365-5678-4e72-a123-71383de9b2dc</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TAMARIN</Import_RootNamespace>
+    <Import_RootNamespace>TAPPLICATION</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)IO\Definitions.cs" />

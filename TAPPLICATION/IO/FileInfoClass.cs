@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TLIB_UWPFRAME.IO
+namespace TAPPLICATION.IO
 {
     public class FileInfoClass : INotifyPropertyChanged
     {

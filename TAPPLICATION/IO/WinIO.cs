@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TLIB;
-using TLIB_UWPFRAME.Model;
+using TAPPLICATION.Model;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
-namespace TLIB_UWPFRAME.IO
+namespace TAPPLICATION.IO
 {
     internal class WinIO : IGeneralIO
     {

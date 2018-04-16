@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TLIB_UWPFRAME.IO
+namespace TAPPLICATION.IO
 {
     public enum UserDecision
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TLIB_UWPFRAME.Model
+namespace TAPPLICATION.Model
 {
     public interface IMainType
     {

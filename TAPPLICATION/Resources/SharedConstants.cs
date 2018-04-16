@@ -1,4 +1,4 @@
-﻿namespace TLIB_UWPFRAME
+﻿namespace TAPPLICATION
 {
     public class SharedConstants
     {

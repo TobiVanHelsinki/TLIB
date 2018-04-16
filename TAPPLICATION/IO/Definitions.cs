@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TLIB_UWPFRAME.IO
+namespace TAPPLICATION.IO
 {
     [Serializable]
     public class IsOKException : Exception

@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TLIB;
-using TLIB_UWPFRAME.Model;
+using TAPPLICATION.Model;
 
-namespace TLIB_UWPFRAME.IO
+namespace TAPPLICATION.IO
 {
     public enum Place
     {
