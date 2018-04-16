@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.Storage;
 
 namespace TAMARIN.Settings
 {
     public class WinSettings : IPlatformSettings
     {
-        Windows.Storage.ApplicationDataContainer Settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+        ApplicationDataContainer Settings = ApplicationData.Current.LocalSettings;
 
         public void set(string place, object value)
         {

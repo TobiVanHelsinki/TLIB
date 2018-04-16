@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TLIB;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
+using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 
 namespace TAMARIN.IO
@@ -59,7 +61,7 @@ namespace TAMARIN.IO
             }
             foreach (var item in Liste.Where(x=> FileTypes.Contains (x.FileType)))
             {
-                Windows.Storage.FileProperties.BasicProperties props = await item.GetBasicPropertiesAsync();
+                BasicProperties props = await item.GetBasicPropertiesAsync();
                 ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Folder.Path , Fileplace = Info.Fileplace, DateModified = props.DateModified, Size = props.Size });
             }
             return ReturnList;
@@ -144,28 +146,23 @@ namespace TAMARIN.IO
 
             try
             {
-                Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken + File.Name ?? "" + File.Name, File,"A Char File",Windows.Storage.AccessCache.RecentStorageItemVisibility.AppAndSystem);
+                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken + File.Name ?? "" + File.Name, File,"A Char File", RecentStorageItemVisibility.AppAndSystem);
             }
             catch (Exception ex)
             {
-                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test", ex);
             }
             try
             {
-                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken + File.Name ?? "" + File.Name, File,"A Char File");
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken + File.Name ?? "" + File.Name, File,"A Char File");
             }
             catch (Exception ex)
             {
-                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test2", ex);
             }
             return File;
         }
         public static async Task<StorageFile> FilePicker(List<string> lststrFileEndings)
         {
-            //if (lststrFileEndings == null)
-            //{
-            //    lststrFileEndings = SharedConstants.LST_FILETYPES_ALL;
-            //}
+
             FileOpenPicker openPicker = new FileOpenPicker()
             {
                 SuggestedStartLocation = PickerLocationId.ComputerFolder
@@ -239,19 +236,17 @@ namespace TAMARIN.IO
             }
             try
             {
-                Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken, Folder, "A folder that contains a sr char file", Windows.Storage.AccessCache.RecentStorageItemVisibility.AppAndSystem);
+                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken, Folder, "A folder that contains a sr char file", RecentStorageItemVisibility.AppAndSystem);
             }
             catch (Exception ex)
             {
-                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test", ex);
             }
             try
             {
-                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken, Folder);
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken, Folder);
             }
             catch (Exception ex)
             {
-                //TLIB_UWPFRAME.Model.SharedAppModel.Instance.NewNotification("test2", ex);
             }
             return Folder;
         }

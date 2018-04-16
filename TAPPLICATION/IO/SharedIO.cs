@@ -19,7 +19,6 @@ namespace TAPPLICATION.IO
     }
     public class SharedIO 
     {
-        const string Prefix_Temp = "Temp_";
         const string Prefix_Emergency = "EmergencySave_";
 
         public static IGeneralIO CurrentIO =
