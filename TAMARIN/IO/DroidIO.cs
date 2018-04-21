@@ -32,12 +32,17 @@ namespace TAMARIN.IO
             throw new NotImplementedException();
         }
 
+        public Task<bool> OpenFolder(FileInfoClass Info)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task RemoveFile(FileInfoClass Info)
         {
             throw new NotImplementedException();
         }
 
-        public Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
+        public Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
             throw new NotImplementedException();
         }

@@ -87,15 +87,15 @@ namespace TAPPLICATION.IO
         /// <param name="Object"></param>
         /// <param name="eSaveType"></param>
         /// <returns></returns>
-        public static async Task SaveAtOriginPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<FileInfoClass> SaveAtOriginPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
         {
-            if (Object.FileInfo.Fileplace != Place.NotDefined)
+            if (Object.FileInfo.Fileplace != Place.NotDefined && Object.FileInfo.Fileplace != Place.Temp)
             {
-                await Save(Object, eUD, eSaveType);
+                return await Save(Object, eUD, eSaveType);
             }
             else
             {
-                await SaveAtCurrentPlace(Object, eUD, eSaveType);
+                return await SaveAtCurrentPlace(Object, eUD, eSaveType);
             }
         }
         /// <summary>
@@ -103,17 +103,17 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="strDelChar"></param>
         /// <returns></returns>
-        public static async Task SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
+        public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
-            await Save(Object, eUD, eSaveType, Object.FileInfo);
+            return await Save(Object, eUD, eSaveType, Object.FileInfo);
         }
-        public static async Task SaveAtTempPlace(IMainType Object)
+        public static async Task<FileInfoClass> SaveAtTempPlace(IMainType Object)
         {
-            await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass() { Fileplace = Place.Temp, Filename = Object.FileInfo.Filename});
+            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass() { Fileplace = Place.Temp, Filename = Object.FileInfo.Filename});
         }
-        public static async Task Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
+        public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
         {
             if (Object == null)
             {
@@ -145,7 +145,7 @@ namespace TAPPLICATION.IO
             {
                 CurrentInfo.Fileplace = SharedSettingsModel.I.InternSync ? Place.Roaming : Place.Local;
             }
-            await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
+            return await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
         }
 
         #endregion

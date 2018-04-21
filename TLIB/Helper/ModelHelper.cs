@@ -1,4 +1,5 @@
 ﻿#if WINDOWS_UWP
+using System;
 using System.ComponentModel;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;

@@ -35,7 +35,7 @@ namespace TAMARIN.IO
         /// <param name="ePlace"></param>
         /// <param name="strSaveName"></param>
         /// <param name="strSavePath"></param>
-        Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser);
+        Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser);
 
         /// <summary>
         /// Remove a string from the specified target file
@@ -77,5 +77,8 @@ namespace TAMARIN.IO
         Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source);
         
         Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
+
+        Task<bool> OpenFolder(FileInfoClass Info);
+
     }
 }

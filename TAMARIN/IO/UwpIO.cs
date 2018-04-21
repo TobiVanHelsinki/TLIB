@@ -7,13 +7,14 @@ using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
+using Windows.System;
 
 namespace TAMARIN.IO
 {
     internal class UwpIO : IPlatformIO
     {
         // ##############################
-        public async Task SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
+        public async Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
             StorageFile x = await GetFile(Info, eUser:eUD);
             await Task.Delay(TimeSpan.FromMilliseconds(100));
@@ -26,6 +27,8 @@ namespace TAMARIN.IO
                 throw new Exception("Writingerror", ex);
             }
             await Task.Delay(TimeSpan.FromMilliseconds(50));
+            var i = new FileInfoClass(Info.Fileplace, x.Name, x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length));
+            return i;
         }
 
         public async Task RemoveFile(FileInfoClass Info)
@@ -193,39 +196,47 @@ namespace TAMARIN.IO
         internal async static Task<StorageFolder> GetFolder(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {
             StorageFolder Folder = null;
-            switch (Info.Fileplace)
+            try
             {
-                case Place.Temp:
-                    Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Temp", CreationCollisionOption.OpenIfExists);
-                    break;
-                case Place.Local:
-                    Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
-                    break;
-                case Place.Roaming:
-                    Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
-                    break;
-                case Place.Extern:
-                    try // to get it
-                    {
-                        Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (eUser == UserDecision.AskUser)
+                 Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+            }
+            catch (Exception)
+            {
+                switch (Info.Fileplace)
+                {
+                    case Place.Temp:
+                        Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Temp", CreationCollisionOption.OpenIfExists);
+                        break;
+                    case Place.Local:
+                        Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                        break;
+                    case Place.Roaming:
+                        Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                        break;
+                    case Place.Extern:
+                        try // to get it
                         {
-                            Folder = await FolderPicker();
-                            if (Folder == null)
+                            Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (eUser == UserDecision.AskUser)
                             {
-                                throw new IsOKException();
+                                Folder = await FolderPicker();
+                                if (Folder == null)
+                                {
+                                    throw new IsOKException();
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception(StringHelper.GetString("Error_GetFolder"), ex);
                             }
                         }
-                        else
-                        {
-                            throw new Exception(StringHelper.GetString("Error_GetFolder"), ex);
-                        }
-                    }
-                    break;
+                        break;
+                }
             }
+
             try
             {
                 StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken, Folder, "A folder that contains a sr char file", RecentStorageItemVisibility.AppAndSystem);
@@ -306,5 +317,10 @@ namespace TAMARIN.IO
             return ReturnValue;
         }
 
+        public async Task<bool> OpenFolder(FileInfoClass Info)
+        {
+            var f = await GetFolder(Info);
+            return await Launcher.LaunchFolderAsync(f);
+        }
     }
 }
