@@ -232,10 +232,6 @@ namespace TAPPLICATION.IO
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             var File = await CurrentIO.LoadFileContent(Info, FileTypes, eUD);
-            if (Info.Fileplace == Place.Extern)
-            {
-                File.Info.Filepath = SharedIO.GetCurrentSavePath();
-            }
             var NewMainObject = Deserialize(File.strFileContent);
             NewMainObject.FileInfo = File.Info;
             return NewMainObject;
