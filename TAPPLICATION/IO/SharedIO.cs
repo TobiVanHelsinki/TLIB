@@ -95,7 +95,7 @@ namespace TAPPLICATION.IO
             }
             else
             {
-                return await SaveAtCurrentPlace(Object, eUD, eSaveType);
+                return await SaveAtCurrentPlace(Object, eSaveType, eUD);
             }
         }
         /// <summary>
@@ -103,7 +103,7 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="strDelChar"></param>
         /// <returns></returns>
-        public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError, SaveType eSaveType = SaveType.Unknown)
+        public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.ThrowError)
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
