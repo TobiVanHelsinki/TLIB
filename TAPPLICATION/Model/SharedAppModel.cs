@@ -97,7 +97,6 @@ namespace TAPPLICATION.Model
             get { return this._MainObject; }
             set
             {
-                //if (value != _MainObject)
                 if (value != null)
                 {
                     if (!value.Equals(_MainObject))

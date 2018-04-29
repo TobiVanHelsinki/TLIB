@@ -46,15 +46,15 @@
 
         #region SetByApp
         public static string APP_VERSION_BUILD_DELIM { get; set; }
-        public static string APP_PUBLISHER { get; set; }
-        public static string APP_PUBLISHER_MAILTO { get; set; }
         public static string APP_STORE_ID { get; set; }
+        public static string APP_PUBLISHER_MAIL { get; set; }
+        public static string APP_PUBLISHER { get; set; }
         #endregion
 
-        public static string APP_STORE_LINK { get => APP_STORE_LINK_SHAPE + APP_STORE_ID; }
-        public static string APP_STORE_REVIEW_LINK { get => APP_STORE_REVIEW_LINK_SHAPE + APP_STORE_ID; }
+        public static string APP_STORE_LINK { get => APP_STORE_LINK_SHAPE + APP_STORE_ID ?? ""; }
+        public static string APP_STORE_REVIEW_LINK { get => APP_STORE_REVIEW_LINK_SHAPE + APP_STORE_ID ?? ""; }
         public static string APP_MORE_APPS { get => APP_MORE_APPS_SHAPE + APP_PUBLISHER; }
-        public static string APP_PUBLISHER_MAIL { get => APP_PUBLISHER_MAILTO.Remove(0, APP_CONTACT_MAILTO_SHAPE.Length); }
+        public static string APP_PUBLISHER_MAILTO { get => APP_CONTACT_MAILTO_SHAPE + APP_PUBLISHER_MAIL; }
 
         #endregion
 
