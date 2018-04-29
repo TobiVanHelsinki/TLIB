@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 #endif
 
 namespace TLIB
@@ -10,52 +11,42 @@ namespace TLIB
     public static class ModelHelper
     {
 #if WINDOWS_UWP
+        public static CoreDispatcher CDispatcher;
         public static async void CallPropertyChangedAtDispatcher(PropertyChangedEventHandler Event, object o, string property, CoreDispatcherPriority Prio = CoreDispatcherPriority.Normal)
         {
-            try
+            if (Environment.CurrentManagedThreadId == 0)
             {
-                await Windows.UI.Xaml.Window.Current?.Dispatcher?.RunAsync(Prio,
-                () =>
-                {
-                    Event?.Invoke(o, new PropertyChangedEventArgs(property));
-                });
+                Event?.Invoke(o, new PropertyChangedEventArgs(property));
+                return;
             }
-            catch (Exception)
+            CoreDispatcher C = Window.Current?.Dispatcher ?? CoreApplication.MainView?.CoreWindow?.Dispatcher ?? CDispatcher;
+            if (C != null)
             {
-                try
+                await C.RunAsync(Prio, () => Event?.Invoke(o, new PropertyChangedEventArgs(property)));
+            }
+            else
+            {
+                if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Prio, () =>
-                    {
-                        Event?.Invoke(o, new PropertyChangedEventArgs(property));
-                    });
+                    System.Diagnostics.Debugger.Break();
                 }
-                catch (Exception)
-                {
-                    System.Diagnostics.Debug.Write("Exception at property changed");
-                }
+                System.Diagnostics.Debug.Write("No Dispatcher at property changed");
             }
     }
-#endif
-#if WINDOWS_UWP
-        public static CoreDispatcher CDispatcher;
-#endif
-#if WINDOWS_UWP
         public static async void AtGui(Action x, CoreDispatcherPriority Priority = CoreDispatcherPriority.Low)
         {
-
-            try
+            CoreDispatcher C = CDispatcher ?? Window.Current?.Dispatcher ?? CoreApplication.MainView?.CoreWindow?.Dispatcher ;
+            if (C != null)
             {
                 await CDispatcher.RunAsync(Priority, () => x());
             }
-            catch (Exception)
+            else
             {
-                try
+                if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    await Windows.UI.Xaml.Window.Current.Dispatcher.RunAsync(Priority, () => x());
+                    System.Diagnostics.Debugger.Break();
                 }
-                catch (Exception)
-                {
-                }
+                System.Diagnostics.Debug.Write("No Dispatcher at property changed");
             }
         }
 #endif
