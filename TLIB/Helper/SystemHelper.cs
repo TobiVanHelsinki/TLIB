@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,15 +14,6 @@ namespace TLIB
             Thread.Sleep(ms);
 #endif
         }
-
-//        public static void WriteLine(string s)
-//        {
-//#if WINDOWS_UWP
-//            System.Diagnostics.Debug.WriteLine(s);
-//#elif WINDOWS_DESKTOP
-//            Console.Write(s);
-//#endif
-//        }
 
         public static void WriteTime() => System.Diagnostics.Debug.Write(DateTime.Now);
         public static void WriteLineTime() => System.Diagnostics.Debug.WriteLine(DateTime.Now);
