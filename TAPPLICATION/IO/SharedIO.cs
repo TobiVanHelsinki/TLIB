@@ -38,7 +38,6 @@ namespace TAPPLICATION.IO
             else
             {
                 return CurrentIO.GetCompleteInternPath(GetCurrentSavePlace()) + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
-                return SharedConstants.INTERN_SAVE_CONTAINER; //TODO IO hier korrekten internen pfad ausgeben, SystemCall wäre notwendig
             }
         }
 
