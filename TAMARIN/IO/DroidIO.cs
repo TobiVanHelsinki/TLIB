@@ -16,6 +16,10 @@ namespace TAMARIN.IO
             throw new NotImplementedException();
         }
 
+        public string GetCompleteInternPath(Place place)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {

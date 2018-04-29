@@ -28,6 +28,13 @@ namespace TAMARIN.IO
     public interface IPlatformIO
     {
         /// <summary>
+        /// returns a system wide valid path to the given place
+        /// </summary>
+        /// <param name="relativ_local_path"></param>
+        /// <returns></returns>
+        string GetCompleteInternPath(Place place);
+
+        /// <summary>
         /// Save a string to the specified target file
         /// Can throw
         /// </summary>

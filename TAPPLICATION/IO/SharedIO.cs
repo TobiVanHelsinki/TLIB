@@ -37,9 +37,9 @@ namespace TAPPLICATION.IO
             }
             else
             {
-                return SharedConstants.INTERN_SAVE_CONTAINER;
+                return CurrentIO.GetCompleteInternPath(GetCurrentSavePlace()) + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
+                return SharedConstants.INTERN_SAVE_CONTAINER; //TODO IO hier korrekten internen pfad ausgeben, SystemCall wäre notwendig
             }
-
         }
 
         internal static Place GetCurrentSavePlace()
@@ -231,9 +231,16 @@ namespace TAPPLICATION.IO
         /// <returns></returns>
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
+            var A = DateTimeOffset.Now;
             var File = await CurrentIO.LoadFileContent(Info, FileTypes, eUD);
+            var B = DateTimeOffset.Now;
             var NewMainObject = Deserialize(File.strFileContent);
+            var C = DateTimeOffset.Now;
             NewMainObject.FileInfo = File.Info;
+            if (SharedSettingsModel.I.BETA_FEATURES)
+            {
+                SharedAppModel.Instance.NewNotification("CharLoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
+            }
             return NewMainObject;
         }
         #endregion

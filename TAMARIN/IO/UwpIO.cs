@@ -322,5 +322,20 @@ namespace TAMARIN.IO
             var f = await GetFolder(Info);
             return await Launcher.LaunchFolderAsync(f);
         }
+
+        public string GetCompleteInternPath(Place place)
+        {
+            switch (place)
+            {
+                case Place.Temp:
+                    return ApplicationData.Current.TemporaryFolder.Path + @"\";
+                case Place.Local:
+                    return ApplicationData.Current.LocalFolder.Path + @"\";
+                case Place.Roaming:
+                    return ApplicationData.Current.RoamingFolder.Path + @"\";
+                default:
+                    throw new NotImplementedException();
+            }
+        }
     }
 }
