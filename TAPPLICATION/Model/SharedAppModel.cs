@@ -83,7 +83,6 @@ namespace TAPPLICATION.Model
     {
         public event EventHandler MainObjectSaved;
 
-        //protected static new SharedAppModel<MainType> instance;
         public static new SharedAppModel<MainType> Instance
         {
             get
