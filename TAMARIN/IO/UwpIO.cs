@@ -167,9 +167,16 @@ namespace TAMARIN.IO
         
         public async Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {
-            var info = (await GetFolder(Info, UserDecision.AskUser));
-            Info.Filepath = info.Path;
-            return Info;
+            try
+            {
+                var info = (await GetFolder(Info, UserDecision.AskUser, FileNotFoundDecision.NotCreate));
+                Info.Filepath = info.Path;
+                return Info;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -182,7 +189,7 @@ namespace TAMARIN.IO
         /// <param name="strPath"></param>
         /// <returns></returns>
         /// <throws>ArgumentException</throws>
-        internal async static Task<StorageFolder> GetFolder(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
+        internal async static Task<StorageFolder> GetFolder(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
         {
             StorageFolder Folder = null;
             try
@@ -194,14 +201,28 @@ namespace TAMARIN.IO
                 switch (Info.Fileplace)
                 {
                     case Place.Local:
-                        Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                        if (eCreation == FileNotFoundDecision.Create)
+                        {
+                            Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                        }
+                        else
+                        {
+                            throw new Exception(StringHelper.GetString("Error_GetFolder"));
+                        }
                         break;
                     case Place.Roaming:
-                        Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                        if (eCreation == FileNotFoundDecision.Create)
+                        {
+                            Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                        }
+                        else
+                        {
+                            throw new Exception(StringHelper.GetString("Error_GetFolder"));
+                        }
                         break;
                     case Place.Extern:
                         // TODO Maybe create recusivly?
-                        if (eUser == UserDecision.AskUser)
+                        if (eUser == UserDecision.AskUser && eCreation == FileNotFoundDecision.Create)
                         {
                             Folder = await FolderPicker();
                             if (Folder == null)
