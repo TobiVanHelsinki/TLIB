@@ -203,7 +203,7 @@ namespace TAMARIN.IO
                     case Place.Local:
                         if (eCreation == FileNotFoundDecision.Create)
                         {
-                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length));
+                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length), false);
                             Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
                         }
                         else
@@ -214,7 +214,7 @@ namespace TAMARIN.IO
                     case Place.Roaming:
                         if (eCreation == FileNotFoundDecision.Create)
                         {
-                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length));
+                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length), false);
                             Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
                         }
                         else
