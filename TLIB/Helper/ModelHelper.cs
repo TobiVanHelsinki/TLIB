@@ -20,14 +20,15 @@ namespace TLIB
                 return;
             }
             CoreDispatcher C = Window.Current?.Dispatcher ?? CDispatcher;
-            //if (C == null)
-            //{
-            //    try
-            //    {
-            //        //TODO Multiple Views, hier ForEach CoreApplication.Views [...]
-            //        C = CoreApplication.GetCurrentView()?.CoreWindow?.Dispatcher;
-            //    }catch (Exception){}
-            //}
+            if (C == null)
+            {
+                try
+                {
+                    //TODO Multiple Views, hier ForEach CoreApplication.Views [...]
+                    C = CoreApplication.GetCurrentView()?.CoreWindow?.Dispatcher;
+                }
+                catch (Exception) { }
+            }
             if (C != null)
             {
                 await C.RunAsync(Prio, () => Event?.Invoke(o, new PropertyChangedEventArgs(property)));
