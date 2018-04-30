@@ -92,26 +92,23 @@ namespace TAMARIN.IO
         internal async static Task<StorageFile> GetFile(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
         {
             StorageFile File = null;
-            if (Info.Fileplace == Place.Assets)
-            {
-                return File = await StorageFile.GetFileFromApplicationUriAsync(new Uri(Info.Filepath + Info.Filename));
-            }
             try
             {
                 try
                 {
-                    if (!Info.Filepath.EndsWith("\\"))
+                    if (!Info.Filepath.EndsWith(@"\"))
                     {
-                        Info.Filepath += "\\";
+                        Info.Filepath += @"\";
                     }
                     File = await StorageFile.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
                 }
                 catch (Exception ex)
                 {
                     if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
-                    {
+                    { // If path and name are empty´, the intent is to ask the user
                         throw new IsOKException();
                     }
+                    // path and name are given, so the folder should be there (but maybe aren't) so we try to create them
                     StorageFolder Folder = await GetFolder(Info, eUser);
                     switch (eCreation)
                     {
@@ -124,11 +121,10 @@ namespace TAMARIN.IO
                         default:
                             throw new Exception();
                     }
-
                 }
             }
             catch (Exception ex)
-            {
+            { // last possibility is to ask the user
                 if (eUser == UserDecision.AskUser)
                 {
                     File = await FilePicker(FileTypes); // get from user
@@ -141,14 +137,7 @@ namespace TAMARIN.IO
 
             try
             {
-                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken + File.Name ?? "" + File.Name, File,"A Char File", RecentStorageItemVisibility.AppAndSystem);
-            }
-            catch (Exception ex)
-            {
-            }
-            try
-            {
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken + File.Name ?? "" + File.Name, File,"A Char File");
+                StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken + File.Name ?? "", File,"A Char File");
             }
             catch (Exception ex)
             {
@@ -198,15 +187,12 @@ namespace TAMARIN.IO
             StorageFolder Folder = null;
             try
             {
-                 Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+                Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
             }
             catch (Exception)
             {
                 switch (Info.Fileplace)
                 {
-                    case Place.Temp:
-                        Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync("Temp", CreationCollisionOption.OpenIfExists);
-                        break;
                     case Place.Local:
                         Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
                         break;
@@ -214,36 +200,23 @@ namespace TAMARIN.IO
                         Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
                         break;
                     case Place.Extern:
-                        try // to get it
+                        // TODO Maybe create recusivly?
+                        if (eUser == UserDecision.AskUser)
                         {
-                            Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+                            Folder = await FolderPicker();
+                            if (Folder == null)
+                            {
+                                throw new IsOKException();
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            if (eUser == UserDecision.AskUser)
-                            {
-                                Folder = await FolderPicker();
-                                if (Folder == null)
-                                {
-                                    throw new IsOKException();
-                                }
-                            }
-                            else
-                            {
-                                throw new Exception(StringHelper.GetString("Error_GetFolder"), ex);
-                            }
+                            throw new Exception(StringHelper.GetString("Error_GetFolder"));
                         }
                         break;
                 }
             }
 
-            try
-            {
-                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(Info.FolderToken, Folder, "A folder that contains a sr char file", RecentStorageItemVisibility.AppAndSystem);
-            }
-            catch (Exception ex)
-            {
-            }
             try
             {
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken, Folder);
@@ -333,6 +306,8 @@ namespace TAMARIN.IO
                     return ApplicationData.Current.LocalFolder.Path + @"\";
                 case Place.Roaming:
                     return ApplicationData.Current.RoamingFolder.Path + @"\";
+                case Place.Assets:
+                    return Windows.ApplicationModel.Package.Current.InstalledLocation.Path + @"\";
                 default:
                     throw new NotImplementedException();
             }

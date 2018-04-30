@@ -110,7 +110,7 @@ namespace TAPPLICATION.IO
         }
         public static async Task<FileInfoClass> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass() { Fileplace = Place.Temp, Filename = Object.FileInfo.Filename});
+            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO.GetCompleteInternPath(Place.Temp)));
         }
         public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
         {
