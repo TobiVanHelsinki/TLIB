@@ -203,7 +203,8 @@ namespace TAMARIN.IO
                     case Place.Local:
                         if (eCreation == FileNotFoundDecision.Create)
                         {
-                            Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length));
+                            Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
                         }
                         else
                         {
@@ -213,7 +214,8 @@ namespace TAMARIN.IO
                     case Place.Roaming:
                         if (eCreation == FileNotFoundDecision.Create)
                         {
-                            Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(Info.Filepath, CreationCollisionOption.OpenIfExists);
+                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length));
+                            Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
                         }
                         else
                         {
@@ -294,14 +296,17 @@ namespace TAMARIN.IO
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        static string CorrectName(string name)
+        static string CorrectName(string name, bool ReplaceInsteadOfRemove = true)
         {
             string ReturnValue = "";
             foreach (char item in name)
             {
-                if (item == '/' || item == '"'|| item == '\\')
+                if (item == '/' || item == '"' || item == '\\')
                 {
-                    ReturnValue += '_';
+                    if (ReplaceInsteadOfRemove)
+                    {
+                        ReturnValue += '_';
+                    }
                 }
                 else
                 {
