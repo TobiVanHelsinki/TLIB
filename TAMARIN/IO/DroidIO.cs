@@ -55,5 +55,10 @@ namespace TAMARIN.IO
         {
             throw new NotImplementedException();
         }
+
+        public Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -225,7 +225,7 @@ namespace TAMARIN.IO
                         break;
                     case Place.Extern:
                         // TODO Maybe create recusivly?
-                        if (eUser == UserDecision.AskUser && eCreation == FileNotFoundDecision.Create)
+                        if (eUser == UserDecision.AskUser)
                         {
                             Folder = await FolderPicker();
                             if (Folder == null)
@@ -350,6 +350,13 @@ namespace TAMARIN.IO
         public void CreateSaveContainer()
         {//TODO falsche stelle
             ApplicationData.Current.LocalSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
+        }
+
+        public async Task<FileInfoClass> Rename(FileInfoClass Source, string NewName)
+        {
+            StorageFile SourceFile = await GetFile(Source);
+            await SourceFile.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+            return new FileInfoClass(Source.Fileplace, SourceFile.Name, SourceFile.Path.Remove(SourceFile.Path.Length - SourceFile.Name.Length));
         }
     }
 }

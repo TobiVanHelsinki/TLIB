@@ -80,6 +80,7 @@ namespace TAMARIN.IO
         /// <param name="Source"></param>
         /// <returns></returns>
         Task Copy(FileInfoClass Target, FileInfoClass Source);
+        Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName);
 
         Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null);
         
@@ -87,5 +88,7 @@ namespace TAMARIN.IO
 
         Task<bool> OpenFolder(FileInfoClass Info);
         void CreateSaveContainer();
+
+
     }
 }

@@ -63,7 +63,7 @@ namespace TAPPLICATION.IO
 
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
         {
-            FileInfo = await CurrentIO.GetFolderInfo(FileInfo);
+            FileInfo = await CurrentIO.GetFolderInfo(FileInfo, UserDecision.AskUser);
             foreach (var (Name, Content) in FileContents)
             {
                 FileInfo.Filename = Name;
@@ -183,6 +183,15 @@ namespace TAPPLICATION.IO
 #endif
         }
         static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
+
+        internal static string CorrectFilenameExtension(string Filename, string Extension)
+        {
+            if (!Filename.EndsWith(Extension))
+            {
+                Filename += Extension;
+            }
+            return Filename;
+        }
 
         #endregion
     }
