@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TAPPLICATION;
 using TLIB;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
@@ -203,7 +204,7 @@ namespace TAMARIN.IO
                     case Place.Local:
                         if (eCreation == FileNotFoundDecision.Create)
                         {
-                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length), false);
+                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.LocalFolder.Path.Length), false);
                             Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
                         }
                         else
@@ -264,18 +265,25 @@ namespace TAMARIN.IO
             return await folderPicker.PickSingleFolderAsync();
         }
 
-        public async Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source)
+        public async Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
             StorageFolder TargetFolder = await GetFolder(Target);
             StorageFolder SourceFolder = await GetFolder(Source);
             foreach (var item in await SourceFolder.GetFilesAsync())
             {
-                try
+                if (FileTypes?.Contains(item.FileType) != false)
                 {
-                    await item.MoveAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
+                    try
+                    {
+                        await item.MoveAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
-                catch (Exception)
+                else
                 {
+
                 }
             }
         }
@@ -337,6 +345,11 @@ namespace TAMARIN.IO
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public void CreateSaveContainer()
+        {//TODO falsche stelle
+            ApplicationData.Current.LocalSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
         }
     }
 }

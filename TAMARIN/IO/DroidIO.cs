@@ -11,7 +11,7 @@ namespace TAMARIN.IO
             throw new NotImplementedException();
         }
 
-        public Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source)
+        public void CreateSaveContainer()
         {
             throw new NotImplementedException();
         }
@@ -47,6 +47,11 @@ namespace TAMARIN.IO
         }
 
         public Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
             throw new NotImplementedException();
         }

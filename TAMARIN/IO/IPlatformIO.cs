@@ -81,11 +81,11 @@ namespace TAMARIN.IO
         /// <returns></returns>
         Task Copy(FileInfoClass Target, FileInfoClass Source);
 
-        Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source);
+        Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null);
         
         Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
 
         Task<bool> OpenFolder(FileInfoClass Info);
-
+        void CreateSaveContainer();
     }
 }

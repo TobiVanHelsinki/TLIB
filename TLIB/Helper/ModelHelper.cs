@@ -38,7 +38,7 @@ namespace TLIB
 #if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    System.Diagnostics.Debugger.Break();
+                    //System.Diagnostics.Debugger.Break();
                 }
                 System.Diagnostics.Debug.Write("No Dispatcher at property changed");
 #endif
