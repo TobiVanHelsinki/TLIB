@@ -30,13 +30,9 @@ namespace TAPPLICATION.Model
             }
         }
 
-        public void NewNotification(string Message, Exception x = null)
+        public void NewNotification(string Message, Exception x = null, bool isLightNotification = true)
         {
-            lstNotifications.Insert(0, new Notification(Message, x));
-        }
-        public void NewNotification(Notification Message)
-        {
-            lstNotifications.Insert(0, Message);
+            lstNotifications.Insert(0, new Notification(Message, x) { IsLight = isLightNotification });
         }
 
         protected static SharedAppModel instance;

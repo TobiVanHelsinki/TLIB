@@ -6,6 +6,7 @@ namespace TAPPLICATION.Model
     {
         public string Message;
         public bool IsRead;
+        public bool IsLight;
         public Exception ThrownException;
         public DateTime OccuredAt = DateTime.Now;
 
@@ -16,12 +17,6 @@ namespace TAPPLICATION.Model
         public Notification(string mess, Exception ex) : this(mess)
         {
             ThrownException = ex;
-        }
-        public Notification(string format, params string[] args) : this(string.Format(format, args))
-        {
-        }
-        public Notification(string format, Exception ex, params string[] args) : this(string.Format(format, args), ex)
-        {
         }
     }
 }
