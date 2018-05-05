@@ -60,5 +60,10 @@ namespace TAMARIN.IO
         {
             throw new NotImplementedException();
         }
+
+        public Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

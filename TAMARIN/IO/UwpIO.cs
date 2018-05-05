@@ -124,6 +124,10 @@ namespace TAMARIN.IO
                     }
                 }
             }
+            catch (IsOKException)
+            {
+                return null;
+            }
             catch (Exception ex)
             { // last possibility is to ask the user
                 if (eUser == UserDecision.AskUser)
@@ -195,6 +199,10 @@ namespace TAMARIN.IO
             StorageFolder Folder = null;
             try
             {
+                if (!Info.Filepath.EndsWith(@"\"))
+                {
+                    Info.Filepath += @"\";
+                }
                 Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
             }
             catch (Exception)
@@ -357,6 +365,29 @@ namespace TAMARIN.IO
             StorageFile SourceFile = await GetFile(Source);
             await SourceFile.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
             return new FileInfoClass(Source.Fileplace, SourceFile.Name, SourceFile.Path.Remove(SourceFile.Path.Length - SourceFile.Name.Length));
+        }
+
+        public async Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
+        {
+            StorageFolder TargetFolder = await GetFolder(Target);
+            StorageFolder SourceFolder = await GetFolder(Source);
+            foreach (var item in await SourceFolder.GetFilesAsync())
+            {
+                if (FileTypes?.Contains(item.FileType) != false)
+                {
+                    try
+                    {
+                        await item.CopyAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+                else
+                {
+
+                }
+            }
         }
     }
 }

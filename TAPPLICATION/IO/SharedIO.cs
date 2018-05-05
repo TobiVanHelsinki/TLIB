@@ -153,7 +153,7 @@ namespace TAPPLICATION.IO
         {
             if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
             {
-                SharedAppModel.Instance.NewNotification(JSON_Error_Notification);
+                SharedAppModel.Instance.lstNotifications.Insert(0, JSON_Error_Notification);
             }
             a.ErrorContext.Handled = true;
         }

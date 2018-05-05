@@ -83,6 +83,7 @@ namespace TAMARIN.IO
         Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName);
 
         Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null);
+        Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null);
         
         Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
 
