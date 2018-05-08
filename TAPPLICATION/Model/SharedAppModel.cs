@@ -18,7 +18,7 @@ namespace TAPPLICATION.Model
         {
             if (null == Task.CurrentId)
             {
-                ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
+                ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
             }
             else
             {
@@ -30,9 +30,14 @@ namespace TAPPLICATION.Model
             }
         }
 
-        public void NewNotification(string Message, Exception x = null, bool isLightNotification = true)
+        public void NewNotification(string Message, Exception x)
         {
-            lstNotifications.Insert(0, new Notification(Message, x) { IsLight = isLightNotification });
+            lstNotifications.Insert(0, new Notification(Message, x));
+        }
+
+        public void NewNotification(string Message, bool isLightNotification = true)
+        {
+            lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification });
         }
 
         protected static SharedAppModel instance;

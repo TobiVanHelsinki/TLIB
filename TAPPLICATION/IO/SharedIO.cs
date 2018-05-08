@@ -148,16 +148,17 @@ namespace TAPPLICATION.IO
         }
 
         #endregion
-        #region Serialization
         public static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
             if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
             {
                 SharedAppModel.Instance.lstNotifications.Insert(0, JSON_Error_Notification);
             }
+            JSON_Error_Notification.Message += "\n\t" + a.ErrorContext.Path;
             a.ErrorContext.Handled = true;
         }
 
+        #region Serialization
         /// <summary>
         /// can throw
         /// </summary>

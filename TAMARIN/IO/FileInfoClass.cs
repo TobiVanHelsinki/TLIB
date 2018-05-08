@@ -101,7 +101,7 @@ namespace TAMARIN.IO
         public event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            ModelHelper.CallPropertyChangedAtDispatcher(PropertyChanged, this, propertyName);
+            ModelHelper.CallPropertyChangedAsync(PropertyChanged, this, propertyName);
         }
 
 
