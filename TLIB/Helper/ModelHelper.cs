@@ -144,7 +144,6 @@ namespace TLIB
         public static CoreDispatcher CDispatcher;
         public static void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
-
             Event?.Invoke(o, new PropertyChangedEventArgs(property));
             return;
             CoreDispatcher C = Window.Current?.Dispatcher ?? CDispatcher;
@@ -168,7 +167,6 @@ namespace TLIB
                 {
                     //TODO Multiple Views, hier ForEach CoreApplication.Views [...]
                     C = CoreApplication.GetCurrentView()?.CoreWindow?.Dispatcher;
-                    //geht nicht, findet keinen DP
                 }
                 catch (Exception) { }
             }
