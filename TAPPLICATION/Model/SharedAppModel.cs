@@ -117,13 +117,13 @@ namespace TAPPLICATION.Model
                     await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
                     MainObjectSaved?.Invoke(this, new EventArgs());
 #if DEBUG
-                    SystemHelper.WriteLine("Char Saved Internaly");
+                    SystemHelper.WriteLine("MainObject Saved");
 #endif
                 }
                 catch (Exception)
                 {
 #if DEBUG
-                    SystemHelper.WriteLine("Error Saving Internaly");
+                    SystemHelper.WriteLine("Error Saving the MainObject");
 #endif
                 }
             }
