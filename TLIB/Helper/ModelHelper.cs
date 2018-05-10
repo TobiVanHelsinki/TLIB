@@ -168,6 +168,7 @@ namespace TLIB
                 {
                     //TODO Multiple Views, hier ForEach CoreApplication.Views [...]
                     C = CoreApplication.GetCurrentView()?.CoreWindow?.Dispatcher;
+                    //geht nicht, findet keinen DP
                 }
                 catch (Exception) { }
             }
