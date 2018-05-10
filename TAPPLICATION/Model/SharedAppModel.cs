@@ -4,13 +4,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TAMARIN.IO;
 using TLIB;
-using Windows.UI.Core;
 
 namespace TAPPLICATION.Model
 {
     public class SharedAppModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Notification> lstNotifications;
+        public ObservableCollection<Notification> lstNotifications = new ObservableCollection<Notification>();
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
@@ -39,35 +38,8 @@ namespace TAPPLICATION.Model
                 return instance;
             }
         }
-
-        public SharedAppModel()
-        {
-            lstNotifications = new ObservableCollection<Notification>();
-#if DEBUG
-            //Exception EX1 = new Exception("Test 1");
-            //EX1.Source = "ich";
-            //Exception EX2 = new Exception("Test 2");
-            //Exception EX3 = new Exception("Test 3");
-            //Exception EX4 = new Exception("Test 4");
-            //NewNotification("Not 0");
-            //NewNotification("Not 1", EX1);
-            //NewNotification("Not 2", EX2);
-            //NewNotification("Not 3", EX3);
-            //NewNotification("Not 4", EX4);
-#endif
-        }
-
-        public void SetDependencies(CoreDispatcher dispatcher)
-        {
-            Dispatcher = dispatcher;
-        }
-        /// <summary>
-        /// for future multithreading
-        /// </summary>
-        /// <param name="dispatcher"></param>
-        public CoreDispatcher Dispatcher;
     }
-    public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new() //where Inheritor : SharedAppModel<MainType, Inheritor>, new()
+    public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new()
     {
         public event EventHandler MainObjectSaved;
 
@@ -136,7 +108,6 @@ namespace TAPPLICATION.Model
                 }
             }
         }
-
 
         public MainType NewMainType()
         {
