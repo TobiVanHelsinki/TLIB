@@ -169,11 +169,7 @@ namespace TAPPLICATION.IO
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
-                //settings.NullValueHandling = NullValueHandling.Include; 
-#if DEBUG
-                Formatting = Formatting.Indented,
-#endif
-                PreserveReferencesHandling = PreserveReferencesHandling.All, //war vorher objects
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
                 Error = ErrorHandler
             };
 #if __ANDROID__
