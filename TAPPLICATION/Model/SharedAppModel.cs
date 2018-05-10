@@ -2,10 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using TAMARIN.IO;
 using TLIB;
-using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 
 namespace TAPPLICATION.Model
@@ -14,20 +12,9 @@ namespace TAPPLICATION.Model
     {
         public ObservableCollection<Notification> lstNotifications;
         public event PropertyChangedEventHandler PropertyChanged;
-        protected async void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            if (null == Task.CurrentId)
-            {
-                ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
-            }
-            else
-            {
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Low,
-                    () =>
-                    {
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                    });
-            }
+            ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
 
         public void NewNotification(string Message, Exception x)
