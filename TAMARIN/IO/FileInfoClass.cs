@@ -7,8 +7,7 @@ namespace TAMARIN.IO
 {
     public class FileInfoClass : INotifyPropertyChanged
     {
-
-        string _Filename;
+        string _Filename = "";
         public string Filename
         {
             get { return _Filename; }
@@ -23,7 +22,7 @@ namespace TAMARIN.IO
         }
 
 
-        string _Filepath;
+        string _Filepath = "";
         public string Filepath
         {
             get { return _Filepath; }
@@ -38,7 +37,7 @@ namespace TAMARIN.IO
         }
 
 
-        Place _Fileplace;
+        Place _Fileplace = Place.NotDefined;
         public Place Fileplace
         {
             get { return _Fileplace; }
@@ -82,9 +81,7 @@ namespace TAMARIN.IO
             }
         }
 
-        string _FolderToken;
-
-
+        string _FolderToken = "";
         public string FolderToken
         {
             get { return _FolderToken; }
@@ -101,9 +98,8 @@ namespace TAMARIN.IO
         public event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            ModelHelper.CallPropertyChangedAsync(PropertyChanged, this, propertyName);
+            ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
-
 
         public FileInfoClass()
         {
