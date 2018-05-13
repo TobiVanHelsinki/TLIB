@@ -24,6 +24,8 @@
         public const bool CONTAINER_SETTINGS_DISPLAY_REQUEST_STD = true;
         public const string CONTAINER_SETTINGS_BETA_FEATURES = "SETTINGS_BETA_FEATURES";
         public const bool CONTAINER_SETTINGS_BETA_FEATURES_STD = false;
+        public const string CONTAINER_SETTINGS_DEBUG_FEATURES = "SETTINGS_DEBUG_FEATURES";
+        public const bool CONTAINER_SETTINGS_DEBUG_FEATURES_STD = false;
         public const string CONTAINER_SETTINGS_INTERN_SYNC = "SETTINGS_INTERN_SYNC";
         public const bool CONTAINER_SETTINGS_INTERN_SYNC_STD = true;
         

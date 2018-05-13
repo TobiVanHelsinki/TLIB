@@ -174,7 +174,12 @@ namespace TAMARIN.IO
         {
             try
             {
-                var info = (await GetFolder(Info, UserDecision.AskUser, FileNotFoundDecision.NotCreate));
+                if (!Info.Filepath.EndsWith(@"\"))
+                {
+                    Info.Filepath += @"\";
+                }
+                var info = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+
                 Info.Filepath = info.Path;
                 return Info;
             }

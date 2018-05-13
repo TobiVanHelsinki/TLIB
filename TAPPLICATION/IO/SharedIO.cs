@@ -242,7 +242,7 @@ namespace TAPPLICATION.IO
             var NewMainObject = Deserialize(File.strFileContent);
             var C = DateTimeOffset.Now;
             NewMainObject.FileInfo = File.Info;
-            if (SharedSettingsModel.I.BETA_FEATURES)
+            if (SharedSettingsModel.I.DEBUG_FEATURES)
             {
                 SharedAppModel.Instance.NewNotification("CharLoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
             }

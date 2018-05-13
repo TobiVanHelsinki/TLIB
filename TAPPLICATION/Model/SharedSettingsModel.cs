@@ -29,6 +29,21 @@ namespace TAPPLICATION.Model
             PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC, SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC_STD);
         }
 
+        
+        public bool DEBUG_FEATURES
+        {
+            get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES);
+            set
+            {
+                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES, value);
+                Instance.NotifyPropertyChanged();
+            }
+        }
+        public void DEBUG_FEATURESReset()
+        {
+            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES, SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES_STD);
+        }
+
 
         public bool BETA_FEATURES
         {
