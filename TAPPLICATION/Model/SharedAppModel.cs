@@ -21,9 +21,9 @@ namespace TAPPLICATION.Model
             lstNotifications.Insert(0, new Notification(Message, x));
         }
 
-        public void NewNotification(string Message, bool isLightNotification = true)
+        public void NewNotification(string Message, bool isLightNotification = true, int seconds = 6)
         {
-            lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification });
+            lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification, ShownTime = seconds * 1000 });
         }
 
         protected static SharedAppModel instance;

@@ -33,6 +33,8 @@
         public const string CONTAINER_SETTINGS_FOLDERMODE_PATH_STD = "";
         #endregion
 
+        public const string CONTAINER_SETTINGS_LAST_APP_VERSION = "SETTINGS_LAST_APP_VERSION";
+        public const string CONTAINER_SETTINGS_LAST_APP_VERSION_STD = "";
 
         #region AppStore Constants
         #region Shapes

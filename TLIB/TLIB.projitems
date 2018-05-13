@@ -17,6 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SystemHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\HttpProcessor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Server\HttpServer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Types\Exceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\IsOKException.cs" />
   </ItemGroup>
 </Project>
