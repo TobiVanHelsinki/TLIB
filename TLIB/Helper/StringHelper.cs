@@ -8,6 +8,12 @@ using System.Linq;
 
 namespace TLIB
 {
+    public enum PrefixType
+    {
+        AppPackageData = 1,
+        AppUserData = 2,
+    }
+
     public static class StringHelper
     {
         public static string GetString(string strID)
@@ -34,11 +40,7 @@ namespace TLIB
 #endif
             return strReturn;
         }
-        public enum PrefixType
-        {
-            AppPackageData = 1,
-            AppUserData = 2,
-        }
+
         public static string GetPrefix(PrefixType type)
         {
             string strReturn = "";
