@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using TAMARIN.Settings;
@@ -103,6 +104,18 @@ namespace TAPPLICATION.Model
 
         #endregion
         #region Methods
+        public List<(string, object)> ExportAllSettings()
+        {
+            var propertyinfos = this.GetType().GetProperties();
+            var ret = new List<(string, object)>();
+            foreach (var item in propertyinfos)
+            {
+                object result = item.GetValue(this);
+                ret.Add((item.Name, result));
+            }
+            return ret;
+        }
+
         public void ResetAllSettings()
         {
             MethodInfo[] method = this.GetType().GetMethods();

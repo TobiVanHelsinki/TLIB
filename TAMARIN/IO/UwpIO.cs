@@ -40,7 +40,7 @@ namespace TAMARIN.IO
 
         public async Task<(string strFileContent, FileInfoClass Info)> LoadFileContent(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
-            StorageFile x = await GetFile(Info, FileTypes, UserDecision.AskUser, FileNotFoundDecision.NotCreate);
+            StorageFile x = await GetFile(Info, FileTypes, eUD, FileNotFoundDecision.NotCreate);
             return (await FileIO.ReadTextAsync(x), new FileInfoClass()
             {
                 Filename = x.Name,

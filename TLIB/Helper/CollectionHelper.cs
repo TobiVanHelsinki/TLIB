@@ -25,7 +25,29 @@ namespace TLIB
                 return 0;
             }
         }
+        public static double MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+        {
+            try
+            {
+                return source.Max(selector);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
         public static int MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+        {
+            try
+            {
+                return source.Min(selector);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+        public static double MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
             try
             {
