@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helper\CollectionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\ModelHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\NumberHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\StaticRandom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\ReflectionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\StringHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\SystemHelper.cs" />
