@@ -51,14 +51,32 @@ namespace TLIB
         {
             return source.ElementAtOrDefault(StaticRandom.Next(0, source.Count()));
         }
-        public static IEnumerable<TSource> RandomElements<TSource>(this IEnumerable<TSource> source, int number)
+        public static IEnumerable<TSource> RandomElements<TSource>(this IEnumerable<TSource> source, int number, bool AllowRepeatants = true)
         {
-            var x = new List<TSource>();
-            for (int i = 0; i < number; i++)
+            var ret = new List<TSource>();
+
+            if (source.Count() <= number)
             {
-                x.Add(RandomElement(source));
+                ret.AddRange(source);
             }
-            return x;
+            else if (!AllowRepeatants)
+            {
+                var templist = source.ToList();
+                for (int i = 0; i < number; i++)
+                {
+                    var newelement = templist.RandomElement();
+                    ret.Add(newelement);
+                    templist.Remove(newelement);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < number; i++)
+                {
+                    ret.Add(source.RandomElement());
+                }
+            }
+            return ret;
         }
         public static void AddRange<T>(this ICollection<T> source, IEnumerable<T> param)
         {
