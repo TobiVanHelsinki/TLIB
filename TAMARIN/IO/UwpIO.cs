@@ -237,7 +237,6 @@ namespace TAMARIN.IO
                         }
                         break;
                     case Place.Extern:
-                        // TODO Maybe create recusivly?
                         if (eUser == UserDecision.AskUser)
                         {
                             Folder = await FolderPicker();
@@ -361,7 +360,7 @@ namespace TAMARIN.IO
         }
 
         public void CreateSaveContainer()
-        {//TODO falsche stelle
+        {
             ApplicationData.Current.LocalSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
         }
 
