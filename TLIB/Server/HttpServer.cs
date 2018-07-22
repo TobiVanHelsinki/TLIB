@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.WindowsRuntime;
+//using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using TLIB.Server;
@@ -159,7 +159,7 @@ namespace TLIB.Net
             return ConvertMacByteArrayToString(macArr);
         }
 
-        public static string ConvertMacByteArrayToString([ReadOnlyArray]byte[] macByte)
+        public static string ConvertMacByteArrayToString(byte[] macByte)
         {
             StringBuilder sb = new StringBuilder();
 
