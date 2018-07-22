@@ -144,7 +144,20 @@ namespace TLIB
         public static CoreDispatcher CDispatcher;
         public static void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
-            Event?.Invoke(o, new PropertyChangedEventArgs(property));
+            try
+            {
+                Event?.Invoke(o, new PropertyChangedEventArgs(property));
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    CallPropertyChangedAsync(Event, o, property);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
             return;
             CoreDispatcher C = Window.Current?.Dispatcher ?? CDispatcher;
             if (C != null)
