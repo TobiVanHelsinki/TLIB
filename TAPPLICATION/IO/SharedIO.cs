@@ -31,9 +31,9 @@ namespace TAPPLICATION.IO
         //#####################################################################
         internal static string GetCurrentSavePath()
         {
-            if (SharedSettingsModel.I.ORDNERMODE)
+            if (SharedSettingsModel.I.FOLDERMODE)
             {
-                return SharedSettingsModel.I.ORDNERMODE_PFAD;
+                return SharedSettingsModel.I.FOLDERMODE_PATH;
             }
             else
             {
@@ -43,13 +43,13 @@ namespace TAPPLICATION.IO
 
         internal static Place GetCurrentSavePlace()
         {
-            if (SharedSettingsModel.I.ORDNERMODE)
+            if (SharedSettingsModel.I.FOLDERMODE)
             {
                 return Place.Extern;
             }
             else
             {
-                if (SharedSettingsModel.I.InternSync)
+                if (SharedSettingsModel.I.INTERN_SYNC)
                 {
                     return Place.Roaming;
                 }
@@ -142,7 +142,7 @@ namespace TAPPLICATION.IO
             CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename) ? "$$" : "" + CurrentInfo.Filename;
             if (CurrentInfo.Fileplace != Place.Extern && CurrentInfo.Fileplace != Place.Temp)
             {
-                CurrentInfo.Fileplace = SharedSettingsModel.I.InternSync ? Place.Roaming : Place.Local;
+                CurrentInfo.Fileplace = SharedSettingsModel.I.INTERN_SYNC ? Place.Roaming : Place.Local;
             }
             return await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
         }

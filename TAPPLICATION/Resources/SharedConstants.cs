@@ -45,6 +45,9 @@
         public const string APP_STORE_LINK_SHAPE = "ms-windows-store://pdp/?productid=";
         public const string APP_STORE_REVIEW_LINK_SHAPE = "ms-windows-store://review/?ProductId=";
         public const string APP_CONTACT_MAILTO_SHAPE = "mailto:";
+        public const string SettingsPrefix = "CONTAINER_SETTINGS_";
+        public const string SettingsSTDPostfix = "_STD";
+
 
         #endregion
 

@@ -7,6 +7,11 @@ namespace TLIB
 {
     public static class ReflectionHelper
     {
+        public static IEnumerable<PropertyInfo> GetMethods(object obj, Type type)
+        {
+            return obj.GetType().GetProperties().Where(p => p.CustomAttributes.Any(c => c.AttributeType == type));
+        }
+
         public static IEnumerable<PropertyInfo> GetProperties(object obj, Type type)
         {
             return obj.GetType().GetProperties().Where(p => p.CustomAttributes.Any(c => c.AttributeType == type));

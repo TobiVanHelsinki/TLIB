@@ -1,13 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using TAMARIN.Settings;
+using TLIB;
 
 namespace TAPPLICATION.Model
 {
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class UsedSettingAttribute : Attribute
+    {
+        public UsedSettingAttribute() { }
+    }
     public class SharedSettingsModel : INotifyPropertyChanged
     {
+        internal Type UsedConstants { get; set; }
         public static IPlatformSettings PlatformSettings =
 #if __ANDROID__
             new DroidSettings()
@@ -16,7 +25,8 @@ namespace TAPPLICATION.Model
 #endif
 ;
         #region Settinsg
-        public bool InternSync
+        [UsedSetting]
+        public bool INTERN_SYNC
         {
             get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC);
             set
@@ -25,12 +35,8 @@ namespace TAPPLICATION.Model
                 Instance.NotifyPropertyChanged();
             }
         }
-        public void InternSyncReset()
-        {
-            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC, SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC_STD);
-        }
-
         
+        [UsedSetting]
         public bool DEBUG_FEATURES
         {
             get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES);
@@ -40,12 +46,8 @@ namespace TAPPLICATION.Model
                 Instance.NotifyPropertyChanged();
             }
         }
-        public void DEBUG_FEATURESReset()
-        {
-            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES, SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES_STD);
-        }
 
-
+        [UsedSetting]
         public bool BETA_FEATURES
         {
             get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES);
@@ -55,11 +57,8 @@ namespace TAPPLICATION.Model
                 Instance.NotifyPropertyChanged();
             }
         }
-        public void BETA_FEATURESReset()
-        {
-            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES, SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES_STD);
-        }
 
+        [UsedSetting]
         public bool DISPLAY_REQUEST
         {
             get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST);
@@ -69,12 +68,9 @@ namespace TAPPLICATION.Model
                 Instance.NotifyPropertyChanged();
             }
         }
-        public void DISPLAY_REQUESTReset()
-        {
-            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST, SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST_STD);
-        }
 
-        public bool ORDNERMODE
+        [UsedSetting]
+        public bool FOLDERMODE
         {
             get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE);
             set
@@ -83,12 +79,9 @@ namespace TAPPLICATION.Model
                 Instance.NotifyPropertyChanged();
             }
         }
-        public void ORDNERMODEReset()
-        {
-            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE, SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_STD);
-        }
 
-        public string ORDNERMODE_PFAD
+        [UsedSetting]
+        public string FOLDERMODE_PATH
         {
             get => PlatformSettings.getString(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH);
             set
@@ -96,10 +89,6 @@ namespace TAPPLICATION.Model
                 PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH, value);
                 NotifyPropertyChanged();
             }
-        }
-        public void ORDNERMODE_PFADReset()
-        {
-            PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH, SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH_STD);
         }
 
         #endregion
@@ -118,18 +107,25 @@ namespace TAPPLICATION.Model
 
         public void ResetAllSettings()
         {
-            MethodInfo[] method = this.GetType().GetMethods();
-            foreach (var item in method)
+            var settings = ReflectionHelper.GetProperties(this, typeof(UsedSettingAttribute));
+            var stdconst = UsedConstants.
+                GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                .Where(fi => fi.IsLiteral && !fi.IsInitOnly);
+
+            foreach (var item in settings)
             {
-                if (item.Name.Contains("Reset"))
+                var stdcontent = stdconst.FirstOrDefault(x=>x.Name == SharedConstants.SettingsPrefix + item.Name + SharedConstants.SettingsSTDPostfix);
+                if (stdcontent != null)
                 {
-                    if (item.Name == "ResetAllSettings")
-                    {
-                        continue;
-                    }
-                    object result = item.Invoke(this, null);
+                    var value = stdcontent.GetValue(null);
+                    item.SetValue(this, value);
+                }
+                else
+                {
+                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
                 }
             }
+            return;
         }
         #endregion
         #region Singleton Model Thigns
@@ -139,6 +135,7 @@ namespace TAPPLICATION.Model
             if (instance == null)
             {
                 instance = new SharedSettingsModel();
+                instance.UsedConstants = typeof(SharedConstants);
             }
             return Instance;
         }
