@@ -178,9 +178,23 @@ namespace TAMARIN.IO
                 {
                     Info.Filepath += @"\";
                 }
-                var info = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
-
-                Info.Filepath = info.Path;
+                try
+                {
+                    var info = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+                    Info.Filepath = info.Path;
+                }
+                catch (Exception)
+                {
+                    if (eUser == UserDecision.AskUser)
+                    {
+                        var info = await GetFolder(Info, eUser, FileNotFoundDecision.NotCreate);
+                        Info.Filepath = info.Path;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return Info;
             }
             catch (Exception)
@@ -279,8 +293,8 @@ namespace TAMARIN.IO
 
         public async Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
-            StorageFolder TargetFolder = await GetFolder(Target);
-            StorageFolder SourceFolder = await GetFolder(Source);
+            StorageFolder TargetFolder = await GetFolder(Target, UserDecision.ThrowError);
+            StorageFolder SourceFolder = await GetFolder(Source, UserDecision.ThrowError);
             foreach (var item in await SourceFolder.GetFilesAsync())
             {
                 if (FileTypes?.Contains(item.FileType) != false)
