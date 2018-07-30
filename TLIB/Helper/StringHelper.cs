@@ -3,6 +3,7 @@
 #endif
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -29,6 +30,29 @@ namespace TLIB
             strReturn = null;
 #endif
             return strReturn;
+        }
+        public static List<string> GetStrings(string strID)
+        {
+            List<string> ret = new List<string>();
+#if WINDOWS_UWP
+#if __ANDROID__
+            strReturn = "NotImplemented";
+#else
+            string Current = "";
+            int Counter = 1;
+            Loop:
+            Current = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID + Counter);
+            if (!String.IsNullOrEmpty(Current))
+            {
+                ret.Add(Current);
+                Counter++;
+                goto Loop;
+            }
+#endif
+#else
+            strReturn = null;
+#endif
+            return ret;
         }
         public static string GetSimpleCountryCode(string[] filter, string fallback)
         {
