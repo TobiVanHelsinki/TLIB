@@ -45,7 +45,7 @@ namespace TAMARIN.IO
             {
                 Filename = x.Name,
                 Fileplace = Info.Fileplace,
-                FolderToken = Info.FolderToken,
+                Token = Info.Token,
                 Filepath = x.Path.Substring(0,x.Path.Length-x.Name.Length) 
             });
         }
@@ -142,7 +142,10 @@ namespace TAMARIN.IO
 
             try
             {
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken + File.Name ?? "", File,"A Char File");
+                if (!string.IsNullOrEmpty(Info.Token))
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token + File.Name, File,"A Char File");
+                }
             }
             catch (Exception ex)
             {
@@ -269,7 +272,10 @@ namespace TAMARIN.IO
 
             try
             {
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.FolderToken, Folder);
+                if (!string.IsNullOrEmpty(Info.Token))
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token, Folder);
+                }
             }
             catch (Exception ex)
             {

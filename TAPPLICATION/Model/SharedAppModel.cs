@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TAMARIN.IO;
 using TLIB;
+using Windows.ApplicationModel.Core;
 
 namespace TAPPLICATION.Model
 {
@@ -18,12 +20,18 @@ namespace TAPPLICATION.Model
 
         public void NewNotification(string Message, Exception x)
         {
-            lstNotifications.Insert(0, new Notification(Message, x));
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                lstNotifications.Insert(0, new Notification(Message, x));
+            });
         }
 
         public void NewNotification(string Message, bool isLightNotification = true, int seconds = 6)
         {
-            lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification, ShownTime = seconds * 1000 });
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification, ShownTime = seconds * 1000 });
+            });
         }
 
         protected static SharedAppModel instance;
@@ -97,6 +105,10 @@ namespace TAPPLICATION.Model
 #if DEBUG
                     SystemHelper.WriteLine("Error Saving the MainObject");
 #endif
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
                 }
             }
 

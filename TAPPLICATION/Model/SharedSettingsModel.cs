@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using TAMARIN.Settings;
 using TLIB;
+using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace TAPPLICATION.Model
 {
@@ -28,10 +29,10 @@ namespace TAPPLICATION.Model
         [UsedSetting]
         public bool INTERN_SYNC
         {
-            get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC);
+            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC);
             set
             {
-                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC, value);
+                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC, value);
                 Instance.NotifyPropertyChanged();
             }
         }
@@ -39,10 +40,10 @@ namespace TAPPLICATION.Model
         [UsedSetting]
         public bool DEBUG_FEATURES
         {
-            get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES);
+            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES);
             set
             {
-                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES, value);
+                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES, value);
                 Instance.NotifyPropertyChanged();
             }
         }
@@ -50,10 +51,10 @@ namespace TAPPLICATION.Model
         [UsedSetting]
         public bool BETA_FEATURES
         {
-            get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES);
+            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES);
             set
             {
-                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES, value);
+                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES, value);
                 Instance.NotifyPropertyChanged();
             }
         }
@@ -61,10 +62,10 @@ namespace TAPPLICATION.Model
         [UsedSetting]
         public bool DISPLAY_REQUEST
         {
-            get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST);
+            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST);
             set
             {
-                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST, value);
+                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST, value);
                 Instance.NotifyPropertyChanged();
             }
         }
@@ -72,10 +73,10 @@ namespace TAPPLICATION.Model
         [UsedSetting]
         public bool FOLDERMODE
         {
-            get => PlatformSettings.getBool(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE);
+            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE);
             set
             {
-                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE, value);
+                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE, value);
                 Instance.NotifyPropertyChanged();
             }
         }
@@ -83,10 +84,10 @@ namespace TAPPLICATION.Model
         [UsedSetting]
         public string FOLDERMODE_PATH
         {
-            get => PlatformSettings.getString(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH);
+            get => PlatformSettings.GetStringLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH);
             set
             {
-                PlatformSettings.set(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH, value);
+                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH, value);
                 NotifyPropertyChanged();
             }
         }
@@ -161,7 +162,7 @@ namespace TAPPLICATION.Model
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
         #endregion
 

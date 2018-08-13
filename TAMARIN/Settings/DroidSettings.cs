@@ -5,27 +5,47 @@ namespace TAMARIN.Settings
 {
     public class DroidSettings : IPlatformSettings
     {
-        public bool getBool(string place, bool fallback = false)
+        public bool GetBoolLocal(string place, bool fallback = false)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> getIEnumerable<T>(string place, T fallback = default)
+        public bool GetBoolRoaming(string place, bool fallback = false)
         {
             throw new NotImplementedException();
         }
 
-        public int getInt(string place, int fallback = 0)
+        public IEnumerable<T> GetIEnumerable<T>(string place, T fallback = default)
         {
             throw new NotImplementedException();
         }
 
-        public string getString(string place, string fallback = "")
+        public int GetIntLocal(string place, int fallback = 0)
         {
             throw new NotImplementedException();
         }
 
-        public void set(string place, object value)
+        public int GetIntRoaming(string place, int fallback = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetStringLocal(string place, string fallback = "")
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetStringRoaming(string place, string fallback = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetLocal(string place, object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetRoaming(string place, object value)
         {
             throw new NotImplementedException();
         }

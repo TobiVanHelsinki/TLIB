@@ -82,7 +82,7 @@ namespace TAMARIN.IO
         }
 
         string _FolderToken = "";
-        public string FolderToken
+        public string Token
         {
             get { return _FolderToken; }
             set
@@ -98,7 +98,7 @@ namespace TAMARIN.IO
         public event PropertyChangedEventHandler PropertyChanged;
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            ModelHelper.CallPropertyChangedAsync(PropertyChanged, this, propertyName);
+            ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
 
         public FileInfoClass()

@@ -10,28 +10,32 @@ namespace TAMARIN.Settings
         /// </summary>
         /// <param name="place"></param>
         /// <param name="value"></param>
-        void set(string place, object value);
-        
-        /// <summary>
-        /// don't throw
-        /// </summary>
-        /// <param name="place"></param>
-        /// <param name="value"></param>
-        bool getBool(string place, bool fallback = default);
+        void SetLocal(string place, object value);
+        void SetRoaming(string place, object value);
 
         /// <summary>
         /// don't throw
         /// </summary>
         /// <param name="place"></param>
         /// <param name="value"></param>
-        string getString(string place, string fallback = default);
+        bool GetBoolLocal(string place, bool fallback = default);
+        bool GetBoolRoaming(string place, bool fallback = default);
 
         /// <summary>
         /// don't throw
         /// </summary>
         /// <param name="place"></param>
         /// <param name="value"></param>
-        int getInt(string place, int fallback = default);
+        string GetStringLocal(string place, string fallback = default);
+        string GetStringRoaming(string place, string fallback = default);
+
+        /// <summary>
+        /// don't throw
+        /// </summary>
+        /// <param name="place"></param>
+        /// <param name="value"></param>
+        int GetIntLocal(string place, int fallback = default);
+        int GetIntRoaming(string place, int fallback = default);
 
 
         /// <summary>
@@ -39,6 +43,6 @@ namespace TAMARIN.Settings
         /// </summary>
         /// <param name="place"></param>
         /// <param name="value"></param>
-        IEnumerable<T> getIEnumerable<T>(string place, T fallback = default); 
+        IEnumerable<T> GetIEnumerable<T>(string place, T fallback = default);
     }
 }
