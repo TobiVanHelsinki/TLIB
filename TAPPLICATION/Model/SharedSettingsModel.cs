@@ -11,10 +11,16 @@ using Microsoft.Toolkit.Uwp.Helpers;
 namespace TAPPLICATION.Model
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class UsedSettingAttribute : Attribute
+    public sealed class LocalSettingAttribute : Attribute
     {
-        public UsedSettingAttribute() { }
+        public LocalSettingAttribute() { }
     }
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class RoamingSettingAttribute : Attribute
+    {
+        public RoamingSettingAttribute() { }
+    }
+    
     public class SharedSettingsModel : INotifyPropertyChanged
     {
         internal Type UsedConstants { get; set; }
@@ -26,7 +32,7 @@ namespace TAPPLICATION.Model
 #endif
 ;
         #region Settinsg
-        [UsedSetting]
+        [LocalSettingAttribute]
         public bool INTERN_SYNC
         {
             get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC);
@@ -37,7 +43,7 @@ namespace TAPPLICATION.Model
             }
         }
         
-        [UsedSetting]
+        [LocalSettingAttribute]
         public bool DEBUG_FEATURES
         {
             get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES);
@@ -48,7 +54,7 @@ namespace TAPPLICATION.Model
             }
         }
 
-        [UsedSetting]
+        [LocalSettingAttribute]
         public bool BETA_FEATURES
         {
             get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES);
@@ -59,7 +65,7 @@ namespace TAPPLICATION.Model
             }
         }
 
-        [UsedSetting]
+        [LocalSettingAttribute]
         public bool DISPLAY_REQUEST
         {
             get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST);
@@ -70,7 +76,7 @@ namespace TAPPLICATION.Model
             }
         }
 
-        [UsedSetting]
+        [LocalSettingAttribute]
         public bool FOLDERMODE
         {
             get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE);
@@ -81,7 +87,7 @@ namespace TAPPLICATION.Model
             }
         }
 
-        [UsedSetting]
+        [LocalSettingAttribute]
         public string FOLDERMODE_PATH
         {
             get => PlatformSettings.GetStringLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH);
@@ -106,9 +112,9 @@ namespace TAPPLICATION.Model
             return ret;
         }
 
-        public void ResetAllSettings()
+        public void InitSettings()
         {
-            var settings = ReflectionHelper.GetProperties(this, typeof(UsedSettingAttribute));
+            var settings = ReflectionHelper.GetProperties(this, typeof(LocalSettingAttribute));
             var stdconst = UsedConstants.
                 GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
                 .Where(fi => fi.IsLiteral && !fi.IsInitOnly);
