@@ -264,7 +264,7 @@ namespace TAMARIN.IO
                         }
                         else
                         {
-                            throw new Exception(StringHelper.GetString("Error_GetFolder"));
+                            throw new IsOKException(StringHelper.GetString("Error_GetFolder"));
                         }
                         break;
                 }
