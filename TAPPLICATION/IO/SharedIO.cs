@@ -26,6 +26,8 @@ namespace TAPPLICATION.IO
                 new DroidIO();
 #elif WINDOWS_UWP
                 new UwpIO();
+#else
+            null;
 #endif
 
         //#####################################################################

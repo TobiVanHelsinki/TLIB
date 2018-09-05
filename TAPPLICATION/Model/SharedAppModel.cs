@@ -1,11 +1,9 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TAMARIN.IO;
 using TLIB;
-using Windows.ApplicationModel.Core;
 
 namespace TAPPLICATION.Model
 {
@@ -20,7 +18,7 @@ namespace TAPPLICATION.Model
 
         public void NewNotification(string Message, Exception x)
         {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            ModelHelper.ExecuteOnUIThreadAsync(() =>
             {
                 lstNotifications.Insert(0, new Notification(Message, x));
             });
@@ -28,7 +26,7 @@ namespace TAPPLICATION.Model
 
         public void NewNotification(string Message, bool isLightNotification = true, int seconds = 6)
         {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            ModelHelper.ExecuteOnUIThreadAsync(() =>
             {
                 lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification, ShownTime = seconds * 1000 });
             });

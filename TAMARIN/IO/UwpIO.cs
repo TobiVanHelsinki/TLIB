@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if WINDOWS_UWP
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -415,3 +417,4 @@ namespace TAMARIN.IO
         }
     }
 }
+#endif

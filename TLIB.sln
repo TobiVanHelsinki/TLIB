@@ -5,15 +5,14 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAPPLICATION", "TAPPLICATION\TAPPLICATION.shproj", "{C43E2365-5678-4E72-A123-71383DE9B2DC}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TLIB", "TLIB\TLIB.shproj", "{E3EB87FF-2421-48B9-BE86-A87E9CA0C533}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAMARIN", "TAMARIN\TAMARIN.shproj", "{7C378B60-8107-4526-BCF0-8BEA273ACF88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLIB", "TLIB\TLIB.csproj", "{9265A8BC-CD26-451C-B44F-D266B15DDECE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		TAMARIN\TAMARIN.projitems*{7c378b60-8107-4526-bcf0-8bea273acf88}*SharedItemsImports = 13
 		TAPPLICATION\TAPPLICATION.projitems*{c43e2365-5678-4e72-a123-71383de9b2dc}*SharedItemsImports = 13
-		TLIB\TLIB.projitems*{e3eb87ff-2421-48b9-be86-a87e9ca0c533}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +23,24 @@ Global
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|ARM.Build.0 = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|x64.Build.0 = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|x86.Build.0 = Debug|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|ARM.ActiveCfg = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|ARM.Build.0 = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|x64.ActiveCfg = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|x64.Build.0 = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|x86.ActiveCfg = Release|Any CPU
+		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

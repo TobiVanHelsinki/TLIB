@@ -16,6 +16,8 @@
     <Import_RootNamespace>TAPPLICATION</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\ModelHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\StringHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\SharedIO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\IMainType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\SharedSettingsModel.cs" />

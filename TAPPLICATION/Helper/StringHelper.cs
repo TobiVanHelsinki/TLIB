@@ -50,7 +50,6 @@ namespace TLIB
             }
 #endif
 #else
-            strReturn = null;
 #endif
             return ret;
         }

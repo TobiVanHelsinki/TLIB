@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using TAMARIN.Settings;
 using TLIB;
-using Microsoft.Toolkit.Uwp.Helpers;
 
 namespace TAPPLICATION.Model
 {
@@ -27,8 +26,10 @@ namespace TAPPLICATION.Model
         public static IPlatformSettings PlatformSettings =
 #if __ANDROID__
             new DroidSettings()
-#else
+#elif WINDOWS_UWP
             new WinSettings()
+#else
+            null
 #endif
 ;
         #region Settinsg

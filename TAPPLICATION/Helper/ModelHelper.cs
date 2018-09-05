@@ -9,9 +9,9 @@ namespace TLIB
 {
     public static class ModelHelper
     {
-#if WINDOWS_UWP
         public static async void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
+#if WINDOWS_UWP
             try
             {
                 Event?.Invoke(o, new PropertyChangedEventArgs(property));
@@ -29,7 +29,15 @@ namespace TLIB
                 {
                 }
             }
-        }
+#else
 #endif
+        }
+
+        public static void ExecuteOnUIThreadAsync(Action p)
+        {
+#if WINDOWS_UWP
+            DispatcherHelper.ExecuteOnUIThreadAsync(p);
+#endif
+        }
     }
 }

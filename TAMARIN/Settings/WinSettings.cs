@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if WINDOWS_UWP
+
+using System;
 using System.Collections.Generic;
 using Windows.Storage;
 
@@ -139,3 +141,4 @@ namespace TAMARIN.Settings
 
     }
 }
+#endif
