@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using TAMARIN.Settings;
 using TLIB;
+using TLIB.Settings;
 
 namespace TAPPLICATION.Model
 {
@@ -22,16 +22,8 @@ namespace TAPPLICATION.Model
     
     public class SharedSettingsModel : INotifyPropertyChanged
     {
-        internal Type UsedConstants { get; set; }
-        public static IPlatformSettings PlatformSettings =
-#if __ANDROID__
-            new DroidSettings()
-#elif WINDOWS_UWP
-            new WinSettings()
-#else
-            null
-#endif
-;
+        public Type UsedConstants { get; set; }
+        public static IPlatformSettings PlatformSettings;
         #region Settinsg
         [LocalSettingAttribute]
         public bool INTERN_SYNC

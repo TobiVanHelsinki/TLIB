@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace TAMARIN.Settings
+namespace TLIB.Settings
 {
     public interface IPlatformSettings
     {

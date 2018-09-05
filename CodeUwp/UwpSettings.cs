@@ -1,12 +1,11 @@
-﻿#if WINDOWS_UWP
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using TLIB.Settings;
 using Windows.Storage;
 
-namespace TAMARIN.Settings
+namespace TLIB.Code.Uwp
 {
-    public class WinSettings : IPlatformSettings
+    public class UwpSettings : IPlatformSettings
     {
         ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         ApplicationDataContainer RoamingSettings = ApplicationData.Current.RoamingSettings;
@@ -19,12 +18,10 @@ namespace TAMARIN.Settings
             }
             catch (Exception)
             {
-#if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
                 }
-#endif
             }
         }
         public void SetRoaming(string place, object value)
@@ -35,12 +32,10 @@ namespace TAMARIN.Settings
             }
             catch (Exception)
             {
-#if DEBUG
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
                 }
-#endif
             }
         }
 
@@ -141,4 +136,3 @@ namespace TAMARIN.Settings
 
     }
 }
-#endif

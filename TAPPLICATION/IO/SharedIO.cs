@@ -3,9 +3,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TAMARIN.IO;
 using TAPPLICATION.Model;
 using TLIB;
+using TLIB.IO;
 
 namespace TAPPLICATION.IO
 {
@@ -21,17 +21,10 @@ namespace TAPPLICATION.IO
     {
         const string Prefix_Emergency = "EmergencySave_";
 
-        public static IPlatformIO CurrentIO =
-#if __ANDROID__
-                new DroidIO();
-#elif WINDOWS_UWP
-                new UwpIO();
-#else
-            null;
-#endif
+        public static IPlatformIO CurrentIO;
 
         //#####################################################################
-        internal static string GetCurrentSavePath()
+        public static string GetCurrentSavePath()
         {
             if (SharedSettingsModel.I.FOLDERMODE)
             {
@@ -43,7 +36,7 @@ namespace TAPPLICATION.IO
             }
         }
 
-        internal static Place GetCurrentSavePlace()
+        public static Place GetCurrentSavePlace()
         {
             if (SharedSettingsModel.I.FOLDERMODE)
             {
@@ -174,16 +167,11 @@ namespace TAPPLICATION.IO
                 PreserveReferencesHandling = PreserveReferencesHandling.All,
                 Error = ErrorHandler
             };
-#if __ANDROID__
-            throw new NotImplementedException();
-            //return JsonConvert.SerializeObject(SaveChar, null, settings);
-#else
             return JsonConvert.SerializeObject(SaveChar, settings);
-#endif
         }
         static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
 
-        internal static string CorrectFilenameExtension(string Filename, string Extension)
+        public static string CorrectFilenameExtension(string Filename, string Extension)
         {
             if (!Filename.EndsWith(Extension))
             {
@@ -213,7 +201,7 @@ namespace TAPPLICATION.IO
         /// <param name="strFileVersion"></param>
         /// <param name="fileContent"></param>
         /// <returns></returns>
-        internal static Func<string, string, string, CurrentType> MainTypeConvert =
+        public static Func<string, string, string, CurrentType> MainTypeConvert =
             (string strFileVersion, string strAppVersion, string fileContent) =>
             {
                 JsonSerializerSettings settings = new JsonSerializerSettings()

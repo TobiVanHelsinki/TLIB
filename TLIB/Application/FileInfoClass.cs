@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TLIB;
 
-namespace TAMARIN.IO
+namespace TLIB.IO
 {
     public class FileInfoClass : INotifyPropertyChanged
     {

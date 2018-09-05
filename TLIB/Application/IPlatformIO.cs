@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TAMARIN.IO
+namespace TLIB.IO
 {
     public enum UserDecision
     {

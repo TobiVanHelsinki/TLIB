@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TAMARIN.Settings
+namespace TLIB.Code.Android
 {
     public class DroidSettings : IPlatformSettings
     {

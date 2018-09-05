@@ -3,16 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAPPLICATION", "TAPPLICATION\TAPPLICATION.shproj", "{C43E2365-5678-4E72-A123-71383DE9B2DC}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAPPLICATION", "TAPPLICATION\TAPPLICATION.csproj", "{C43E2365-5678-4E72-A123-71383DE9B2DC}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAMARIN", "TAMARIN\TAMARIN.shproj", "{7C378B60-8107-4526-BCF0-8BEA273ACF88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TLIB", "TLIB\TLIB.csproj", "{9265A8BC-CD26-451C-B44F-D266B15DDECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLIB", "TLIB\TLIB.csproj", "{9265A8BC-CD26-451C-B44F-D266B15DDECE}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CodeUwp", "CodeUwp\CodeUwp.shproj", "{EC6F9FDF-F9C2-46E2-B5FC-937CA2A239ED}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CodeAndroid", "CodeAndroid\CodeAndroid.shproj", "{2B0B32CD-F876-4486-8A77-684B3B0E9980}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		TAMARIN\TAMARIN.projitems*{7c378b60-8107-4526-bcf0-8bea273acf88}*SharedItemsImports = 13
+		CodeAndroid\CodeAndroid.projitems*{2b0b32cd-f876-4486-8a77-684b3b0e9980}*SharedItemsImports = 13
 		TAPPLICATION\TAPPLICATION.projitems*{c43e2365-5678-4e72-a123-71383de9b2dc}*SharedItemsImports = 13
+		CodeUwp\CodeUwp.projitems*{ec6f9fdf-f9c2-46e2-b5fc-937ca2a239ed}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +28,22 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|x64.Build.0 = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Debug|x86.Build.0 = Debug|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|ARM.Build.0 = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|x64.ActiveCfg = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|x64.Build.0 = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{C43E2365-5678-4E72-A123-71383DE9B2DC}.Release|x86.Build.0 = Release|Any CPU
 		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9265A8BC-CD26-451C-B44F-D266B15DDECE}.Debug|ARM.ActiveCfg = Debug|Any CPU

@@ -1,18 +1,16 @@
-﻿#if WINDOWS_UWP
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TAPPLICATION;
-using TLIB;
+using TLIB.IO;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.System;
 
-namespace TAMARIN.IO
+namespace TLIB.Code.Uwp
 {
     internal class UwpIO : IPlatformIO
     {
@@ -417,4 +415,3 @@ namespace TAMARIN.IO
         }
     }
 }
-#endif

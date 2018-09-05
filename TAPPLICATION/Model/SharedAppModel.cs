@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using TAMARIN.IO;
 using TLIB;
+using TLIB.IO;
 
 namespace TAPPLICATION.Model
 {
@@ -94,15 +94,11 @@ namespace TAPPLICATION.Model
                 {
                     await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
                     MainObjectSaved?.Invoke(this, new EventArgs());
-#if DEBUG
-                    SystemHelper.WriteLine("MainObject Saved");
-#endif
+                    System.Diagnostics.Debug.WriteLine("MainObject Saved");
                 }
                 catch (Exception)
                 {
-#if DEBUG
-                    SystemHelper.WriteLine("Error Saving the MainObject");
-#endif
+                    System.Diagnostics.Debug.WriteLine("Error Saving the MainObject");
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
                         System.Diagnostics.Debugger.Break();
