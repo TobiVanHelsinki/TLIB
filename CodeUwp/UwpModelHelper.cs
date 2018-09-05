@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using TLIB.PlatformHelper;
+using Windows.ApplicationModel.Core;
 
 namespace TLIB.Code.Uwp
 {
     public class UwpModelHelper : IModelHelper
     {
-        public async void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
+        public async Task CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
             try
             {

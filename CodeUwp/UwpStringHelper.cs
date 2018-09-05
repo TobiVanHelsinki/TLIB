@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using TLIB.PlatformHelper;
 
 namespace TLIB.Code.Uwp
 {
@@ -13,7 +12,7 @@ namespace TLIB.Code.Uwp
         {
             return Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID);
         }
-        public static List<string> GetStrings(string strID)
+        public List<string> GetStrings(string strID)
         {
             List<string> ret = new List<string>();
             string Current = "";
@@ -26,16 +25,15 @@ namespace TLIB.Code.Uwp
                 Counter++;
                 goto Loop;
             }
-
             return ret;
         }
 
-        public static string GetSimpleCountryCode(string[] filter, string fallback)
+        public string GetSimpleCountryCode(string[] filter, string fallback)
         {
             return filter.Contains(CultureInfo.CurrentCulture.TwoLetterISOLanguageName) ? CultureInfo.CurrentCulture.TwoLetterISOLanguageName : fallback;
         }
 
-        public static string GetPrefix(PrefixType type)
+        public string GetPrefix(PrefixType type)
         {
             string strReturn = "";
 
