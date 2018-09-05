@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)UwpIO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UwpModelHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UwpSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UwpStringHelper.cs" />
   </ItemGroup>
 </Project>
