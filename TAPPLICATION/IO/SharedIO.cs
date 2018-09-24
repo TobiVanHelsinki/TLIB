@@ -169,7 +169,18 @@ namespace TAPPLICATION.IO
             };
             return JsonConvert.SerializeObject(SaveChar, settings);
         }
-        static Notification JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
+        static Notification _JSON_Error_Notification;
+        static Notification JSON_Error_Notification
+        {
+            get
+            {
+                if (_JSON_Error_Notification == null)
+                {
+                    _JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
+                }
+                return _JSON_Error_Notification;
+            }
+        }
 
         public static string CorrectFilenameExtension(string Filename, string Extension)
         {
