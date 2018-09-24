@@ -11,5 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DroidIO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DroidSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DroidModelHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DroidStringHelper.cs" />
   </ItemGroup>
 </Project>

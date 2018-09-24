@@ -1,69 +1,68 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TLIB.IO;
 
 namespace TLIB.Code.Android
 {
-    internal class DroidIO : IPlatformIO
+    internal class IO : IPlatformIO
     {
-        public Task Copy(FileInfoClass Target, FileInfoClass Source)
+        public async Task Copy(FileInfoClass Target, FileInfoClass Source)
         {
-            throw new NotImplementedException();
         }
 
         public void CreateSaveContainer()
         {
-            throw new NotImplementedException();
+            
         }
 
         public string GetCompleteInternPath(Place place)
         {
-            throw new NotImplementedException();
+            return "";   
         }
 
-        public Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
+        public async Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {
-            throw new NotImplementedException();
+            return new FileInfoClass();
         }
 
-        public Task<List<FileInfoClass>> GetListofFiles(FileInfoClass Info, UserDecision eUser, List<string> FileTypes = null)
+        public async Task<List<FileInfoClass>> GetListofFiles(FileInfoClass Info, UserDecision eUser, List<string> FileTypes = null)
         {
-            throw new NotImplementedException();
+            return new List<FileInfoClass>();
         }
 
-        public Task<(string strFileContent, FileInfoClass Info)> LoadFileContent(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
+        public async Task<(string strFileContent, FileInfoClass Info)> LoadFileContent(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
-            throw new NotImplementedException();
+            return ( "", new FileInfoClass());
         }
 
-        public Task<bool> OpenFolder(FileInfoClass Info)
+        public async Task<bool> OpenFolder(FileInfoClass Info)
         {
-            throw new NotImplementedException();
+            return false;   
         }
 
-        public Task RemoveFile(FileInfoClass Info)
+        public async Task RemoveFile(FileInfoClass Info)
         {
-            throw new NotImplementedException();
         }
 
-        public Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
+        public async Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
-            throw new NotImplementedException();
+            return new FileInfoClass();
         }
 
-        public Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
+        public async Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName)
+        public async Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName)
         {
-            throw new NotImplementedException();
+            return new FileInfoClass();
         }
 
-        public Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
+        public async Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

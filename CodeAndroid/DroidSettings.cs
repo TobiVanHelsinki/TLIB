@@ -1,53 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
+using TLIB.Settings;
 
 namespace TLIB.Code.Android
 {
-    public class DroidSettings : IPlatformSettings
+    public class Settings : IPlatformSettings
     {
         public bool GetBoolLocal(string place, bool fallback = false)
         {
-            throw new NotImplementedException();
+            return fallback;
         }
 
         public bool GetBoolRoaming(string place, bool fallback = false)
         {
-            throw new NotImplementedException();
+            return fallback;
         }
 
         public IEnumerable<T> GetIEnumerable<T>(string place, T fallback = default)
         {
-            throw new NotImplementedException();
+            return new List<T>();
         }
 
         public int GetIntLocal(string place, int fallback = 0)
         {
-            throw new NotImplementedException();
+            return fallback;
         }
 
         public int GetIntRoaming(string place, int fallback = 0)
         {
-            throw new NotImplementedException();
+            return fallback;
         }
 
         public string GetStringLocal(string place, string fallback = "")
         {
-            throw new NotImplementedException();
+            return fallback;
         }
 
         public string GetStringRoaming(string place, string fallback = null)
         {
-            throw new NotImplementedException();
+            return fallback;
         }
 
         public void SetLocal(string place, object value)
         {
-            throw new NotImplementedException();
         }
 
         public void SetRoaming(string place, object value)
         {
-            throw new NotImplementedException();
         }
     }
 }
