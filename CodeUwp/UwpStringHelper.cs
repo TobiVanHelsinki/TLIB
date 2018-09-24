@@ -10,7 +10,14 @@ namespace TLIB.Code.Uwp
     {
         public string GetString(string strID)
         {
-            return Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID);
+            try
+            {
+                return Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
         public List<string> GetStrings(string strID)
         {
