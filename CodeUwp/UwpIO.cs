@@ -104,7 +104,7 @@ namespace TLIB.Code.Uwp
                     }
                     File = await StorageFile.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
                     { // If path and name are empty´, the intent is to ask the user
@@ -129,7 +129,7 @@ namespace TLIB.Code.Uwp
             {
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             { // last possibility is to ask the user
                 if (eUser == UserDecision.AskUser)
                 {
@@ -148,7 +148,7 @@ namespace TLIB.Code.Uwp
                     StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token + File.Name, File,"A Char File");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return File;
@@ -278,7 +278,7 @@ namespace TLIB.Code.Uwp
                     StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token, Folder);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             return Folder;

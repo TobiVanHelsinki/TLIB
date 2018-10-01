@@ -24,7 +24,7 @@ namespace TLIB.Code.Uwp
                         Event?.Invoke(o, new PropertyChangedEventArgs(property));
                     });
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
