@@ -95,7 +95,6 @@ namespace TAPPLICATION.IO
         /// <summary>
         /// Can Throw
         /// </summary>
-        /// <param name="strDelChar"></param>
         /// <returns></returns>
         public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.ThrowError)
         {
@@ -111,7 +110,7 @@ namespace TAPPLICATION.IO
         {
             if (Object == null)
             {
-                throw new ArgumentNullException("Char was Empty");
+                throw new ArgumentNullException("MainObject was Empty");
             }
             FileInfoClass CurrentInfo = Info ?? Object.FileInfo;
             string strAdditionalName = "";
@@ -157,9 +156,9 @@ namespace TAPPLICATION.IO
         /// <summary>
         /// can throw
         /// </summary>
-        /// <param name="SaveChar"></param>
+        /// <param name="Object to serialize"></param>
         /// <returns></returns>
-        public static string Serialize(IMainType SaveChar)
+        public static string Serialize(IMainType ObjectToSerialize)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
@@ -167,7 +166,7 @@ namespace TAPPLICATION.IO
                 PreserveReferencesHandling = PreserveReferencesHandling.All,
                 Error = ErrorHandler
             };
-            return JsonConvert.SerializeObject(SaveChar, settings);
+            return JsonConvert.SerializeObject(ObjectToSerialize, settings);
         }
         static Notification _JSON_Error_Notification;
         static Notification JSON_Error_Notification
@@ -245,7 +244,7 @@ namespace TAPPLICATION.IO
             NewMainObject.FileInfo = File.Info;
             if (SharedSettingsModel.I.DEBUG_FEATURES)
             {
-                SharedAppModel.Instance.NewNotification("CharLoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
+                SharedAppModel.Instance.NewNotification("LoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
             }
             return NewMainObject;
         }

@@ -106,12 +106,9 @@ namespace TAPPLICATION.Model
                 }
             }
 
-            if (e.PropertyName.Contains("MainObject"))
+            if (e.PropertyName == nameof(MainObject) && MainObject != null)
             {
-                if (MainObject != null)
-                {
-                    MainObject.SaveRequest += save;
-                }
+                MainObject.SaveRequest += save;
             }
         }
 
