@@ -5,6 +5,16 @@ using TLIB.PlatformHelper;
 
 namespace TLIB.IO
 {
+    public enum Place
+    {
+        NotDefined = 0,
+        Extern = 2,
+        Roaming = 3,
+        Local = 4,
+        Assets = 5,
+        Temp = 6
+    }
+
     /// <summary>
     /// Symbolizes a File. Has no link to an actual file at the filesystem, provides binding
     /// </summary>
