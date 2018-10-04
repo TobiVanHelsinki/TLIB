@@ -96,7 +96,7 @@ namespace TAPPLICATION.Model
         #region Methods
         public List<(string, object)> ExportAllSettings()
         {
-            var propertyinfos = this.GetType().GetProperties();
+            var propertyinfos = this.GetType().GetRuntimeProperties();
             var ret = new List<(string, object)>();
             foreach (var item in propertyinfos)
             {
@@ -110,8 +110,11 @@ namespace TAPPLICATION.Model
         {
             var settings = ReflectionHelper.GetProperties(this, typeof(LocalSettingAttribute));
             var stdconst = UsedConstants.
-                GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-                .Where(fi => fi.IsLiteral && !fi.IsInitOnly);
+                GetRuntimeFields()
+                .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.IsStatic && fi.IsPublic);
+    //        var stdconst = UsedConstants.
+    //GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+    //.Where(fi => fi.IsLiteral && !fi.IsInitOnly);
 
             foreach (var item in settings)
             {

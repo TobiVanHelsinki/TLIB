@@ -2,7 +2,7 @@
 
 namespace TLIB
 {
-    [Serializable]
+    //[Serializable]
     public class IsOKException : Exception
     {
         public IsOKException()
