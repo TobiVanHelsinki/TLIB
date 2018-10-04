@@ -17,13 +17,19 @@ namespace TAPPLICATION.IO
         Emergency = 3,
         Temp = 4
     }
+
+    /// <summary>
+    /// Provides Basic IO for the Framework
+    /// </summary>
     public class SharedIO 
     {
         const string Prefix_Emergency = "EmergencySave_";
 
         public static IPlatformIO CurrentIO;
 
-        //#####################################################################
+        /// <summary>
+        /// returns the current default save path
+        /// </summary>
         public static string GetCurrentSavePath()
         {
             if (SharedSettingsModel.I.FOLDERMODE)
@@ -36,6 +42,9 @@ namespace TAPPLICATION.IO
             }
         }
 
+        /// <summary>
+        /// returns the current default save place
+        /// </summary>
         public static Place GetCurrentSavePlace()
         {
             if (SharedSettingsModel.I.FOLDERMODE)
@@ -56,6 +65,11 @@ namespace TAPPLICATION.IO
             }
         }
 
+        /// <summary>
+        /// Creates multiple files at the folder specified at info.
+        /// </summary>
+        /// <param name="FileContents">List of FileName and Content</param>
+        /// <param name="FileInfo">Folder to save to</param>
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
         {
             FileInfo = await CurrentIO.GetFolderInfo(FileInfo, UserDecision.AskUser);
@@ -76,11 +90,13 @@ namespace TAPPLICATION.IO
         #region Saving
 
         /// <summary>
-        /// Can Throw
+        /// Saves the MainType Object at the place, that is descriped at the Object. If saveplace is not defined or temp, it will be saved to current default location
         /// </summary>
         /// <param name="Object"></param>
         /// <param name="eSaveType"></param>
-        /// <returns></returns>
+        /// <param name="eUD"></param>
+        /// <exception cref="Exception"/>
+        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> SaveAtOriginPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
         {
             if (Object.FileInfo.Fileplace != Place.NotDefined && Object.FileInfo.Fileplace != Place.Temp)
@@ -92,20 +108,42 @@ namespace TAPPLICATION.IO
                 return await SaveAtCurrentPlace(Object, eSaveType, eUD);
             }
         }
+
         /// <summary>
-        /// Can Throw
+        /// Saves the MainType Object to current default location
         /// </summary>
-        /// <returns></returns>
+        /// <param name="Object"></param>
+        /// <param name="eSaveType"></param>
+        /// <param name="eUD"></param>
+        /// <exception cref="Exception"/>
+        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.ThrowError)
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
             return await Save(Object, eUD, eSaveType, Object.FileInfo);
         }
+
+        /// <summary>
+        /// Saves the MainType Object to current tmp location
+        /// </summary>
+        /// <param name="Object"></param>
+        /// <exception cref="Exception"/>
+        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> SaveAtTempPlace(IMainType Object)
         {
             return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO.GetCompleteInternPath(Place.Temp)));
         }
+
+        /// <summary>
+        /// Saves the Object to the specified location at "info" or if null to the info at the object
+        /// </summary>
+        /// <param name="Object"></param>
+        /// <param name="eUD"></param>
+        /// <param name="eSaveType"></param>
+        /// <param name="Info"></param>
+        /// <exception cref="Exception"/>
+        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
         {
             if (Object == null)
@@ -142,6 +180,11 @@ namespace TAPPLICATION.IO
         }
 
         #endregion
+        /// <summary>
+        /// Default Error Handler. Gives a notification and set .Handled = true 
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="a"></param>
         public static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
             if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
@@ -193,6 +236,11 @@ namespace TAPPLICATION.IO
         #endregion
     }
 
+    /// <summary>
+    /// Provides MainType Specific IO for the framework. 
+    /// Use this class to derive from in your application
+    /// </summary>
+    /// <typeparam name="CurrentType"></typeparam>
     public class SharedIO<CurrentType> : SharedIO where CurrentType : IMainType, new()
     {
         #region Deserialization
@@ -206,10 +254,11 @@ namespace TAPPLICATION.IO
             return MainTypeConvert(strAppVersion, strFileVersion, fileContent);
         }
         /// <summary>
-        /// Can throw
+        /// Converter, that does to actual deserialization, you can provide your own by setting this var
         /// </summary>
         /// <param name="strFileVersion"></param>
         /// <param name="fileContent"></param>
+        /// <exception cref="Exception"/>
         /// <returns></returns>
         public static Func<string, string, string, CurrentType> MainTypeConvert =
             (string strFileVersion, string strAppVersion, string fileContent) =>
@@ -226,13 +275,14 @@ namespace TAPPLICATION.IO
         #region Loading
 
         /// <summary>
-        /// Can throw
+        /// gets file and deserialize it
         /// </summary>
         /// <param name="ePlace"></param>
         /// <param name="strSaveName"></param>
         /// <param name="strSavePath"></param>
         /// <param name="FileTypes"></param>
         /// <param name="eUD"></param>
+        /// <exception cref="Exception"/>
         /// <returns></returns>
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {

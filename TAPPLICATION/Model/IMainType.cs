@@ -4,6 +4,9 @@ using TLIB.IO;
 
 namespace TAPPLICATION.Model
 {
+    /// <summary>
+    /// Interface for the Frameworks Main-Type.
+    /// </summary>
     public interface IMainType
     {
         string APP_VERSION_NUMBER { get; } 
@@ -11,6 +14,9 @@ namespace TAPPLICATION.Model
 
         FileInfoClass FileInfo { get; set; }
 
+        /// <summary>
+        /// use this Event if you want to get this object saved
+        /// </summary>
         event EventHandler SaveRequest;
         [JsonIgnore]
         bool HasChanges { get; set; }

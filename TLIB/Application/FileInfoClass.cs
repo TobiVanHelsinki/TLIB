@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using TLIB;
 using TLIB.PlatformHelper;
 
 namespace TLIB.IO
 {
+    /// <summary>
+    /// Symbolizes a File. Has no link to an actual file at the filesystem, provides binding
+    /// </summary>
     public class FileInfoClass : INotifyPropertyChanged
     {
         string _Filename = "";
