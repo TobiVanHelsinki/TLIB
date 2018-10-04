@@ -117,5 +117,11 @@ namespace TLIB.IO
             Filepath = filepath;
             Fileplace = fileplace;
         }
+
+        public FileInfoClass Clone()
+        {
+            return new FileInfoClass(this.Fileplace, this.Filename, this.Filepath)
+            {DateModified = this.DateModified, Token = this.Token, Size = this.Size };
+        }
     }
 }

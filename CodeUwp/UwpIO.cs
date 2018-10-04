@@ -29,7 +29,9 @@ namespace TLIB.Code.Uwp
                 throw new Exception("Writingerror", ex);
             }
             await Task.Delay(TimeSpan.FromMilliseconds(50));
-            var i = new FileInfoClass(Info.Fileplace, x.Name, x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length));
+            FileInfoClass i = Info.Clone();
+            i.Filename = x.Name;
+            i.Filepath = x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length);
             return i;
         }
 
@@ -42,13 +44,11 @@ namespace TLIB.Code.Uwp
         public async Task<(string strFileContent, FileInfoClass Info)> LoadFileContent(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             StorageFile x = await GetFile(Info, FileTypes, eUD, FileNotFoundDecision.NotCreate);
-            return (await FileIO.ReadTextAsync(x), new FileInfoClass()
-            {
-                Filename = x.Name,
-                Fileplace = Info.Fileplace,
-                Token = Info.Token,
-                Filepath = x.Path.Substring(0,x.Path.Length-x.Name.Length) 
-            });
+            var rettext = await FileIO.ReadTextAsync(x);
+            var info = Info.Clone();
+            info.Filename = x.Name;
+            info.Filepath = x.Path.Substring(0, x.Path.Length - x.Name.Length);
+            return (rettext, info);
         }
 
         // ##############################
@@ -389,7 +389,9 @@ namespace TLIB.Code.Uwp
         {
             StorageFile SourceFile = await GetFile(Source);
             await SourceFile.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
-            return new FileInfoClass(Source.Fileplace, SourceFile.Name, SourceFile.Path.Remove(SourceFile.Path.Length - SourceFile.Name.Length));
+            var Info = Source.Clone();
+            Info.Filepath = SourceFile.Path.Remove(SourceFile.Path.Length - SourceFile.Name.Length);
+            return Info;
         }
 
         public async Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
