@@ -108,13 +108,10 @@ namespace TAPPLICATION.Model
 
         public void InitSettings()
         {
-            var settings = ReflectionHelper.GetProperties(this, typeof(LocalSettingAttribute));
-            var stdconst = UsedConstants.
-                GetRuntimeFields()
-                .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.IsStatic && fi.IsPublic);
-    //        var stdconst = UsedConstants.
-    //GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-    //.Where(fi => fi.IsLiteral && !fi.IsInitOnly);
+            var settings = ReflectionHelper.GetProperties(this, typeof(LocalSettingAttribute)).ToList();
+            var stdconst = UsedConstants.GetRuntimeFields()
+                .Concat(typeof(SharedConstants).GetRuntimeFields())
+                .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.IsStatic && fi.IsPublic).ToList();
 
             foreach (var item in settings)
             {
@@ -126,7 +123,8 @@ namespace TAPPLICATION.Model
                 }
                 else
                 {
-                    //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                    //item.Name has no STD Value
+                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
                 }
             }
             return;
@@ -138,8 +136,10 @@ namespace TAPPLICATION.Model
         {
             if (instance == null)
             {
-                instance = new SharedSettingsModel();
-                instance.UsedConstants = typeof(SharedConstants);
+                instance = new SharedSettingsModel
+                {
+                    UsedConstants = typeof(SharedConstants)
+                };
             }
             return Instance;
         }
