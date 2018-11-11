@@ -37,12 +37,5 @@ namespace TLIB.Settings
         int GetIntLocal(string place, int fallback = default);
         int GetIntRoaming(string place, int fallback = default);
 
-
-        /// <summary>
-        /// don't throw
-        /// </summary>
-        /// <param name="place"></param>
-        /// <param name="value"></param>
-        IEnumerable<T> GetIEnumerable<T>(string place, T fallback = default);
     }
 }

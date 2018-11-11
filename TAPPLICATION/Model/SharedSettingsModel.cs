@@ -126,7 +126,7 @@ namespace TAPPLICATION.Model
                 }
                 else
                 {
-                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                    //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
                 }
             }
             return;

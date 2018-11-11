@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using TLIB.Settings;
 using Windows.Storage;
 
@@ -47,8 +46,8 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception)
             {
+                return fallback;
             }
-            return fallback;
         }
         public bool GetBoolRoaming(string place, bool fallback = false)
         {
@@ -64,9 +63,9 @@ namespace TAPPLICATION_UWP
                 }
                 catch (Exception)
                 {
+                    return fallback;
                 }
             }
-            return fallback;
         }
         public string GetStringLocal(string place, string fallback = default)
         {
@@ -76,8 +75,8 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception)
             {
+                return fallback;
             }
-            return fallback;
         }
         public string GetStringRoaming(string place, string fallback = default)
         {
@@ -93,9 +92,9 @@ namespace TAPPLICATION_UWP
                 }
                 catch (Exception)
                 {
+                    return fallback;
                 }
             }
-            return fallback;
         }
         public int GetIntLocal(string place, int fallback = default)
         {
@@ -105,8 +104,8 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception)
             {
+                return fallback;
             }
-            return fallback;
         }
 
         public int GetIntRoaming(string place, int fallback = 0)
@@ -123,16 +122,9 @@ namespace TAPPLICATION_UWP
                 }
                 catch (Exception)
                 {
+                    return fallback;
                 }
             }
-            return fallback;
         }
-
-        public IEnumerable<T> GetIEnumerable<T>(string place, T fallback = default)
-        {
-            var val = LocalSettings.Values[place];
-            throw new NotImplementedException();
-        }
-
     }
 }

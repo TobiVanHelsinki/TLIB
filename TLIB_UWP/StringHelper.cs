@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using TLIB.PlatformHelper;
+using Windows.ApplicationModel.Resources;
 
 namespace TLIB_UWP
 {
@@ -12,7 +11,7 @@ namespace TLIB_UWP
         {
             try
             {
-                return Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID);
+                return ResourceLoader.GetForViewIndependentUse().GetString(strID);
             }
             catch (Exception ex)
             {
@@ -21,12 +20,19 @@ namespace TLIB_UWP
         }
         public List<string> GetStrings(string strID)
         {
-            List<string> ret = new List<string>();
-            string Current = "";
-            int Counter = 1;
+            var ret = new List<string>();
+            var Counter = 1;
+            string Current;
             Loop:
-            Current = Windows.ApplicationModel.Resources.ResourceLoader.GetForViewIndependentUse().GetString(strID + Counter);
-            if (!String.IsNullOrEmpty(Current))
+            try
+            {
+                Current = ResourceLoader.GetForViewIndependentUse().GetString(strID + Counter);
+            }
+            catch (Exception)
+            {
+                Current = null;
+            }
+            if (!string.IsNullOrEmpty(Current))
             {
                 ret.Add(Current);
                 Counter++;
@@ -35,27 +41,5 @@ namespace TLIB_UWP
             return ret;
         }
 
-        public string GetSimpleCountryCode(string[] filter, string fallback)
-        {
-            return filter.Contains(CultureInfo.CurrentCulture.TwoLetterISOLanguageName) ? CultureInfo.CurrentCulture.TwoLetterISOLanguageName : fallback;
-        }
-
-        public string GetPrefix(PrefixType type)
-        {
-            string strReturn = "";
-
-            switch (type)
-            {
-                case PrefixType.AppPackageData:
-                    strReturn = "ms-appx:///";
-                    break;
-                case PrefixType.AppUserData:
-                    strReturn = "ms-appdata:///";
-                    break;
-                default:
-                    break;
-            }
-            return strReturn;
-        }
     }
 }

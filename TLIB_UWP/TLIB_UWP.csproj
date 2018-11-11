@@ -102,10 +102,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TLIB\TLIB.csproj">
-      <Project>{9265a8bc-cd26-451c-b44f-d266b15ddece}</Project>
-      <Name>TLIB</Name>
-    </ProjectReference>
+    <Reference Include="TLIB">
+      <HintPath>..\TLIB\bin\$(Configuration)\netstandard1.0\TLIB.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

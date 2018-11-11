@@ -44,7 +44,14 @@ namespace TLIB
             int ret = 0;
             do
             {
-                ret = r.Next(minValueInclusiv, maxValueExclusive);
+                try
+                {
+                    ret = r.Next(minValueInclusiv, maxValueExclusive);
+                }
+                catch (Exception)
+                {
+                    ret = default;
+                }
             } while (ret == not);
 
             return ret;

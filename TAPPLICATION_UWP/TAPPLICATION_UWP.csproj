@@ -108,14 +108,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TAPPLICATION\TAPPLICATION.csproj">
-      <Project>{c43e2365-5678-4e72-a123-71383de9b2dc}</Project>
-      <Name>TAPPLICATION</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TLIB\TLIB.csproj">
-      <Project>{9265a8bc-cd26-451c-b44f-d266b15ddece}</Project>
-      <Name>TLIB</Name>
-    </ProjectReference>
+    <Reference Include="TAPPLICATION, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TAPPLICATION\bin\$(Configuration)\netstandard1.0\TAPPLICATION.dll</HintPath>
+    </Reference>
+    <Reference Include="TLIB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TLIB\bin\$(Configuration)\netstandard1.0\TLIB.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
