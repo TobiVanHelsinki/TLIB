@@ -1,0 +1,11 @@
+﻿namespace TAPPLICATION_UWP
+{
+    public class Init
+    {
+        public static void Do()
+        {
+            TAPPLICATION.IO.SharedIO.CurrentIO = new IO();
+            TAPPLICATION.Model.SharedSettingsModel.PlatformSettings = new Settings();
+        }
+    }
+}

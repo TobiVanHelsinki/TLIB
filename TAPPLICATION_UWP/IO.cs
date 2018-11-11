@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TAPPLICATION;
+using TLIB;
 using TLIB.IO;
 using TLIB.PlatformHelper;
 using Windows.Storage;
@@ -11,9 +12,9 @@ using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.System;
 
-namespace TLIB.Code.Uwp
+namespace TAPPLICATION_UWP
 {
-    internal class UwpIO : IPlatformIO
+    internal class IO : IPlatformIO
     {
         // ##############################
         public async Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)

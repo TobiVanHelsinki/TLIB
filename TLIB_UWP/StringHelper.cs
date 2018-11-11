@@ -4,9 +4,9 @@ using System.Globalization;
 using System.Linq;
 using TLIB.PlatformHelper;
 
-namespace TLIB.Code.Uwp
+namespace TLIB_UWP
 {
-    public class UwpStringHelper : IStringHelper
+    internal class StringHelper : IStringHelper
     {
         public string GetString(string strID)
         {

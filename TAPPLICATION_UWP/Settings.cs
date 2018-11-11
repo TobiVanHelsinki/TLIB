@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TLIB.Settings;
 using Windows.Storage;
 
-namespace TLIB.Code.Uwp
+namespace TAPPLICATION_UWP
 {
-    public class UwpSettings : IPlatformSettings
+    internal class Settings : IPlatformSettings
     {
         ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         ApplicationDataContainer RoamingSettings = ApplicationData.Current.RoamingSettings;
