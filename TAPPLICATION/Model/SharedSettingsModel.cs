@@ -7,90 +7,163 @@ using System.Runtime.CompilerServices;
 using TLIB;
 using TLIB.Settings;
 using TLIB.PlatformHelper;
+using TLIB.IO;
 
 namespace TAPPLICATION.Model
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class LocalSettingAttribute : Attribute
-    {
-        public LocalSettingAttribute() { }
-    }
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public sealed class RoamingSettingAttribute : Attribute
-    {
-        public RoamingSettingAttribute() { }
-    }
-    
     public class SharedSettingsModel : INotifyPropertyChanged
     {
-        public Type UsedConstants { get; set; }
+        IEnumerable<PropertyInfo> Settings => ReflectionHelper.GetProperties(this, typeof(SettingAttribute));
+        //public Type UsedConstants { get; set; }
+
+        #region Attributes
+
+        protected enum SaveType
+        {
+            Roaming, Local, Nothing
+        }
+        [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+        protected sealed class SettingAttribute : Attribute
+        {
+            public string SaveString;
+            public object DefaultValue;
+            public SaveType Sync;
+            public Type DeviatingType;
+
+            public SettingAttribute(string saveString, object defaultValue, SaveType sync, Type deviatingType = null)
+            {
+                SaveString = saveString;
+                DefaultValue = defaultValue;
+                Sync = sync;
+                DeviatingType = deviatingType;
+            }
+        }
+        #endregion
+
+        #region Generic Set / Get
         public static IPlatformSettings PlatformSettings;
-        #region Settinsg
-        [LocalSettingAttribute]
-        public bool INTERN_SYNC
+        protected dynamic Get([CallerMemberName] string Name = "")
         {
-            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC);
-            set
+            var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
+            var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
+            switch (Attribute?.Sync)
             {
-                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_INTERN_SYNC, value);
-                Instance.NotifyPropertyChanged();
+                case SaveType.Roaming:
+                    switch (Attribute.DeviatingType ?? Setting.PropertyType)
+                    {
+                        case Type namedType when namedType == typeof(int):
+                            return PlatformSettings.GetIntRoaming(Attribute.SaveString);
+                        case Type namedType when namedType == typeof(bool):
+                            return PlatformSettings.GetBoolRoaming(Attribute.SaveString);
+                        case Type namedType when namedType == typeof(string):
+                            return PlatformSettings.GetStringRoaming(Attribute.SaveString);
+                        default:
+                            return Attribute.DefaultValue;
+                    }
+                case SaveType.Local:
+                    switch (Attribute.DeviatingType ?? Setting.PropertyType)
+                    {
+                        case Type namedType when namedType == typeof(int):
+                            return PlatformSettings.GetIntLocal(Attribute.SaveString);
+                        case Type namedType when namedType == typeof(bool):
+                            return PlatformSettings.GetBoolLocal(Attribute.SaveString);
+                        case Type namedType when namedType == typeof(string):
+                            return PlatformSettings.GetStringLocal(Attribute.SaveString);
+                        default:
+                            return Attribute.DefaultValue;
+                    }
+                default:
+                    return Attribute.DefaultValue;
             }
         }
-        
-        [LocalSettingAttribute]
-        public bool DEBUG_FEATURES
+        protected void Set(object value, [CallerMemberName] string Name = "")
         {
-            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES);
+            var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
+            var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
+            if (Attribute.DeviatingType != null)
+            {
+
+            }
+            value = Attribute.DeviatingType == null ? value : Convert.ChangeType(value, Attribute.DeviatingType);
+            switch (Attribute.Sync)
+            {
+                case SaveType.Roaming:
+                    PlatformSettings.SetRoaming(Attribute.SaveString, value);
+                    break;
+                case SaveType.Local:
+                    PlatformSettings.SetLocal(Attribute.SaveString, value);
+                    break;
+                default:
+                    break;
+            }
+            Instance.NotifyPropertyChanged(Name);
+        }
+        #endregion
+
+        #region Settings
+
+        [Setting("SETTINGS_INTERN_SYNC", true, SaveType.Local)]
+        public bool INTERN_SYNC { get => Get(); set => Set(value); }
+
+        [Setting("SETTINGS_DEBUG_FEATURES", false, SaveType.Local)]
+        public bool DEBUG_FEATURES { get => Get(); set => Set(value); }
+
+        [Setting("SETTINGS_BETA_FEATURES", false, SaveType.Local)]
+        public bool BETA_FEATURES { get => Get(); set => Set(value); }
+
+        [Setting("SETTINGS_DISPLAY_REQUEST", true, SaveType.Local)]
+        public bool DISPLAY_REQUEST { get => Get(); set => Set(value); }
+
+        [Setting("SETTINGS_FOLDERMODE", false, SaveType.Local)]
+        public bool FOLDERMODE { get => Get(); set => Set(value); }
+
+        [Setting("SETTINGS_FOLDERMODE_PATH", "", SaveType.Local)]
+        public string FOLDERMODE_PATH { get => Get(); set => Set(value); }
+
+        [Setting("LAST_SAVE_INFO", null, SaveType.Nothing)]
+        public FileInfoClass LAST_SAVE_INFO
+        {
+            get
+            {
+                return new FileInfoClass()
+                {
+                    Filename = LAST_SAVE_INFO_NAME,
+                    Filepath = LAST_SAVE_INFO_PATH,
+                    Fileplace = LAST_SAVE_INFO_PLACE,
+                    Token = LAST_SAVE_INFO_TOKEN
+                };
+            }
             set
             {
-                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_DEBUG_FEATURES, value);
+                if (value == null)
+                {
+                    LAST_SAVE_INFO_NAME = "";
+                    LAST_SAVE_INFO_PATH = "";
+                    LAST_SAVE_INFO_PLACE = Place.NotDefined;
+                    LAST_SAVE_INFO_TOKEN = "";
+                }
+                else
+                {
+                    LAST_SAVE_INFO_NAME = value.Filename;
+                    LAST_SAVE_INFO_PATH = value.Filepath;
+                    LAST_SAVE_INFO_PLACE = value.Fileplace;
+                    LAST_SAVE_INFO_TOKEN = value.Token;
+                }
                 Instance.NotifyPropertyChanged();
             }
         }
 
-        [LocalSettingAttribute]
-        public bool BETA_FEATURES
-        {
-            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES);
-            set
-            {
-                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_BETA_FEATURES, value);
-                Instance.NotifyPropertyChanged();
-            }
-        }
+        [Setting("SETTINGS_LAST_CHAR_NAME", "", SaveType.Local)]
+        public string LAST_SAVE_INFO_NAME { get => Get(); set => Set(value); }
 
-        [LocalSettingAttribute]
-        public bool DISPLAY_REQUEST
-        {
-            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST);
-            set
-            {
-                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_DISPLAY_REQUEST, value);
-                Instance.NotifyPropertyChanged();
-            }
-        }
+        [Setting("SETTINGS_LAST_SAVE_PATH", "", SaveType.Local)]
+        public string LAST_SAVE_INFO_PATH { get => Get(); set => Set(value); }
 
-        [LocalSettingAttribute]
-        public bool FOLDERMODE
-        {
-            get => PlatformSettings.GetBoolLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE);
-            set
-            {
-                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE, value);
-                Instance.NotifyPropertyChanged();
-            }
-        }
+        [Setting("SETTINGS_LAST_SAVE_PLACE", Place.NotDefined, SaveType.Local, typeof(int))]
+        public Place LAST_SAVE_INFO_PLACE { get => (Place)Get(); set => Set(value); }
 
-        [LocalSettingAttribute]
-        public string FOLDERMODE_PATH
-        {
-            get => PlatformSettings.GetStringLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH);
-            set
-            {
-                PlatformSettings.SetLocal(SharedConstants.CONTAINER_SETTINGS_FOLDERMODE_PATH, value);
-                NotifyPropertyChanged();
-            }
-        }
+        [Setting("SETTINGS_LAST_SAVE_TOKEN", "", SaveType.Local)]
+        public string LAST_SAVE_INFO_TOKEN { get => Get(); set => Set(value); }
 
         #endregion
         #region Methods
@@ -108,26 +181,40 @@ namespace TAPPLICATION.Model
 
         public void InitSettings()
         {
-            var settings = ReflectionHelper.GetProperties(this, typeof(LocalSettingAttribute)).ToList();
-            var stdconst = UsedConstants.GetRuntimeFields()
-                .Concat(typeof(SharedConstants).GetRuntimeFields())
-                .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.IsStatic && fi.IsPublic).ToList();
-
-            foreach (var item in settings)
+            foreach (var SettingInfo in Settings)
             {
-                var stdcontent = stdconst.FirstOrDefault(x=>x.Name == SharedConstants.SettingsPrefix + item.Name + SharedConstants.SettingsSTDPostfix);
-                if (stdcontent != null)
+                try
                 {
-                    var value = stdcontent.GetValue(null);
-                    item.SetValue(this, value);
+                    var Attribute = SettingInfo?.GetCustomAttribute<SettingAttribute>(true);
+                    SettingInfo.SetMethod.Invoke(this, new object[] { Attribute.DefaultValue });
                 }
-                else
+                catch (Exception)
                 {
-                    //item.Name has no STD Value
-                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                    if (System.Diagnostics.Debugger.IsAttached)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
                 }
             }
-            return;
+            //var settings = ReflectionHelper.GetProperties(this, typeof(LocalSettingAttribute)).ToList();
+            //var stdconst = UsedConstants.GetRuntimeFields()
+            //    .Concat(typeof(SharedConstants).GetRuntimeFields())
+            //    .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.IsStatic && fi.IsPublic).ToList();
+
+            //foreach (var item in settings)
+            //{
+            //    var stdcontent = stdconst.FirstOrDefault(x=>x.Name == SharedConstants.SettingsPrefix + item.Name + SharedConstants.SettingsSTDPostfix);
+            //    if (stdcontent != null)
+            //    {
+            //        var value = stdcontent.GetValue(null);
+            //        item.SetValue(this, value);
+            //    }
+            //    else
+            //    {
+            //        //item.Name has no STD Value
+            //        if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+            //    }
+            //}
         }
         #endregion
         #region Singleton Model Thigns
@@ -138,7 +225,7 @@ namespace TAPPLICATION.Model
             {
                 instance = new SharedSettingsModel
                 {
-                    UsedConstants = typeof(SharedConstants)
+                    //UsedConstants = typeof(SharedConstants)
                 };
             }
             return Instance;
