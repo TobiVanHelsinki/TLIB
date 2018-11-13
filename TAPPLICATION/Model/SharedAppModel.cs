@@ -92,6 +92,7 @@ namespace TAPPLICATION.Model
             {
                 try
                 {
+                    SharedSettingsModel.I.LAST_SAVE_INFO =
                     await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
                     MainObjectSaved?.Invoke(this, new EventArgs());
                     System.Diagnostics.Debug.WriteLine("MainObject Saved");
@@ -106,9 +107,17 @@ namespace TAPPLICATION.Model
                 }
             }
 
-            if (e.PropertyName == nameof(MainObject) && MainObject != null)
+            if (e.PropertyName == nameof(MainObject))
             {
-                MainObject.SaveRequest += save;
+                if (MainObject != null)
+                {
+                    SharedSettingsModel.I.LAST_SAVE_INFO = MainObject.FileInfo;
+                    MainObject.SaveRequest += save;
+                }
+                else
+                {
+                    SharedSettingsModel.I.LAST_SAVE_INFO = null;
+                }
             }
         }
 
