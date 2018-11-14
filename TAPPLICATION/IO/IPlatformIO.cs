@@ -76,6 +76,7 @@ namespace TLIB.IO
         Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null);
         
         Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
+        Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser);
 
         Task<bool> OpenFolder(FileInfoClass Info);
         void CreateSaveContainer();

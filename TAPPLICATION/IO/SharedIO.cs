@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
 using TLIB.IO;
@@ -135,6 +136,7 @@ namespace TAPPLICATION.IO
             return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO.GetCompleteInternPath(Place.Temp)));
         }
 
+        static Mutex mut = new Mutex();
         /// <summary>
         /// Saves the Object to the specified location at "info" or if null to the info at the object
         /// </summary>
@@ -146,6 +148,11 @@ namespace TAPPLICATION.IO
         /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
         {
+            System.Diagnostics.Debug.WriteLine("{0} is requesting the mutex",
+                          Task.CurrentId);
+            mut.WaitOne();
+            System.Diagnostics.Debug.WriteLine("{0} has entered the protected area",
+              Task.CurrentId);
             if (Object == null)
             {
                 throw new ArgumentNullException("MainObject was Empty");
@@ -166,17 +173,26 @@ namespace TAPPLICATION.IO
                 default:
                     break;
             }
-            CurrentInfo.Filename = Object.MakeName();
+            //CurrentInfo.Filename = Object.MakeName(); // TODO 
             if (!CurrentInfo.Filename.StartsWith(strAdditionalName))
             {
                 CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
             }
-            CurrentInfo.Filename = string.IsNullOrEmpty(CurrentInfo.Filename) ? "$$" : "" + CurrentInfo.Filename;
+            if (string.IsNullOrEmpty(CurrentInfo.Filename))
+            {
+                CurrentInfo.Filename = "$$";
+            }
             if (CurrentInfo.Fileplace != Place.Extern && CurrentInfo.Fileplace != Place.Temp)
             {
                 CurrentInfo.Fileplace = SharedSettingsModel.I.INTERN_SYNC ? Place.Roaming : Place.Local;
             }
-            return await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
+            var retinfo = await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
+            System.Diagnostics.Debug.WriteLine("{0} is leaving the protected area",
+              Task.CurrentId);
+            mut.ReleaseMutex();
+            System.Diagnostics.Debug.WriteLine("{0} has released the mutex",
+              Task.CurrentId);
+            return retinfo;
         }
 
         #endregion

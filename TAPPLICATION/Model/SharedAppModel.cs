@@ -97,7 +97,7 @@ namespace TAPPLICATION.Model
                     MainObjectSaved?.Invoke(this, new EventArgs());
                     System.Diagnostics.Debug.WriteLine("MainObject Saved");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Error Saving the MainObject");
                     if (System.Diagnostics.Debugger.IsAttached)

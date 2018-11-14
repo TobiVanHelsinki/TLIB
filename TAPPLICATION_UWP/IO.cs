@@ -174,7 +174,41 @@ namespace TAPPLICATION_UWP
             return file;
         }
 
-        
+        public async Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
+        {
+            try
+            {
+                if (!Info.Filepath.EndsWith(@"\"))
+                {
+                    Info.Filepath += @"\";
+                }
+                try
+                {
+                    var info = await StorageFile.GetFileFromPathAsync(Info.Filepath + Info.Filename);
+                    Info.Filename = info.Name;
+                    Info.Filepath = info.Path.Replace(info.Name, "");
+                }
+                catch (Exception)
+                {
+                    if (eUser == UserDecision.AskUser)
+                    {
+                        var info = await GetFile(Info,null, eUser, FileNotFoundDecision.NotCreate);
+                        Info.Filepath = info.Path;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Info;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
         public async Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {
             try
@@ -247,8 +281,14 @@ namespace TAPPLICATION_UWP
                     case Place.Roaming:
                         if (eCreation == FileNotFoundDecision.Create)
                         {
-                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length), false);
-                            Folder = await ApplicationData.Current.RoamingFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
+                            //var path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length), false);
+                            var path = Info.Filepath.Replace(ApplicationData.Current.RoamingFolder.Path, "");
+                            var folders = path.Split(new string[] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
+                            Folder = ApplicationData.Current.RoamingFolder;
+                            foreach (var item in folders)
+                            {
+                                Folder = await Folder.CreateFolderAsync(item, CreationCollisionOption.OpenIfExists);
+                            }
                         }
                         else
                         {
