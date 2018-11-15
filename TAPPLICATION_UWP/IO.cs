@@ -21,7 +21,6 @@ namespace TAPPLICATION_UWP
         public async Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
             StorageFile x = await GetFile(Info, eUser:eUD);
-            await Task.Delay(TimeSpan.FromMilliseconds(100));
             try
             {
                 if (true)
@@ -33,7 +32,6 @@ namespace TAPPLICATION_UWP
             {
                 throw new Exception("Writingerror", ex);
             }
-            await Task.Delay(TimeSpan.FromMilliseconds(50));
             FileInfoClass i = Info.Clone();
             i.Filename = x.Name;
             i.Filepath = x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length);
