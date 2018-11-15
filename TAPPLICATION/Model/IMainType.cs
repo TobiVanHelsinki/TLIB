@@ -21,6 +21,6 @@ namespace TAPPLICATION.Model
         [JsonIgnore]
         bool HasChanges { get; set; }
 
-        string MakeName();
+        //string MakeName();
     }
 }

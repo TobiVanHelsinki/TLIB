@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TAPPLICATION;
@@ -23,7 +24,10 @@ namespace TAPPLICATION_UWP
             await Task.Delay(TimeSpan.FromMilliseconds(100));
             try
             {
-                await FileIO.WriteTextAsync(x, saveChar);
+                if (true)
+                {
+                    await FileIO.WriteTextAsync(x, saveChar);
+                }
             }
             catch (Exception ex)
             {
@@ -254,61 +258,52 @@ namespace TAPPLICATION_UWP
         /// <throws>ArgumentException</throws>
         internal async static Task<StorageFolder> GetFolder(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
         {
-            StorageFolder Folder = null;
+            StorageFolder ReturnFolder = null;
             try
             {
                 if (!Info.Filepath.EndsWith(@"\"))
                 {
                     Info.Filepath += @"\";
                 }
-                Folder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
+                ReturnFolder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
             }
             catch (Exception)
             {
-                switch (Info.Fileplace)
+                try
                 {
-                    case Place.Local:
-                        if (eCreation == FileNotFoundDecision.Create)
+                    //Ordner ist nicht da, erzeugen wir ihn
+                    if (eCreation == FileNotFoundDecision.Create)
+                    {
+                        switch (Info.Fileplace)
                         {
-                            string path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.LocalFolder.Path.Length), false);
-                            Folder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(path, CreationCollisionOption.OpenIfExists);
+                            case Place.Extern:
+                                var Dir = new DirectoryInfo(Info.Filepath);
+                                var ParentFolder = await StorageFolder.GetFolderFromPathAsync(Dir.Parent.FullName);
+                                ReturnFolder = await CreateFoldersRecursive(Info, ParentFolder);
+                                break;
+                            case Place.Roaming:
+                                ReturnFolder = await CreateFoldersRecursive(Info, ApplicationData.Current.RoamingFolder);
+                                break;
+                            case Place.Local:
+                                ReturnFolder = await CreateFoldersRecursive(Info, ApplicationData.Current.LocalFolder);
+                                break;
+                            default:
+                                throw;
                         }
-                        else
+                    }
+                }
+                catch (Exception)
+                {
+                    // erzeugen klappte nicht.
+                    if (eUser == UserDecision.AskUser)
+                    {
+                        ReturnFolder = await FolderPicker();
+                        if (ReturnFolder == null)
                         {
-                            throw new Exception(StringHelper.GetString("Error_GetFolder"));
+                            throw new IsOKException();
                         }
-                        break;
-                    case Place.Roaming:
-                        if (eCreation == FileNotFoundDecision.Create)
-                        {
-                            //var path = CorrectName(Info.Filepath.Remove(0, ApplicationData.Current.RoamingFolder.Path.Length), false);
-                            var path = Info.Filepath.Replace(ApplicationData.Current.RoamingFolder.Path, "");
-                            var folders = path.Split(new string[] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
-                            Folder = ApplicationData.Current.RoamingFolder;
-                            foreach (var item in folders)
-                            {
-                                Folder = await Folder.CreateFolderAsync(item, CreationCollisionOption.OpenIfExists);
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception(StringHelper.GetString("Error_GetFolder"));
-                        }
-                        break;
-                    case Place.Extern:
-                        if (eUser == UserDecision.AskUser)
-                        {
-                            Folder = await FolderPicker();
-                            if (Folder == null)
-                            {
-                                throw new IsOKException();
-                            }
-                        }
-                        else
-                        {
-                            throw new IsOKException(StringHelper.GetString("Error_GetFolder"));
-                        }
-                        break;
+                    }
+                    throw;
                 }
             }
 
@@ -316,14 +311,29 @@ namespace TAPPLICATION_UWP
             {
                 if (!string.IsNullOrEmpty(Info.Token))
                 {
-                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token, Folder);
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token, ReturnFolder);
                 }
             }
             catch (Exception)
             {
             }
+            return ReturnFolder;
+        }
+
+        static async Task<StorageFolder> CreateFoldersRecursive(FileInfoClass Info, StorageFolder StartFolder)
+        {
+            StorageFolder Folder;
+            var path = Info.Filepath.Replace(StartFolder.Path, "");
+            var folders = path.Split(new string[] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
+            Folder = StartFolder;
+            foreach (var item in folders)
+            {
+                Folder = await Folder.CreateFolderAsync(item, CreationCollisionOption.OpenIfExists);
+            }
+
             return Folder;
         }
+
         /// <summary>
         /// Throws things
         /// </summary>

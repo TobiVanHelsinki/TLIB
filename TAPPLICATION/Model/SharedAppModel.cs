@@ -92,6 +92,7 @@ namespace TAPPLICATION.Model
             {
                 try
                 {
+                    System.Diagnostics.Debug.WriteLine("SharedAppModel_PropertyChanged save");
                     SharedSettingsModel.I.LAST_SAVE_INFO =
                     await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
                     MainObjectSaved?.Invoke(this, new EventArgs());

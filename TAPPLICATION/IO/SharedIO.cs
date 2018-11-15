@@ -10,14 +10,6 @@ using TLIB.PlatformHelper;
 
 namespace TAPPLICATION.IO
 {
-    public enum SaveType
-    {
-        Unknown = 0,
-        Manually = 1,
-        Auto = 2,
-        Emergency = 3,
-        Temp = 4
-    }
 
     /// <summary>
     /// Provides Basic IO for the Framework
@@ -94,19 +86,21 @@ namespace TAPPLICATION.IO
         /// Saves the MainType Object at the place, that is descriped at the Object. If saveplace is not defined or temp, it will be saved to current default location
         /// </summary>
         /// <param name="Object"></param>
-        /// <param name="eSaveType"></param>
         /// <param name="eUD"></param>
+        /// 
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> SaveAtOriginPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<FileInfoClass> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
         {
-            if (Object.FileInfo.Fileplace != Place.NotDefined && Object.FileInfo.Fileplace != Place.Temp)
+            if (Object.FileInfo.Fileplace != Place.NotDefined 
+                && Object.FileInfo.Fileplace != Place.Temp
+                && Object.FileInfo.Fileplace != Place.Assets)
             {
-                return await Save(Object, eUD, eSaveType);
+                return await Save(Object, eUD);
             }
             else
             {
-                return await SaveAtCurrentPlace(Object, eSaveType, eUD);
+                return await SaveAtCurrentPlace(Object, eUD);
             }
         }
 
@@ -114,15 +108,15 @@ namespace TAPPLICATION.IO
         /// Saves the MainType Object to current default location
         /// </summary>
         /// <param name="Object"></param>
-        /// <param name="eSaveType"></param>
         /// <param name="eUD"></param>
+        /// 
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, SaveType eSaveType = SaveType.Unknown, UserDecision eUD = UserDecision.ThrowError)
+        public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
-            return await Save(Object, eUD, eSaveType, Object.FileInfo);
+            return await Save(Object, eUD, Object.FileInfo);
         }
 
         /// <summary>
@@ -142,56 +136,18 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="Object"></param>
         /// <param name="eUD"></param>
-        /// <param name="eSaveType"></param>
         /// <param name="Info"></param>
+        /// 
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, SaveType eSaveType = SaveType.Unknown, FileInfoClass Info = null)
+        public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null)
         {
-            System.Diagnostics.Debug.WriteLine("{0} is requesting the mutex",
-                          Task.CurrentId);
-            mut.WaitOne();
-            System.Diagnostics.Debug.WriteLine("{0} has entered the protected area",
-              Task.CurrentId);
             if (Object == null)
             {
                 throw new ArgumentNullException("MainObject was Empty");
             }
-            FileInfoClass CurrentInfo = Info ?? Object.FileInfo;
-            string strAdditionalName = "";
-            switch (eSaveType)
-            {
-                case SaveType.Temp:
-                    break;
-                case SaveType.Emergency:
-                    strAdditionalName = Prefix_Emergency;
-                    break;
-                case SaveType.Unknown:
-                case SaveType.Manually:
-                case SaveType.Auto:
-                    break;
-                default:
-                    break;
-            }
-            //CurrentInfo.Filename = Object.MakeName(); // TODO 
-            if (!CurrentInfo.Filename.StartsWith(strAdditionalName))
-            {
-                CurrentInfo.Filename = strAdditionalName + CurrentInfo.Filename;
-            }
-            if (string.IsNullOrEmpty(CurrentInfo.Filename))
-            {
-                CurrentInfo.Filename = "$$";
-            }
-            if (CurrentInfo.Fileplace != Place.Extern && CurrentInfo.Fileplace != Place.Temp)
-            {
-                CurrentInfo.Fileplace = SharedSettingsModel.I.INTERN_SYNC ? Place.Roaming : Place.Local;
-            }
-            var retinfo = await CurrentIO.SaveFileContent(Serialize(Object), CurrentInfo, eUD);
-            System.Diagnostics.Debug.WriteLine("{0} is leaving the protected area",
-              Task.CurrentId);
-            mut.ReleaseMutex();
-            System.Diagnostics.Debug.WriteLine("{0} has released the mutex",
-              Task.CurrentId);
+            System.Diagnostics.Debug.WriteLine("Saving");
+            var retinfo = await CurrentIO.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo, eUD);
             return retinfo;
         }
 
