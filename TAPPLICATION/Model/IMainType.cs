@@ -17,7 +17,7 @@ namespace TAPPLICATION.Model
         /// <summary>
         /// use this Event if you want to get this object saved
         /// </summary>
-        event EventHandler SaveRequest;
+        event EventHandler<IMainType> SaveRequest;
         [JsonIgnore]
         bool HasChanges { get; set; }
 

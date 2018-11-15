@@ -47,7 +47,7 @@ namespace TAPPLICATION.Model
     }
     public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new()
     {
-        public event EventHandler MainObjectSaved;
+        public event EventHandler<IMainType> MainObjectSaved;
 
         public static new SharedAppModel<MainType> Instance
         {
@@ -88,19 +88,20 @@ namespace TAPPLICATION.Model
 
         private void SharedAppModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            async void save(object sender2, EventArgs e2)
+            void save(object sender2, IMainType MainObject)
             {
                 try
                 {
                     System.Diagnostics.Debug.WriteLine("SharedAppModel_PropertyChanged save");
-                    SharedSettingsModel.I.LAST_SAVE_INFO =
-                    await IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
-                    MainObjectSaved?.Invoke(this, new EventArgs());
-                    System.Diagnostics.Debug.WriteLine("MainObject Saved");
+                    var T = IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
+                    T.Wait();
+                    SharedSettingsModel.I.LAST_SAVE_INFO = T.Result;
+                    MainObjectSaved?.Invoke(this, MainObject);
+                    System.Diagnostics.Debug.WriteLine("MainObject Saved " + MainObject.ToString());
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine("Error Saving the MainObject");
+                    System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
                         System.Diagnostics.Debugger.Break();

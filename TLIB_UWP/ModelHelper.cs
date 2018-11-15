@@ -19,10 +19,11 @@ namespace TLIB_UWP
             {
                 try
                 {
-                    await DispatcherHelper.AwaitableRunAsync(CoreApplication.MainView?.Dispatcher, () =>
+                    Task T = DispatcherHelper.AwaitableRunAsync(CoreApplication.MainView?.Dispatcher, () =>
                     {
                         Event?.Invoke(o, new PropertyChangedEventArgs(property));
                     });
+                    T.Wait();
                 }
                 catch (Exception)
                 {

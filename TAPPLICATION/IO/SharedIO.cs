@@ -146,7 +146,7 @@ namespace TAPPLICATION.IO
             {
                 throw new ArgumentNullException("MainObject was Empty");
             }
-            System.Diagnostics.Debug.WriteLine("Saving");
+            System.Diagnostics.Debug.WriteLine("Saving" + Object.ToString());
             var retinfo = await CurrentIO.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo, eUD);
             return retinfo;
         }
