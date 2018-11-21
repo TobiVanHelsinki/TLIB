@@ -5,8 +5,20 @@ using TLIB.PlatformHelper;
 
 namespace TLIB.Code.Android
 {
-    public class ModelHelper : IModelHelper
+    public class PlatformHelper : IPlatformHelper
     {
+
+        public string GetString(string strID)
+        {
+            try
+            {
+                return "---";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
         public async Task CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
             try

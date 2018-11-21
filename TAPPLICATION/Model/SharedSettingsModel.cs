@@ -45,34 +45,41 @@ namespace TAPPLICATION.Model
         {
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
-            switch (Attribute?.Sync)
+            try
             {
-                case SaveType.Roaming:
-                    switch (Attribute.DeviatingType ?? Setting.PropertyType)
-                    {
-                        case Type namedType when namedType == typeof(int):
-                            return PlatformSettings.GetIntRoaming(Attribute.SaveString);
-                        case Type namedType when namedType == typeof(bool):
-                            return PlatformSettings.GetBoolRoaming(Attribute.SaveString);
-                        case Type namedType when namedType == typeof(string):
-                            return PlatformSettings.GetStringRoaming(Attribute.SaveString);
-                        default:
-                            return Attribute.DefaultValue;
-                    }
-                case SaveType.Local:
-                    switch (Attribute.DeviatingType ?? Setting.PropertyType)
-                    {
-                        case Type namedType when namedType == typeof(int):
-                            return PlatformSettings.GetIntLocal(Attribute.SaveString);
-                        case Type namedType when namedType == typeof(bool):
-                            return PlatformSettings.GetBoolLocal(Attribute.SaveString);
-                        case Type namedType when namedType == typeof(string):
-                            return PlatformSettings.GetStringLocal(Attribute.SaveString);
-                        default:
-                            return Attribute.DefaultValue;
-                    }
-                default:
-                    return Attribute.DefaultValue;
+                switch (Attribute?.Sync)
+                {
+                    case SaveType.Roaming:
+                        switch (Attribute.DeviatingType ?? Setting.PropertyType)
+                        {
+                            case Type namedType when namedType == typeof(int):
+                                return PlatformSettings.GetIntRoaming(Attribute.SaveString);
+                            case Type namedType when namedType == typeof(bool):
+                                return PlatformSettings.GetBoolRoaming(Attribute.SaveString);
+                            case Type namedType when namedType == typeof(string):
+                                return PlatformSettings.GetStringRoaming(Attribute.SaveString);
+                            default:
+                                return Attribute.DefaultValue;
+                        }
+                    case SaveType.Local:
+                        switch (Attribute.DeviatingType ?? Setting.PropertyType)
+                        {
+                            case Type namedType when namedType == typeof(int):
+                                return PlatformSettings.GetIntLocal(Attribute.SaveString);
+                            case Type namedType when namedType == typeof(bool):
+                                return PlatformSettings.GetBoolLocal(Attribute.SaveString);
+                            case Type namedType when namedType == typeof(string):
+                                return PlatformSettings.GetStringLocal(Attribute.SaveString);
+                            default:
+                                return Attribute.DefaultValue;
+                        }
+                    default:
+                        return Attribute.DefaultValue;
+                }
+            }
+            catch (Exception)
+            {
+                return Attribute?.DefaultValue;
             }
         }
         protected void Set(object value, [CallerMemberName] string Name = "")

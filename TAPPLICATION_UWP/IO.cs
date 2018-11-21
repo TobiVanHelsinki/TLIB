@@ -227,7 +227,7 @@ namespace TAPPLICATION_UWP
                 {
                     if (eUser == UserDecision.AskUser)
                     {
-                        var info = await GetFolder(Info, eUser, FileNotFoundDecision.NotCreate);
+                        var info = await GetFolder(Info, eUser, FileNotFoundDecision.Create);
                         Info.Filepath = info.Path;
                     }
                     else
@@ -300,7 +300,10 @@ namespace TAPPLICATION_UWP
                             throw new IsOKException();
                         }
                     }
-                    throw;
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 
