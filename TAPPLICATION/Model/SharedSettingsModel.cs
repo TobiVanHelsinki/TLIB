@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using TLIB;
 using TLIB.Settings;
-using TLIB.PlatformHelper;
 using TLIB.IO;
 
 namespace TAPPLICATION.Model
@@ -252,7 +251,7 @@ namespace TAPPLICATION.Model
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
+            PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
         #endregion
 

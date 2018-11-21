@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TLIB;
 using TLIB.IO;
-using TLIB.PlatformHelper;
 
 namespace TAPPLICATION.Model
 {
@@ -13,12 +13,12 @@ namespace TAPPLICATION.Model
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            ModelHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
+            PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
 
         public void NewNotification(string Message, Exception x)
         {
-            ModelHelper.ExecuteOnUIThreadAsync(() =>
+            PlatformHelper.ExecuteOnUIThreadAsync(() =>
             {
                 lstNotifications.Insert(0, new Notification(Message, x));
             });
@@ -26,7 +26,7 @@ namespace TAPPLICATION.Model
 
         public void NewNotification(string Message, bool isLightNotification = true, int seconds = 6)
         {
-            ModelHelper.ExecuteOnUIThreadAsync(() =>
+            PlatformHelper.ExecuteOnUIThreadAsync(() =>
             {
                 lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification, ShownTime = seconds * 1000 });
             });

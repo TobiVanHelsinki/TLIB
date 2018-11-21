@@ -4,8 +4,7 @@
     {
         public static void Do()
         {
-            TLIB.PlatformHelper.ModelHelper.Platform = new ModelHelper();
-            TLIB.PlatformHelper.StringHelper.Platform = new StringHelper();
+            TLIB.PlatformHelper.Platform = new PlatformHelper();
         }
     }
 }

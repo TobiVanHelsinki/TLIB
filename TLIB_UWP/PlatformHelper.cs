@@ -2,14 +2,26 @@
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using TLIB.PlatformHelper;
+using TLIB;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.Resources;
 
 namespace TLIB_UWP
 {
-    internal class ModelHelper : IModelHelper
+    internal class PlatformHelper : IPlatformHelper
     {
-        public async Task CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
+        public string GetString(string strID)
+        {
+            try
+            {
+                return ResourceLoader.GetForViewIndependentUse().GetString(strID);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        public void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
             try
             {

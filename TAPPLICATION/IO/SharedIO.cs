@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
 using TLIB.IO;
-using TLIB.PlatformHelper;
+using TLIB;
 
 namespace TAPPLICATION.IO
 {
@@ -129,8 +129,7 @@ namespace TAPPLICATION.IO
         {
             return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO.GetCompleteInternPath(Place.Temp)));
         }
-
-        static Mutex mut = new Mutex();
+        
         /// <summary>
         /// Saves the Object to the specified location at "info" or if null to the info at the object
         /// </summary>
@@ -190,7 +189,7 @@ namespace TAPPLICATION.IO
             {
                 if (_JSON_Error_Notification == null)
                 {
-                    _JSON_Error_Notification = new Notification(StringHelper.GetString("Notification_Error_Loader_Error1/Text"));
+                    _JSON_Error_Notification = new Notification(PlatformHelper.GetString("Notification_Error_Loader_Error1/Text"));
                 }
                 return _JSON_Error_Notification;
             }

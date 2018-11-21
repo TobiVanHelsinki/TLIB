@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TAPPLICATION;
 using TLIB;
 using TLIB.IO;
-using TLIB.PlatformHelper;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
