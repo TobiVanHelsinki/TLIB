@@ -8,15 +8,29 @@ namespace TLIB_Xamarin
     {
         public void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
+            try
+            {
+                Event?.Invoke(o, new PropertyChangedEventArgs(property));
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public void ExecuteOnUIThreadAsync(Action p)
         {
+            try
+            {
+                p?.Invoke();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public string GetString(string strID)
         {
-            return "";
+            return "Not Supported yet";
         }
     }
 }
