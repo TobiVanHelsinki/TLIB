@@ -34,6 +34,36 @@ namespace TAPPLICATION.Model
             NewNotification(new Notification(Message) { ThrownException = ex });
         }
 
+        public void NewNotification(string Message, bool Ligth)
+        {
+            NewNotification(new Notification(Message) { IsLight = Ligth });
+        }
+
+        public void NewNotification(string Message, int time)
+        {
+            NewNotification(new Notification(Message) { ShownTime = time });
+        }
+
+        public void NewNotification(string Message, bool Ligth, int time)
+        {
+            NewNotification(new Notification(Message) { IsLight = Ligth, ShownTime = time });
+        }
+
+        public void NewNotification(string Message, Exception ex, bool Ligth)
+        {
+            NewNotification(new Notification(Message) { ThrownException = ex, IsLight = Ligth });
+        }
+
+        public void NewNotification(string Message, Exception ex, int time)
+        {
+            NewNotification(new Notification(Message) { ThrownException = ex, ShownTime = time });
+        }
+
+        public void NewNotification(string Message, Exception ex, bool Ligth, int time)
+        {
+            NewNotification(new Notification(Message) { ThrownException = ex, IsLight = Ligth, ShownTime = time });
+        }
+
         protected static SharedAppModel instance;
         public static SharedAppModel Instance
         {
@@ -106,7 +136,7 @@ namespace TAPPLICATION.Model
                     System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
                     try
                     {
-                        NewNotification(new Notification("Error saving Char", ex) { ShownTime = 2 });
+                        NewNotification("Error saving Char", ex, 2);
                     }
                     catch (Exception)
                     {
