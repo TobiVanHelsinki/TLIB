@@ -16,20 +16,22 @@ namespace TAPPLICATION.Model
             PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
 
-        public void NewNotification(string Message, Exception x)
+        public void NewNotification(Notification Not)
         {
             PlatformHelper.ExecuteOnUIThreadAsync(() =>
             {
-                lstNotifications.Insert(0, new Notification(Message, x));
+                lstNotifications.Insert(0, Not);
             });
         }
 
-        public void NewNotification(string Message, bool isLightNotification = true, int seconds = 6)
+        public void NewNotification(string Message)
         {
-            PlatformHelper.ExecuteOnUIThreadAsync(() =>
-            {
-                lstNotifications.Insert(0, new Notification(Message) { IsLight = isLightNotification, ShownTime = seconds * 1000 });
-            });
+            NewNotification(new Notification(Message));
+        }
+
+        public void NewNotification(string Message, Exception ex)
+        {
+            NewNotification(new Notification(Message) { ThrownException = ex });
         }
 
         protected static SharedAppModel instance;
@@ -102,6 +104,13 @@ namespace TAPPLICATION.Model
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
+                    try
+                    {
+                        NewNotification(new Notification("Error saving Char", ex) { ShownTime = 2 });
+                    }
+                    catch (Exception)
+                    {
+                    }
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
                         System.Diagnostics.Debugger.Break();

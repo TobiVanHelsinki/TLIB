@@ -15,9 +15,5 @@ namespace TAPPLICATION.Model
         {
             Message = mess;
         }
-        public Notification(string mess, Exception ex) : this(mess)
-        {
-            ThrownException = ex;
-        }
     }
 }
