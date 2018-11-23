@@ -376,10 +376,10 @@ namespace TAPPLICATION_UWP
         /// <param name="Target"></param>
         /// <param name="Source"></param>
         /// <returns></returns>
-        public async Task Copy(FileInfoClass Target, FileInfoClass Source)
+        public async Task Copy(FileInfoClass Target, FileInfoClass Source, UserDecision UD)
         {
-            StorageFile SourceFile = await GetFile(Source);
-            StorageFolder TargetFolder = await GetFolder(Target, UserDecision.ThrowError);
+            StorageFile SourceFile = await GetFile(Source, eUser: UD);
+            StorageFolder TargetFolder = await GetFolder(Target, UD);
             await SourceFile.CopyAsync(TargetFolder, Target.Filename ?? SourceFile.Name, NameCollisionOption.ReplaceExisting);
         }
         /// <summary>

@@ -69,7 +69,7 @@ namespace TLIB
         /// <param name="Target"></param>
         /// <param name="Source"></param>
         /// <returns></returns>
-        Task Copy(FileInfoClass Target, FileInfoClass Source);
+        Task Copy(FileInfoClass Target, FileInfoClass Source, UserDecision UD);
         Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName);
 
         Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null);
@@ -80,7 +80,5 @@ namespace TLIB
 
         Task<bool> OpenFolder(FileInfoClass Info);
         void CreateSaveContainer();
-
-
     }
 }
