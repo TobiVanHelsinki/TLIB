@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using TLIB;
 
-namespace TLIB.IO
+namespace TLIB
 {
     public enum Place
     {

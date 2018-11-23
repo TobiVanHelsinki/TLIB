@@ -13,7 +13,7 @@ namespace TLIB_Xamarin
                 Event?.Invoke(o, new PropertyChangedEventArgs(property));
             }
             catch (Exception)
-            {
+ { TAPPLICATION.Debugging.TraceException();
             }
         }
 
@@ -24,7 +24,7 @@ namespace TLIB_Xamarin
                 p?.Invoke();
             }
             catch (Exception)
-            {
+ { TAPPLICATION.Debugging.TraceException();
             }
         }
 
