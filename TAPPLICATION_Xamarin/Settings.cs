@@ -5,42 +5,22 @@ namespace TAPPLICATION_Xamarin
 {
     internal class Settings : IPlatformSettings
     {
-        public bool GetBoolLocal(string place, bool fallback = false)
-        {
-            return fallback;
-        }
-
-        public bool GetBoolRoaming(string place, bool fallback = false)
-        {
-            return fallback;
-        }
-
-        public int GetIntLocal(string place, int fallback = 0)
-        {
-            return fallback;
-        }
-
-        public int GetIntRoaming(string place, int fallback = 0)
-        {
-            return fallback;
-        }
-
-        public string GetStringLocal(string place, string fallback = null)
-        {
-            return fallback;
-        }
-
-        public string GetStringRoaming(string place, string fallback = null)
-        {
-            return fallback;
-        }
-
         public void SetLocal(string place, object value)
         {
+            throw new ArgumentException();
         }
-
         public void SetRoaming(string place, object value)
         {
+            throw new ArgumentException();
+        }
+
+        public object GetLocal(string place)
+        {
+            throw new ArgumentException();
+        }
+        public object GetRoaming(string place)
+        {
+            throw new ArgumentException();
         }
     }
 }

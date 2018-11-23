@@ -16,7 +16,8 @@ namespace TAPPLICATION_UWP
                 LocalSettings.Values[place] = value;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+            {
+                TAPPLICATION.Debugging.TraceException(ex);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
@@ -30,7 +31,8 @@ namespace TAPPLICATION_UWP
                 RoamingSettings.Values[place] = value;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+            {
+                TAPPLICATION.Debugging.TraceException(ex);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
@@ -38,92 +40,30 @@ namespace TAPPLICATION_UWP
             }
         }
 
-        public bool GetBoolLocal(string place, bool fallback = default)
+        public object GetLocal(string place)
         {
-            try
+            if (LocalSettings.Values.ContainsKey(place))
             {
-                return bool.Parse(LocalSettings.Values[place].ToString());
+                return LocalSettings.Values[place];
             }
-            catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
-                return fallback;
+            else
+            {
+                throw new ArgumentException();
             }
         }
-        public bool GetBoolRoaming(string place, bool fallback = false)
+        public object GetRoaming(string place)
         {
-            try
+            if (RoamingSettings.Values.ContainsKey(place))
             {
-                return bool.Parse(RoamingSettings.Values[place].ToString());
+                return RoamingSettings.Values[place];
             }
-            catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
-                try
-                {
-                    return bool.Parse(LocalSettings.Values[place].ToString());
-                }
-                catch (Exception ex2)
- { TAPPLICATION.Debugging.TraceException(ex2);
-                    return fallback;
-                }
-            }
-        }
-        public string GetStringLocal(string place, string fallback = default)
-        {
-            try
+            else if (LocalSettings.Values.ContainsKey(place))
             {
-                return LocalSettings.Values[place].ToString();
+                return RoamingSettings.Values[place];
             }
-            catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
-                return fallback;
-            }
-        }
-        public string GetStringRoaming(string place, string fallback = default)
-        {
-            try
+            else
             {
-                return RoamingSettings.Values[place].ToString();
-            }
-            catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
-                try
-                {
-                    return LocalSettings.Values[place].ToString();
-                }
-                catch (Exception ex2)
- { TAPPLICATION.Debugging.TraceException(ex2);
-                    return fallback;
-                }
-            }
-        }
-        public int GetIntLocal(string place, int fallback = default)
-        {
-            try
-            {
-                return int.Parse(LocalSettings.Values[place].ToString());
-            }
-            catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
-                return fallback;
-            }
-        }
-
-        public int GetIntRoaming(string place, int fallback = 0)
-        {
-            try
-            {
-                return int.Parse(RoamingSettings.Values[place].ToString());
-            }
-            catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
-                try
-                {
-                    return int.Parse(LocalSettings.Values[place].ToString());
-                }
-                catch (Exception ex2)
- { TAPPLICATION.Debugging.TraceException(ex2);
-                    return fallback;
-                }
+                throw new ArgumentException();
             }
         }
     }

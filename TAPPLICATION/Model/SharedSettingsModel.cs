@@ -46,32 +46,26 @@ namespace TAPPLICATION.Model
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
             try
             {
+                Func<string, object> UsedFunction;
                 switch (Attribute?.Sync)
                 {
                     case SaveType.Roaming:
-                        switch (Attribute.DeviatingType ?? Setting.PropertyType)
-                        {
-                            case Type namedType when namedType == typeof(int):
-                                return PlatformSettings.GetIntRoaming(Attribute.SaveString);
-                            case Type namedType when namedType == typeof(bool):
-                                return PlatformSettings.GetBoolRoaming(Attribute.SaveString);
-                            case Type namedType when namedType == typeof(string):
-                                return PlatformSettings.GetStringRoaming(Attribute.SaveString);
-                            default:
-                                return Attribute.DefaultValue;
-                        }
+                        UsedFunction = PlatformSettings.GetRoaming;
+                        break;
                     case SaveType.Local:
-                        switch (Attribute.DeviatingType ?? Setting.PropertyType)
-                        {
-                            case Type namedType when namedType == typeof(int):
-                                return PlatformSettings.GetIntLocal(Attribute.SaveString);
-                            case Type namedType when namedType == typeof(bool):
-                                return PlatformSettings.GetBoolLocal(Attribute.SaveString);
-                            case Type namedType when namedType == typeof(string):
-                                return PlatformSettings.GetStringLocal(Attribute.SaveString);
-                            default:
-                                return Attribute.DefaultValue;
-                        }
+                        UsedFunction = PlatformSettings.GetLocal;
+                        break;
+                    default:
+                        throw new Exception();
+                }
+                switch (Attribute.DeviatingType ?? Setting.PropertyType)
+                {
+                    case Type namedType when namedType == typeof(int):
+                        return int.Parse(UsedFunction(Attribute.SaveString).ToString());
+                    case Type namedType when namedType == typeof(bool):
+                        return bool.Parse(UsedFunction(Attribute.SaveString).ToString());
+                    case Type namedType when namedType == typeof(string):
+                        return UsedFunction(Attribute.SaveString).ToString();
                     default:
                         return Attribute.DefaultValue;
                 }
@@ -85,10 +79,6 @@ namespace TAPPLICATION.Model
         {
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
-            if (Attribute.DeviatingType != null)
-            {
-
-            }
             value = Attribute.DeviatingType == null ? value : Convert.ChangeType(value, Attribute.DeviatingType);
             switch (Attribute.Sync)
             {
