@@ -15,8 +15,8 @@ namespace TAPPLICATION_UWP
             {
                 LocalSettings.Values[place] = value;
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
@@ -29,8 +29,8 @@ namespace TAPPLICATION_UWP
             {
                 RoamingSettings.Values[place] = value;
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
@@ -44,8 +44,8 @@ namespace TAPPLICATION_UWP
             {
                 return bool.Parse(LocalSettings.Values[place].ToString());
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 return fallback;
             }
         }
@@ -55,14 +55,14 @@ namespace TAPPLICATION_UWP
             {
                 return bool.Parse(RoamingSettings.Values[place].ToString());
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 try
                 {
                     return bool.Parse(LocalSettings.Values[place].ToString());
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex2)
+ { TAPPLICATION.Debugging.TraceException(ex2);
                     return fallback;
                 }
             }
@@ -73,8 +73,8 @@ namespace TAPPLICATION_UWP
             {
                 return LocalSettings.Values[place].ToString();
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 return fallback;
             }
         }
@@ -84,14 +84,14 @@ namespace TAPPLICATION_UWP
             {
                 return RoamingSettings.Values[place].ToString();
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 try
                 {
                     return LocalSettings.Values[place].ToString();
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex2)
+ { TAPPLICATION.Debugging.TraceException(ex2);
                     return fallback;
                 }
             }
@@ -102,8 +102,8 @@ namespace TAPPLICATION_UWP
             {
                 return int.Parse(LocalSettings.Values[place].ToString());
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 return fallback;
             }
         }
@@ -114,14 +114,14 @@ namespace TAPPLICATION_UWP
             {
                 return int.Parse(RoamingSettings.Values[place].ToString());
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 try
                 {
                     return int.Parse(LocalSettings.Values[place].ToString());
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex2)
+ { TAPPLICATION.Debugging.TraceException(ex2);
                     return fallback;
                 }
             }

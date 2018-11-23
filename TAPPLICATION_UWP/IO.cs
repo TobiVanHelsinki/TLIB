@@ -105,8 +105,8 @@ namespace TAPPLICATION_UWP
                     }
                     File = await StorageFile.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                     if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
                     { // If path and name are empty´, the intent is to ask the user
                         throw new IsOKException();
@@ -130,8 +130,8 @@ namespace TAPPLICATION_UWP
             {
                 return null;
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException(); // last possibility is to ask the user
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex); // last possibility is to ask the user
                 if (eUser == UserDecision.AskUser)
                 {
                     File = await FilePicker(FileTypes); // get from user
@@ -149,8 +149,8 @@ namespace TAPPLICATION_UWP
                     StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token + File.Name, File,"A Char File");
                 }
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
             }
             return File;
         }
@@ -188,8 +188,8 @@ namespace TAPPLICATION_UWP
                     Info.Filename = info.Name;
                     Info.Filepath = info.Path.Replace(info.Name, "");
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                     if (eUser == UserDecision.AskUser)
                     {
                         var info = await GetFile(Info,null, eUser, FileNotFoundDecision.NotCreate);
@@ -202,8 +202,8 @@ namespace TAPPLICATION_UWP
                 }
                 return Info;
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 return null;
             }
         }
@@ -222,8 +222,8 @@ namespace TAPPLICATION_UWP
                     var info = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
                     Info.Filepath = info.Path;
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                     if (eUser == UserDecision.AskUser)
                     {
                         var info = await GetFolder(Info, eUser, FileNotFoundDecision.Create);
@@ -236,8 +236,8 @@ namespace TAPPLICATION_UWP
                 }
                 return Info;
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 return null;
             }
         }
@@ -263,8 +263,8 @@ namespace TAPPLICATION_UWP
                 }
                 ReturnFolder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                 try
                 {
                     //Ordner ist nicht da, erzeugen wir ihn
@@ -288,8 +288,8 @@ namespace TAPPLICATION_UWP
                         }
                     }
                 }
-                catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                catch (Exception ex2)
+ { TAPPLICATION.Debugging.TraceException(ex2);
                     // erzeugen klappte nicht.
                     if (eUser == UserDecision.AskUser)
                     {
@@ -313,8 +313,8 @@ namespace TAPPLICATION_UWP
                     StorageApplicationPermissions.FutureAccessList.AddOrReplace(Info.Token, ReturnFolder);
                 }
             }
-            catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+            catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
             }
             return ReturnFolder;
         }
@@ -360,8 +360,8 @@ namespace TAPPLICATION_UWP
                     {
                         await item.MoveAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
                     }
-                    catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                    catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                     }
                 }
                 else
@@ -456,8 +456,8 @@ namespace TAPPLICATION_UWP
                     {
                         await item.CopyAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
                     }
-                    catch (Exception)
- { TAPPLICATION.Debugging.TraceException();
+                    catch (Exception ex)
+ { TAPPLICATION.Debugging.TraceException(ex);
                     }
                 }
                 else

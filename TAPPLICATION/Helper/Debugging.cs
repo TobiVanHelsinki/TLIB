@@ -1,17 +1,18 @@
-﻿using TAPPLICATION.Model;
+﻿using System;
+using TAPPLICATION.Model;
 
 namespace TAPPLICATION
 {
     public static class Debugging
     {
-        public static void TraceException(
+        public static void TraceException(Exception x = null,
         [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
         [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
         [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {
             if (SharedSettingsModel.I.DEBUG_FEATURES)
             {
-                SharedAppModel.Instance.NewNotification(@"Exception from " + memberName + " at:" + sourceFilePath + ":" + sourceLineNumber);
+                SharedAppModel.Instance.NewNotification(x?.GetType().Name+@" from " + memberName + " at " + sourceFilePath + ":" + sourceLineNumber);
             }
         }
         //public static readonly Dictionary<string, (DateTime StartTime, DateTime StopTime)> Dict = new Dictionary<string, (DateTime StartTime, DateTime StopTime)>();

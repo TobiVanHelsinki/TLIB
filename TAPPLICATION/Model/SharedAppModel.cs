@@ -132,17 +132,19 @@ namespace TAPPLICATION.Model
                 }
                 catch (Exception ex)
                 {
+                    TAPPLICATION.Debugging.TraceException(ex);
                     System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
                     try
                     {
                         NewNotification("Error saving Char", ex, 2);
                     }
-                    catch (Exception)
+                    catch (Exception ex2)
                     {
+                        TAPPLICATION.Debugging.TraceException(ex2);
                     }
                     if (System.Diagnostics.Debugger.IsAttached)
                     {
-                        System.Diagnostics.Debugger.Break();
+                        //System.Diagnostics.Debugger.Break();
                     }
                 }
             }

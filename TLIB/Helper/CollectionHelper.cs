@@ -91,7 +91,7 @@ namespace TLIB
             {
                 return source.Max(selector);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return 0;
             }
@@ -102,7 +102,7 @@ namespace TLIB
             {
                 return source.Max(selector);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return 0;
             }
@@ -113,7 +113,7 @@ namespace TLIB
             {
                 return source.Min(selector);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return 0;
             }
@@ -124,7 +124,7 @@ namespace TLIB
             {
                 return source.Min(selector);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return 0;
             }
