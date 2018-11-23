@@ -134,5 +134,10 @@ namespace TLIB
             return new FileInfoClass(this.Fileplace, this.Filename, this.Filepath)
             {DateModified = this.DateModified, Token = this.Token, Size = this.Size };
         }
+
+        public override string ToString()
+        {
+            return Filepath + "_" + Filename;
+        }
     }
 }

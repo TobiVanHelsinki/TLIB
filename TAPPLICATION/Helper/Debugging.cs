@@ -5,14 +5,21 @@ namespace TAPPLICATION
 {
     public static class Debugging
     {
-        public static void TraceException(Exception x = null,
+        public static void TraceException(Exception x = null, object AdditionalInfo = null,
         [System.Runtime.CompilerServices.CallerMemberName] string memberName = "",
         [System.Runtime.CompilerServices.CallerFilePath] string sourceFilePath = "",
         [System.Runtime.CompilerServices.CallerLineNumber] int sourceLineNumber = 0)
         {
-            if (SharedSettingsModel.I.DEBUG_FEATURES)
+            try
             {
-                SharedAppModel.Instance.NewNotification(x?.GetType().Name+@" from " + memberName + " at " + sourceFilePath + ":" + sourceLineNumber);
+
+                if (SharedSettingsModel.I.DEBUG_FEATURES)
+                {
+                    SharedAppModel.Instance.NewNotification(x?.GetType().Name + " from " + memberName + " at " + sourceFilePath + ":" + sourceLineNumber + (AdditionalInfo != null ? " note: " + AdditionalInfo.ToString() : ""));
+                }
+            }
+            catch (Exception)
+            {
             }
         }
         //public static readonly Dictionary<string, (DateTime StartTime, DateTime StopTime)> Dict = new Dictionary<string, (DateTime StartTime, DateTime StopTime)>();

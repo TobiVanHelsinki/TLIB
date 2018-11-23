@@ -106,7 +106,7 @@ namespace TAPPLICATION_UWP
                     File = await StorageFile.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
                 }
                 catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
                     if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
                     { // If path and name are empty´, the intent is to ask the user
                         throw new IsOKException();
@@ -131,7 +131,7 @@ namespace TAPPLICATION_UWP
                 return null;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex); // last possibility is to ask the user
+ { TAPPLICATION.Debugging.TraceException(ex, Info); // last possibility is to ask the user
                 if (eUser == UserDecision.AskUser)
                 {
                     File = await FilePicker(FileTypes); // get from user
@@ -150,7 +150,7 @@ namespace TAPPLICATION_UWP
                 }
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
             }
             return File;
         }
@@ -189,7 +189,7 @@ namespace TAPPLICATION_UWP
                     Info.Filepath = info.Path.Replace(info.Name, "");
                 }
                 catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
                     if (eUser == UserDecision.AskUser)
                     {
                         var info = await GetFile(Info,null, eUser, FileNotFoundDecision.NotCreate);
@@ -203,7 +203,7 @@ namespace TAPPLICATION_UWP
                 return Info;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
                 return null;
             }
         }
@@ -223,7 +223,7 @@ namespace TAPPLICATION_UWP
                     Info.Filepath = info.Path;
                 }
                 catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
                     if (eUser == UserDecision.AskUser)
                     {
                         var info = await GetFolder(Info, eUser, FileNotFoundDecision.Create);
@@ -237,7 +237,7 @@ namespace TAPPLICATION_UWP
                 return Info;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
                 return null;
             }
         }
@@ -264,7 +264,7 @@ namespace TAPPLICATION_UWP
                 ReturnFolder = await StorageFolder.GetFolderFromPathAsync(Info.Filepath);
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
                 try
                 {
                     //Ordner ist nicht da, erzeugen wir ihn
@@ -289,7 +289,7 @@ namespace TAPPLICATION_UWP
                     }
                 }
                 catch (Exception ex2)
- { TAPPLICATION.Debugging.TraceException(ex2);
+ { TAPPLICATION.Debugging.TraceException(ex2, Info);
                     // erzeugen klappte nicht.
                     if (eUser == UserDecision.AskUser)
                     {
@@ -314,7 +314,7 @@ namespace TAPPLICATION_UWP
                 }
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Info);
             }
             return ReturnFolder;
         }
@@ -361,7 +361,7 @@ namespace TAPPLICATION_UWP
                         await item.MoveAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
                     }
                     catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Target.ToString() + Source.ToString());
                     }
                 }
                 else
@@ -457,7 +457,7 @@ namespace TAPPLICATION_UWP
                         await item.CopyAsync(TargetFolder, item.Name, NameCollisionOption.GenerateUniqueName);
                     }
                     catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex);
+ { TAPPLICATION.Debugging.TraceException(ex, Target.ToString() + Source.ToString());
                     }
                 }
                 else
