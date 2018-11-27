@@ -74,7 +74,7 @@ namespace TAPPLICATION.IO
                 }
                 catch (Exception x)
                 {
-                    SharedAppModel.Instance.NewNotification("Writing Error", x);
+                    SharedAppModel.Instance?.NewNotification("Writing Error", x);
                 }
             }
         }
@@ -157,9 +157,9 @@ namespace TAPPLICATION.IO
         /// <param name="a"></param>
         public static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
-            if (!SharedAppModel.Instance.lstNotifications.Contains(JSON_Error_Notification))
+            if (!SharedAppModel.Instance?.lstNotifications.Contains(JSON_Error_Notification))
             {
-                SharedAppModel.Instance.lstNotifications.Insert(0, JSON_Error_Notification);
+                SharedAppModel.Instance?.lstNotifications.Insert(0, JSON_Error_Notification);
             }
             JSON_Error_Notification.Message += "\n\t" + a.ErrorContext.Path;
             a.ErrorContext.Handled = true;
@@ -264,7 +264,7 @@ namespace TAPPLICATION.IO
             NewMainObject.FileInfo = File.Info;
             if (SharedSettingsModel.I.DEBUG_FEATURES)
             {
-                SharedAppModel.Instance.NewNotification("LoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
+                SharedAppModel.Instance?.NewNotification("LoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
             }
             return NewMainObject;
         }

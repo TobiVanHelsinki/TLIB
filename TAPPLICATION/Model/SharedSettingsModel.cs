@@ -42,12 +42,13 @@ namespace TAPPLICATION.Model
         public static IPlatformSettings PlatformSettings;
         protected dynamic Get([CallerMemberName] string Name = "")
         {
-            if (PlatformSettings == null)
-            {
-                return null;
-            }
+
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
+            if (PlatformSettings == null)
+            {
+                return Attribute.DefaultValue;
+            }
             try
             {
                 Func<string, object> UsedFunction;
