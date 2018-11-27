@@ -30,7 +30,7 @@ namespace TAPPLICATION.IO
             }
             else
             {
-                return CurrentIO.GetCompleteInternPath(GetCurrentSavePlace()) + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
+                return CurrentIO?.GetCompleteInternPath(GetCurrentSavePlace()) + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
             }
         }
 
@@ -64,13 +64,13 @@ namespace TAPPLICATION.IO
         /// <param name="FileInfo">Folder to save to</param>
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
         {
-            FileInfo = await CurrentIO.GetFolderInfo(FileInfo, UserDecision.AskUser);
+            FileInfo = await CurrentIO?.GetFolderInfo(FileInfo, UserDecision.AskUser);
             foreach (var (Name, Content) in FileContents)
             {
                 FileInfo.Filename = Name;
                 try
                 {
-                    await CurrentIO.SaveFileContent(Content, FileInfo);
+                    await CurrentIO?.SaveFileContent(Content, FileInfo);
                 }
                 catch (Exception x)
                 {
@@ -126,7 +126,7 @@ namespace TAPPLICATION.IO
         /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO.GetCompleteInternPath(Place.Temp)));
+            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO?.GetCompleteInternPath(Place.Temp)));
         }
         
         /// <summary>
@@ -145,7 +145,7 @@ namespace TAPPLICATION.IO
                 throw new ArgumentNullException("MainObject was Empty");
             }
             System.Diagnostics.Debug.WriteLine("Saving" + Object.ToString());
-            var retinfo = await CurrentIO.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo, eUD);
+            var retinfo = await CurrentIO?.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo, eUD);
             return retinfo;
         }
 
@@ -257,7 +257,7 @@ namespace TAPPLICATION.IO
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             var A = DateTimeOffset.Now;
-            var File = await CurrentIO.LoadFileContent(Info, FileTypes, eUD);
+            var File = await CurrentIO?.LoadFileContent(Info, FileTypes, eUD);
             var B = DateTimeOffset.Now;
             var NewMainObject = Deserialize(File.strFileContent);
             var C = DateTimeOffset.Now;

@@ -42,6 +42,10 @@ namespace TAPPLICATION.Model
         public static IPlatformSettings PlatformSettings;
         protected dynamic Get([CallerMemberName] string Name = "")
         {
+            if (PlatformSettings == null)
+            {
+                return null;
+            }
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
             try
@@ -83,10 +87,10 @@ namespace TAPPLICATION.Model
             switch (Attribute.Sync)
             {
                 case SaveType.Roaming:
-                    PlatformSettings.SetRoaming(Attribute.SaveString, value);
+                    PlatformSettings?.SetRoaming(Attribute.SaveString, value);
                     break;
                 case SaveType.Local:
-                    PlatformSettings.SetLocal(Attribute.SaveString, value);
+                    PlatformSettings?.SetLocal(Attribute.SaveString, value);
                     break;
                 default:
                     break;

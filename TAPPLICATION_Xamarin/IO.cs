@@ -6,7 +6,7 @@ namespace TAPPLICATION_Xamarin
 {
     internal class IO : IPlatformIO
     {
-        public Task Copy(FileInfoClass Target, FileInfoClass Source)
+        public Task Copy(FileInfoClass Target, FileInfoClass Source, UserDecision euser)
         {
             return default;
         }
