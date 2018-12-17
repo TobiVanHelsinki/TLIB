@@ -149,7 +149,8 @@ namespace TAPPLICATION_UWP
                 }
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info);
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info);
             }
             return File;
         }
