@@ -30,7 +30,7 @@ namespace TLIB_Xamarin
 
         public string GetString(string strID)
         {
-            return "Not Supported yet";
+            return "";
         }
     }
 }

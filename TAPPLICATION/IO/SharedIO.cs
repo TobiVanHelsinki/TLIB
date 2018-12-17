@@ -157,7 +157,7 @@ namespace TAPPLICATION.IO
         /// <param name="a"></param>
         public static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
-            if (!SharedAppModel.Instance?.lstNotifications.Contains(JSON_Error_Notification))
+            if (SharedAppModel.Instance?.lstNotifications.Contains(JSON_Error_Notification) == false)
             {
                 SharedAppModel.Instance?.lstNotifications.Insert(0, JSON_Error_Notification);
             }

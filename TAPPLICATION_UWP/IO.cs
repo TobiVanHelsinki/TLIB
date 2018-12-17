@@ -99,14 +99,12 @@ namespace TAPPLICATION_UWP
             {
                 try
                 {
-                    if (!Info.Filepath.EndsWith(@"\"))
-                    {
-                        Info.Filepath += @"\";
-                    }
-                    File = await StorageFile.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
+                    var Path = Info.Filepath + (!Info.Filepath.EndsWith(@"\") ? @"\" : "");
+                    File = await StorageFile.GetFileFromPathAsync(Path + CorrectName(Info.Filename));
                 }
                 catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info);
+                {
+                    TAPPLICATION.Debugging.TraceException(ex, Info);
                     if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
                     { // If path and name are empty´, the intent is to ask the user
                         throw new IsOKException();
@@ -126,12 +124,13 @@ namespace TAPPLICATION_UWP
                     }
                 }
             }
-            catch (IsOKException)
-            {
-                return null;
-            }
+            //catch (IsOKException)
+            //{
+            //    return null;
+            //}
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info); // last possibility is to ask the user
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info); // last possibility is to ask the user
                 if (eUser == UserDecision.AskUser)
                 {
                     File = await FilePicker(FileTypes); // get from user

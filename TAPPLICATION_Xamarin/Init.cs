@@ -4,8 +4,8 @@
     {
         public static void Do()
         {
-            TAPPLICATION.IO.SharedIO.CurrentIO = new IO();
-            TAPPLICATION.Model.SharedSettingsModel.PlatformSettings = new Settings();
+            //TAPPLICATION.IO.SharedIO.CurrentIO = new IO();
+            //TAPPLICATION.Model.SharedSettingsModel.PlatformSettings = new Settings();
         }
     }
 }
