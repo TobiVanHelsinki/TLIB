@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TLIB
 {
@@ -87,44 +86,60 @@ namespace TLIB
         }
         public static int MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
+            if (source.Count() == 0)
+            {
+                return 0;
+            }
             try
             {
                 return source.Max(selector);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }
         }
         public static double MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
+            if (source.Count() == 0)
+            {
+                return 0.0;
+            }
             try
             {
                 return source.Max(selector);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return 0;
+                return 0.0;
             }
         }
         public static int MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
+            if (source.Count() == 0)
+            {
+                return 0;
+            }
             try
             {
                 return source.Min(selector);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }
         }
         public static double MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
         {
+            if (source.Count() == 0)
+            {
+                return 0.0;
+            }
             try
             {
                 return source.Min(selector);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }

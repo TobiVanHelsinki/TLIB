@@ -1,4 +1,4 @@
-﻿using Plugin.FilePicker;
+﻿//using Plugin.FilePicker;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -119,15 +119,15 @@ namespace TAPPLICATION_Xamarin
 
         public static async Task<FileInfo> FilePicker(List<string> lststrFileEndings)
         {
-            var file = await CrossFilePicker.Current.PickFile();
+            //var file = await CrossFilePicker.Current.PickFile();
 
-            if (file == null)
+            //if (file == null)
             {
                 throw new IsOKException();
             }
-            else
+            //else
             {
-                return new FileInfo(file.FileName);
+                //return new FileInfo(file.FileName);
             }
         }
 

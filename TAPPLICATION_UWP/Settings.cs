@@ -1,4 +1,5 @@
 ﻿using System;
+using TLIB;
 using TLIB.Settings;
 using Windows.Storage;
 
@@ -48,7 +49,7 @@ namespace TAPPLICATION_UWP
             }
             else
             {
-                throw new ArgumentException();
+                throw new SettingNotPresentException();
             }
         }
         public object GetRoaming(string place)
@@ -63,7 +64,7 @@ namespace TAPPLICATION_UWP
             }
             else
             {
-                throw new ArgumentException();
+                throw new SettingNotPresentException();
             }
         }
     }
