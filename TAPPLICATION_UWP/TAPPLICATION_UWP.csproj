@@ -107,16 +107,12 @@
       <Version>4.5.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="TAPPLICATION, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TAPPLICATION\bin\$(Configuration)\netstandard1.0\TAPPLICATION.dll</HintPath>
-      <Private>False</Private>
+   <ItemGroup>
+    <Reference Include="TAPPLICATION">
+      <HintPath>..\..\TLIB\OutgoingReferences\TAPPLICATION.dll</HintPath>
     </Reference>
-    <Reference Include="TLIB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TLIB\bin\$(Configuration)\netstandard1.0\TLIB.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="TLIB">
+      <HintPath>..\..\TLIB\OutgoingReferences\TLIB.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

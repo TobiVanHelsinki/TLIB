@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -108,6 +109,14 @@ namespace TLIB
         }
         
         public event PropertyChangedEventHandler PropertyChanged;
+
+        FileInfo _SystemFileInfo;
+        public FileInfo SystemFileInfo
+        {
+            get { return _SystemFileInfo; }
+            set { if (_SystemFileInfo != value) { _SystemFileInfo = value; NotifyPropertyChanged(); } }
+        }
+
         void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
@@ -115,18 +124,25 @@ namespace TLIB
 
         public FileInfoClass()
         {
+            try
+            {
+                SystemFileInfo = new FileInfo(Fileplace + Filename);
+            }
+            catch (Exception)
+            {
+            }
+            //Size = SystemFileInfo.Length;
         }
 
-        public FileInfoClass(Place place)
+        public FileInfoClass(Place place) : this()
         {
             Fileplace = place;
         }
 
-        public FileInfoClass(Place fileplace, string filename, string filepath)
+        public FileInfoClass(Place fileplace, string filename, string filepath) : this(fileplace)
         {
             Filename = filename;
             Filepath = filepath;
-            Fileplace = fileplace;
         }
 
         public FileInfoClass Clone()
