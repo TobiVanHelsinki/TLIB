@@ -1,61 +1,194 @@
-﻿//using Plugin.FilePicker;
+﻿using PCLStorage;
+using Plugin.FilePicker;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using TLIB;
 
 namespace TAPPLICATION_Xamarin
 {
+    public static class MyClass
+    {
+        public static string FileType(this IFile File)
+        {
+            return string.Concat(File.Name.SkipWhile(x => x != '.'));
+        }
+    }
     internal class IO : IPlatformIO
     {
-        public Task Copy(FileInfoClass Target, FileInfoClass Source, UserDecision euser)
+        public async Task Copy(FileInfoClass Target, FileInfoClass Source, UserDecision UD)
         {
-            return default;
+            //TODO Test
+            IFile SourceFile = await GetFile(Source, eUser: UD);
+            IFolder TargetFolder = await GetFolder(Target, UD);
+            var NewFile = await TargetFolder.CreateFileAsync(Target.Filename ?? SourceFile.Name, CreationCollisionOption.ReplaceExisting);
+            await NewFile.WriteAllTextAsync(await SourceFile.ReadAllTextAsync());
         }
 
-        public Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
+        public async Task CopyAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
-            return default;
+            IFolder TargetFolder = await GetFolder(Target);
+            IFolder SourceFolder = await GetFolder(Source);
+            foreach (var SourceFile in await SourceFolder.GetFilesAsync())
+            {
+                if (FileTypes?.Contains(SourceFile.FileType()) != false) //TODO Check Extension code
+                {
+                    try
+                    {
+                        //await SourceFile.CopyAsync(TargetFolder, SourceFile.Name, NameCollisionOption.GenerateUniqueName);
+                        //TODO Check this
+                        var NewFile = await TargetFolder.CreateFileAsync(Target.Filename ?? SourceFile.Name, CreationCollisionOption.ReplaceExisting);
+                        await NewFile.WriteAllTextAsync(await SourceFile.ReadAllTextAsync());
+                    }
+                    catch (Exception ex)
+                    {
+                        TAPPLICATION.Debugging.TraceException(ex, Target.ToString() + Source.ToString());
+                    }
+                }
+                else
+                {
+
+                }
+            }
         }
 
         public void CreateSaveContainer()
         {
+           
         }
 
         public string GetCompleteInternPath(Place place)
         {
-            return default;
+            switch (place)
+            {
+                case Place.Temp:
+                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                    return "";
+                    //return FileSystem.Current.TemporaryFolder.Path + @"\";
+                case Place.Local:
+                    return FileSystem.Current.LocalStorage.Path;
+                case Place.Roaming:
+                    if (FileSystem.Current.RoamingStorage == null)
+                    {
+                        return FileSystem.Current.LocalStorage.Path;
+                    }
+                    return FileSystem.Current.RoamingStorage.Path;
+                case Place.Assets:
+                    //return Windows.ApplicationModel.Package.Current.InstalledLocation.Path + @"\";
+                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                    return "";
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
-        public Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
+        public async Task<FileInfoClass> GetFileInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {
-            return default;
+            try
+            {
+                if (!Info.Filepath.EndsWith(@"\"))
+                {
+                    Info.Filepath += @"\";
+                }
+                try
+                {
+                    var info = await FileSystem.Current.GetFileFromPathAsync(Info.Filepath + Info.Filename);
+                    Info.Filename = info.Name;
+                    Info.Filepath = info.Path.Replace(info.Name, "");
+                }
+                catch (Exception ex)
+                {
+                    TAPPLICATION.Debugging.TraceException(ex, Info);
+                    if (eUser == UserDecision.AskUser)
+                    {
+                        var info = await GetFile(Info, null, eUser, FileNotFoundDecision.NotCreate);
+                        Info.Filepath = info.Path;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Info;
+            }
+            catch (Exception ex)
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info);
+                return null;
+            }
         }
 
-        public Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
+
+        public async Task<FileInfoClass> GetFolderInfo(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser)
         {
-            return default;
+            try
+            {
+                if (!Info.Filepath.EndsWith(@"\"))
+                {
+                    Info.Filepath += @"\";
+                }
+                try
+                {
+                    var info = await FileSystem.Current.GetFolderFromPathAsync(Info.Filepath);
+                    Info.Filepath = info.Path;
+                }
+                catch (Exception ex)
+                {
+                    TAPPLICATION.Debugging.TraceException(ex, Info);
+                    if (eUser == UserDecision.AskUser)
+                    {
+                        var info = await GetFolder(Info, eUser, FileNotFoundDecision.Create);
+                        Info.Filepath = info.Path;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return Info;
+            }
+            catch (Exception ex)
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info);
+                return null;
+            }
         }
 
-        public Task<List<FileInfoClass>> GetListofFiles(FileInfoClass Info, UserDecision eUser, List<string> FileTypes = null)
+        public async Task<List<FileInfoClass>> GetListofFiles(FileInfoClass Info, UserDecision eUser, List<string> FileTypes = null)
         {
-            return default;
+            var ReturnList = new List<FileInfoClass>();
+            var Folder = await GetFolder(Info, eUser);
+            var Liste = await Folder.GetFilesAsync();
+            if (FileTypes == null || FileTypes.Count == 0)
+            {
+                FileTypes = new List<string>
+                {
+                    "."
+                };
+            }
+            foreach (var item in Liste.Where(x => FileTypes.Contains(x.FileType())))
+            {
+                //BasicProperties props = await item.GetBasicPropertiesAsync();
+                //ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Folder.Path, Fileplace = Info.Fileplace, DateModified = props.DateModified, Size = props.Size });
+                ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Folder.Path, Fileplace = Info.Fileplace, DateModified = DateTimeOffset.Now, Size = 666});
+            }
+            return ReturnList;
         }
 
         public async Task<(string strFileContent, FileInfoClass Info)> LoadFileContent(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
-            FileInfo x = await GetFile(Info, FileTypes, eUD, FileNotFoundDecision.NotCreate);
-            string rettext = File.ReadAllText(x.FullName);
+            IFile x = await GetFile(Info, FileTypes, eUD, FileNotFoundDecision.NotCreate);
+            string rettext = await x.ReadAllTextAsync();
             var info = Info.Clone();
-            //info.Filename = x.Name;
-            //info.Filepath = x.Path.Substring(0, x.Path.Length - x.Name.Length);
+            info.Filename = x.Name;
+            info.Filepath = x.Path.Substring(0, x.Path.Length - x.Name.Length);
             return (rettext, info);
         }
 
-        internal async static Task<FileInfo> GetFile(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
+        internal async static Task<IFile> GetFile(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
         {
-            FileInfo File = null;
+            IFile File = null;
             try
             {
                 try
@@ -64,12 +197,8 @@ namespace TAPPLICATION_Xamarin
                     {
                         Info.Filepath += @"\";
                     }
-                    var a = new FileInfo(Info.Filepath + CorrectName(Info.Filename));
-                    if (a.Exists)
-                    {
-                        return a;
-                    }
-                    else
+                    File = await FileSystem.Current.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
+                    if (File == null)
                     {
                         throw new Exception();
                     }
@@ -82,19 +211,19 @@ namespace TAPPLICATION_Xamarin
                         throw new IsOKException();
                     }
                     // path and name are given, so the folder should be there (but maybe aren't) so we try to create them
-                        throw new Exception();
-                    //DirectoryInfo Folder = await GetFolder(Info, eUser);
-                    //switch (eCreation)
-                    //{
-                    //    case FileNotFoundDecision.NotCreate:
-                    //        File = await Folder.Getf(CorrectName(Info.Filename));
-                    //        break;
-                    //    case FileNotFoundDecision.Create:
-                    //        File = await Folder.CreateFileAsync(CorrectName(Info.Filename), CreationCollisionOption.OpenIfExists);
-                    //        break;
-                    //    default:
-                    //        throw new Exception();
-                    //}
+                        //throw new Exception();
+                    IFolder Folder = await GetFolder(Info, eUser);
+                    switch (eCreation)
+                    {
+                        case FileNotFoundDecision.NotCreate:
+                            File = await Folder.GetFileAsync(CorrectName(Info.Filename));
+                            break;
+                        case FileNotFoundDecision.Create:
+                            File = await Folder.CreateFileAsync(CorrectName(Info.Filename), CreationCollisionOption.OpenIfExists);
+                            break;
+                        default:
+                            throw new Exception();
+                    }
                 }
             }
             catch (IsOKException)
@@ -117,38 +246,25 @@ namespace TAPPLICATION_Xamarin
             return File;
         }
 
-        public static async Task<FileInfo> FilePicker(List<string> lststrFileEndings)
+        public static async Task<IFile> FilePicker(List<string> lststrFileEndings)
         {
-            //var file = await CrossFilePicker.Current.PickFile();
-
-            //if (file == null)
+            var file = await CrossFilePicker.Current.PickFile();
+            if (file == null)
             {
                 throw new IsOKException();
             }
-            //else
+            else
             {
-                //return new FileInfo(file.FileName);
+                return await FileSystem.Current.GetFileFromPathAsync(file.FileName);
             }
         }
 
-        internal async static Task<DirectoryInfo> GetFolder(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
+        internal async static Task<IFolder> GetFolder(FileInfoClass Info, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
         {
-            DirectoryInfo ReturnFolder = null;
+            IFolder ReturnFolder = null;
             try
             {
-                if (!Info.Filepath.EndsWith(@"\"))
-                {
-                    Info.Filepath += @"\";
-                }
-                ReturnFolder = new DirectoryInfo(Info.Filepath);
-                if (ReturnFolder.Exists)
-                {
-                    return ReturnFolder;
-                }
-                else
-                {
-                    throw new Exception();
-                }
+                ReturnFolder = await FileSystem.Current.GetFolderFromPathAsync(Info.Filepath);
             }
             catch (Exception ex)
             {
@@ -161,13 +277,15 @@ namespace TAPPLICATION_Xamarin
                         switch (Info.Fileplace)
                         {
                             case Place.Extern:
-                                var Dir = new DirectoryInfo(Info.Filepath);
-                                var ParentFolder = new DirectoryInfo(Dir.Parent.FullName);
+                                var ParDirPath = Info.Filepath.Replace(new Uri(Info.Filepath).Segments.LastOrDefault(), "");
+                                var ParentFolder = await FileSystem.Current.GetFolderFromPathAsync(ParDirPath);
                                 ReturnFolder = await CreateFoldersRecursive(Info, ParentFolder);
                                 break;
                             case Place.Roaming:
+                                ReturnFolder = await CreateFoldersRecursive(Info, FileSystem.Current.RoamingStorage);
+                                break;
                             case Place.Local:
-                                ReturnFolder = await CreateFoldersRecursive(Info, new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)));
+                                ReturnFolder = await CreateFoldersRecursive(Info, FileSystem.Current.LocalStorage);
                                 break;
                             default:
                                 throw;
@@ -196,15 +314,15 @@ namespace TAPPLICATION_Xamarin
             return ReturnFolder;
         }
 
-        static async Task<DirectoryInfo> CreateFoldersRecursive(FileInfoClass Info, DirectoryInfo StartFolder)
+        static async Task<IFolder> CreateFoldersRecursive(FileInfoClass Info, IFolder StartFolder)
         {
-            DirectoryInfo Folder;
-            var path = Info.Filepath.Replace(StartFolder.FullName, "");
+            IFolder Folder;
+            var path = Info.Filepath.Replace(StartFolder.Name, "");
             var folders = path.Split(new string[] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
             Folder = StartFolder;
             foreach (var item in folders)
             {
-                Folder = Folder.CreateSubdirectory(item);
+                Folder = await Folder.CreateFolderAsync(item, CreationCollisionOption.OpenIfExists);
             }
 
             return Folder;
@@ -215,44 +333,80 @@ namespace TAPPLICATION_Xamarin
         /// </summary>
         /// <param name="strSuggestedStartLocation"></param>
         /// <returns></returns>
-        public static async Task<DirectoryInfo> FolderPicker()
+        public static async Task<IFolder> FolderPicker()
         {
-            throw new NotImplementedException();
-            //var a = await CrossFilePicker.Current.PickFile();
-            //a.
-            //var folderPicker = new FolderPicker()
-            //{
-            //    SuggestedStartLocation = PickerLocationId.ComputerFolder,
-            //    ViewMode = PickerViewMode.List
-            //};
-            //folderPicker.FileTypeFilter.Add(".");
-            //return await folderPicker.PickSingleFolderAsync();
+            var a = await CrossFilePicker.Current.PickFile();
+            Uri uri = new Uri(a.FileName);
+            var FolderName = a.FileName.Replace(uri.Segments.LastOrDefault(), ""); //TODO Check
+            return await FileSystem.Current.GetFolderFromPathAsync(FolderName);
         }
 
 
-        public Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
+        public async Task MoveAllFiles(FileInfoClass Target, FileInfoClass Source, IEnumerable<string> FileTypes = null)
         {
-            return default;
+            var TargetFolder = await GetFolder(Target, UserDecision.ThrowError);
+            var SourceFolder = await GetFolder(Source, UserDecision.ThrowError);
+            foreach (var item in await SourceFolder.GetFilesAsync())
+            {
+                if (FileTypes?.Contains(item.FileType()) != false)
+                {
+                    try
+                    {
+                        await item.MoveAsync(TargetFolder.Path + @"\" + item.Name, NameCollisionOption.GenerateUniqueName);
+                    }
+                    catch (Exception ex)
+                    {
+                        TAPPLICATION.Debugging.TraceException(ex, Target.ToString() + Source.ToString());
+                    }
+                }
+                else
+                {
+
+                }
+            }
         }
+
 
         public Task<bool> OpenFolder(FileInfoClass Info)
         {
+            //TODO
             return default;
         }
 
-        public Task RemoveFile(FileInfoClass Info)
+        public async Task RemoveFile(FileInfoClass Info)
         {
-            return default;
+
+            var x = await GetFile(Info);
+            await x.DeleteAsync();
         }
 
-        public Task<FileInfoClass> Rename(FileInfoClass SourceFile, string NewName)
+        public async Task<FileInfoClass> Rename(FileInfoClass Source, string NewName)
         {
-            return default;
+            var SourceFile = await GetFile(Source);
+            await SourceFile.RenameAsync(NewName, NameCollisionOption.GenerateUniqueName);
+            var Info = Source.Clone();
+            Info.Filepath = SourceFile.Path.Remove(SourceFile.Path.Length - SourceFile.Name.Length);
+            return Info;
         }
 
-        public Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
+        public async Task<FileInfoClass> SaveFileContent(string saveChar, FileInfoClass Info, UserDecision eUD = UserDecision.AskUser)
         {
-            return default;
+            IFile x = await GetFile(Info, eUser: eUD);
+            try
+            {
+                if (true)
+                {
+                    await x.WriteAllTextAsync(saveChar);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Writingerror", ex);
+            }
+            FileInfoClass i = Info.Clone();
+            i.Filename = x.Name;
+            i.Filepath = x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length);
+            return i;
         }
 
         /// <summary>

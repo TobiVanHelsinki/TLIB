@@ -189,10 +189,11 @@ namespace TAPPLICATION_UWP
                     Info.Filepath = info.Path.Replace(info.Name, "");
                 }
                 catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info);
+                {
+                    TAPPLICATION.Debugging.TraceException(ex, Info);
                     if (eUser == UserDecision.AskUser)
                     {
-                        var info = await GetFile(Info,null, eUser, FileNotFoundDecision.NotCreate);
+                        var info = await GetFile(Info, null, eUser, FileNotFoundDecision.NotCreate);
                         Info.Filepath = info.Path;
                     }
                     else
@@ -203,7 +204,8 @@ namespace TAPPLICATION_UWP
                 return Info;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info);
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info);
                 return null;
             }
         }
@@ -223,7 +225,8 @@ namespace TAPPLICATION_UWP
                     Info.Filepath = info.Path;
                 }
                 catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info);
+                {
+                    TAPPLICATION.Debugging.TraceException(ex, Info);
                     if (eUser == UserDecision.AskUser)
                     {
                         var info = await GetFolder(Info, eUser, FileNotFoundDecision.Create);
@@ -237,7 +240,8 @@ namespace TAPPLICATION_UWP
                 return Info;
             }
             catch (Exception ex)
- { TAPPLICATION.Debugging.TraceException(ex, Info);
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info);
                 return null;
             }
         }
