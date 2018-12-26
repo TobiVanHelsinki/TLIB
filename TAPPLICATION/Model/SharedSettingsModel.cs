@@ -125,11 +125,8 @@ namespace TAPPLICATION.Model
         {
             get
             {
-                return new FileInfoClass()
+                return new FileInfoClass(LAST_SAVE_INFO_PLACE, LAST_SAVE_INFO_NAME, LAST_SAVE_INFO_PATH)
                 {
-                    Filename = LAST_SAVE_INFO_NAME,
-                    Filepath = LAST_SAVE_INFO_PATH,
-                    Fileplace = LAST_SAVE_INFO_PLACE,
                     Token = LAST_SAVE_INFO_TOKEN
                 };
             }

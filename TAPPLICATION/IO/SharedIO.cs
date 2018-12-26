@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
@@ -64,13 +65,16 @@ namespace TAPPLICATION.IO
         /// <param name="FileInfo">Folder to save to</param>
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
         {
-            FileInfo = await CurrentIO?.GetFolderInfo(FileInfo, UserDecision.AskUser);
+            var d = new DirectoryInfo(FileInfo.Path);
+            await CurrentIO?.GetAccess(d);
+            //FileInfo = await CurrentIO?.GetFolderInfo(FileInfo, UserDecision.AskUser);
             foreach (var (Name, Content) in FileContents)
             {
-                FileInfo.Filename = Name;
+                //FileInfo.Filename = Name;
                 try
                 {
-                    await CurrentIO?.SaveFileContent(Content, FileInfo);
+                    var f = new FileInfo(d.FullName + Name);
+                    await CurrentIO?.SaveFileContent(Content, f);
                 }
                 catch (Exception x)
                 {
@@ -126,7 +130,7 @@ namespace TAPPLICATION.IO
         /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
         public static async Task<FileInfoClass> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, CurrentIO?.GetCompleteInternPath(Place.Temp)));
+            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
         }
         
         /// <summary>
@@ -145,8 +149,8 @@ namespace TAPPLICATION.IO
                 throw new ArgumentNullException("MainObject was Empty");
             }
             System.Diagnostics.Debug.WriteLine("Saving" + Object.ToString());
-            var retinfo = await CurrentIO?.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo, eUD);
-            return retinfo;
+            await CurrentIO?.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo);
+            return Info ?? Object.FileInfo;
         }
 
         #endregion
@@ -257,11 +261,11 @@ namespace TAPPLICATION.IO
         public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
             var A = DateTimeOffset.Now;
-            var File = await CurrentIO?.LoadFileContent(Info, FileTypes, eUD);
+            var File = await CurrentIO?.LoadFileContent(Info);
             var B = DateTimeOffset.Now;
-            var NewMainObject = Deserialize(File.strFileContent);
+            var NewMainObject = Deserialize(File);
             var C = DateTimeOffset.Now;
-            NewMainObject.FileInfo = File.Info;
+            NewMainObject.FileInfo = Info;
             if (SharedSettingsModel.I.DEBUG_FEATURES)
             {
                 SharedAppModel.Instance?.NewNotification("LoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());

@@ -21,6 +21,7 @@ namespace TLIB
     public class FileInfoClass : INotifyPropertyChanged
     {
         string _Filename = "";
+        [Obsolete]
         public string Filename
         {
             get { return _Filename; }
@@ -33,9 +34,10 @@ namespace TLIB
                 }
             }
         }
-
+        public string Name { get => SystemFileInfo.Name; set { SystemFileInfo = new FileInfo(Path + value); } }
 
         string _Filepath = "";
+        [Obsolete]
         public string Filepath
         {
             get { return _Filepath; }
@@ -44,13 +46,21 @@ namespace TLIB
                 if (value != _Filepath)
                 {
                     _Filepath = value;
+                    if (!Filepath.EndsWith(@"\"))
+                    {
+                        Filepath += @"\";
+                    }
                     NotifyPropertyChanged();
                 }
             }
         }
 
+        public string Path => SystemFileInfo.Directory.FullName;
+        public string Fullname => SystemFileInfo.FullName;
+
 
         Place _Fileplace = Place.NotDefined;
+        [Obsolete]
         public Place Fileplace
         {
             get { return _Fileplace; }
@@ -64,8 +74,8 @@ namespace TLIB
             }
         }
 
-
         DateTimeOffset _DateModified;
+        [Obsolete]
         public DateTimeOffset DateModified
         {
             get { return _DateModified; }
@@ -81,6 +91,7 @@ namespace TLIB
 
 
         ulong _Size;
+        [Obsolete]
         public ulong Size
         {
             get { return _Size; }
@@ -95,6 +106,7 @@ namespace TLIB
         }
 
         string _FolderToken = "";
+        [Obsolete]
         public string Token
         {
             get { return _FolderToken; }
@@ -108,6 +120,7 @@ namespace TLIB
             }
         }
         
+        [Obsolete]
         public event PropertyChangedEventHandler PropertyChanged;
 
         FileInfo _SystemFileInfo;
@@ -122,38 +135,49 @@ namespace TLIB
             PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
 
-        public FileInfoClass()
+        FileInfoClass()
         {
+        }
+
+        public FileInfoClass(FileInfo fi)
+        {
+            SystemFileInfo = fi;
+        }
+
+        public FileInfoClass(Place fileplace, string filename = "", string filepath = "") 
+        {
+            Filename = filename;
+            Filepath = filepath;
+            Fileplace = fileplace;
             try
             {
-                SystemFileInfo = new FileInfo(Fileplace + Filename);
+                SystemFileInfo = new FileInfo(Filepath + Filename);
             }
             catch (Exception)
             {
             }
-            //Size = SystemFileInfo.Length;
         }
 
-        public FileInfoClass(Place place) : this()
+        // User-defined conversion from Digit to double
+        public static implicit operator FileInfo(FileInfoClass fic)
         {
-            Fileplace = place;
+            return fic.SystemFileInfo;
         }
-
-        public FileInfoClass(Place fileplace, string filename, string filepath) : this(fileplace)
+        //  User-defined conversion from double to Digit
+        public static implicit operator FileInfoClass(FileInfo fi)
         {
-            Filename = filename;
-            Filepath = filepath;
+            return new FileInfoClass(fi);
         }
 
         public FileInfoClass Clone()
         {
-            return new FileInfoClass(this.Fileplace, this.Filename, this.Filepath)
+            return new FileInfoClass(this.Fileplace, this.Name, this.Path)
             {DateModified = this.DateModified, Token = this.Token, Size = this.Size };
         }
 
         public override string ToString()
         {
-            return Filepath + "_" + Filename;
+            return Fullname;
         }
     }
 }

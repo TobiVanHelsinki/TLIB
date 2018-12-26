@@ -2,6 +2,7 @@
 using Plugin.FilePicker;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TLIB;
@@ -22,7 +23,7 @@ namespace TAPPLICATION_Xamarin
             //TODO Test
             IFile SourceFile = await GetFile(Source, eUser: UD);
             IFolder TargetFolder = await GetFolder(Target, UD);
-            var NewFile = await TargetFolder.CreateFileAsync(Target.Filename ?? SourceFile.Name, CreationCollisionOption.ReplaceExisting);
+            var NewFile = await TargetFolder.CreateFileAsync(Target.Name ?? SourceFile.Name, CreationCollisionOption.ReplaceExisting);
             await NewFile.WriteAllTextAsync(await SourceFile.ReadAllTextAsync());
         }
 
@@ -38,7 +39,7 @@ namespace TAPPLICATION_Xamarin
                     {
                         //await SourceFile.CopyAsync(TargetFolder, SourceFile.Name, NameCollisionOption.GenerateUniqueName);
                         //TODO Check this
-                        var NewFile = await TargetFolder.CreateFileAsync(Target.Filename ?? SourceFile.Name, CreationCollisionOption.ReplaceExisting);
+                        var NewFile = await TargetFolder.CreateFileAsync(Target.Name ?? SourceFile.Name, CreationCollisionOption.ReplaceExisting);
                         await NewFile.WriteAllTextAsync(await SourceFile.ReadAllTextAsync());
                     }
                     catch (Exception ex)
@@ -93,8 +94,8 @@ namespace TAPPLICATION_Xamarin
                 }
                 try
                 {
-                    var info = await FileSystem.Current.GetFileFromPathAsync(Info.Filepath + Info.Filename);
-                    Info.Filename = info.Name;
+                    var info = await FileSystem.Current.GetFileFromPathAsync(Info.Filepath + Info.Name);
+                    Info.Name = info.Name;
                     Info.Filepath = info.Path.Replace(info.Name, "");
                 }
                 catch (Exception ex)
@@ -171,7 +172,7 @@ namespace TAPPLICATION_Xamarin
             {
                 //BasicProperties props = await item.GetBasicPropertiesAsync();
                 //ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Folder.Path, Fileplace = Info.Fileplace, DateModified = props.DateModified, Size = props.Size });
-                ReturnList.Add(new FileInfoClass() { Filename = item.Name, Filepath = Folder.Path, Fileplace = Info.Fileplace, DateModified = DateTimeOffset.Now, Size = 666});
+                ReturnList.Add(new FileInfoClass(Info.Fileplace, item.Name, Folder.Path) { DateModified = DateTimeOffset.Now, Size = 666});
             }
             return ReturnList;
         }
@@ -181,7 +182,7 @@ namespace TAPPLICATION_Xamarin
             IFile x = await GetFile(Info, FileTypes, eUD, FileNotFoundDecision.NotCreate);
             string rettext = await x.ReadAllTextAsync();
             var info = Info.Clone();
-            info.Filename = x.Name;
+            info.Name = x.Name;
             info.Filepath = x.Path.Substring(0, x.Path.Length - x.Name.Length);
             return (rettext, info);
         }
@@ -197,7 +198,7 @@ namespace TAPPLICATION_Xamarin
                     {
                         Info.Filepath += @"\";
                     }
-                    File = await FileSystem.Current.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Filename));
+                    File = await FileSystem.Current.GetFileFromPathAsync(Info.Filepath + CorrectName(Info.Name));
                     if (File == null)
                     {
                         throw new Exception();
@@ -206,7 +207,7 @@ namespace TAPPLICATION_Xamarin
                 catch (Exception ex)
                 {
                     TAPPLICATION.Debugging.TraceException(ex, Info);
-                    if (string.IsNullOrEmpty(Info.Filename) && string.IsNullOrEmpty(Info.Filepath))
+                    if (string.IsNullOrEmpty(Info.Name) && string.IsNullOrEmpty(Info.Filepath))
                     { // If path and name are empty´, the intent is to ask the user
                         throw new IsOKException();
                     }
@@ -216,10 +217,10 @@ namespace TAPPLICATION_Xamarin
                     switch (eCreation)
                     {
                         case FileNotFoundDecision.NotCreate:
-                            File = await Folder.GetFileAsync(CorrectName(Info.Filename));
+                            File = await Folder.GetFileAsync(CorrectName(Info.Name));
                             break;
                         case FileNotFoundDecision.Create:
-                            File = await Folder.CreateFileAsync(CorrectName(Info.Filename), CreationCollisionOption.OpenIfExists);
+                            File = await Folder.CreateFileAsync(CorrectName(Info.Name), CreationCollisionOption.OpenIfExists);
                             break;
                         default:
                             throw new Exception();
@@ -255,7 +256,7 @@ namespace TAPPLICATION_Xamarin
             }
             else
             {
-                return await FileSystem.Current.GetFileFromPathAsync(file.FileName);
+                return await FileSystem.Current.GetFileFromPathAsync(file.FileName); // Does not work
             }
         }
 
@@ -336,8 +337,8 @@ namespace TAPPLICATION_Xamarin
         public static async Task<IFolder> FolderPicker()
         {
             var a = await CrossFilePicker.Current.PickFile();
-            Uri uri = new Uri(a.FileName);
-            var FolderName = a.FileName.Replace(uri.Segments.LastOrDefault(), ""); //TODO Check
+            Uri uri = new Uri(a.FileName); //TODO Does not work
+            var FolderName = a.FileName.Replace(uri.Segments.LastOrDefault(), ""); //TODO Does not work
             return await FileSystem.Current.GetFolderFromPathAsync(FolderName);
         }
 
@@ -375,7 +376,6 @@ namespace TAPPLICATION_Xamarin
 
         public async Task RemoveFile(FileInfoClass Info)
         {
-
             var x = await GetFile(Info);
             await x.DeleteAsync();
         }
@@ -404,7 +404,7 @@ namespace TAPPLICATION_Xamarin
                 throw new Exception("Writingerror", ex);
             }
             FileInfoClass i = Info.Clone();
-            i.Filename = x.Name;
+            i.Name = x.Name;
             i.Filepath = x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length);
             return i;
         }
@@ -434,5 +434,74 @@ namespace TAPPLICATION_Xamarin
             return ReturnValue;
         }
 
+        Task<string> IPlatformIO.GetCompleteInternPath(Place place)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveFileContent(string saveChar, FileInfo Info)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFile(FileInfo Info)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> LoadFileContent(FileInfo Info)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<FileInfo>> GetListofFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<FileInfo> CopyTo(DirectoryInfo Target, FileInfo Source, UserDecision UD)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<FileInfo> Rename(FileInfo SourceFile, string NewName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task MoveAllFiles(DirectoryInfo Target, DirectoryInfo Source, IEnumerable<string> FileTypes = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CopyAllFiles(DirectoryInfo Target, DirectoryInfo Source, IEnumerable<string> FileTypes = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> OpenFolder(DirectoryInfo Info)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<DirectoryInfo> IPlatformIO.FolderPicker()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<FileInfo> FilePicker(IEnumerable<string> lststrFileEndings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> GetAccess(DirectoryInfo Info)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> GetAccess(FileInfo Info)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
