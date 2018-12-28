@@ -18,7 +18,7 @@ namespace TLIB
     /// <summary>
     /// Symbolizes a File. Has no link to an actual file at the filesystem, provides binding
     /// </summary>
-    public class FileInfoClass : INotifyPropertyChanged
+    public class CustomFileInfo : INotifyPropertyChanged
     {
         string _Filename = "";
         [Obsolete]
@@ -135,16 +135,16 @@ namespace TLIB
             PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
 
-        FileInfoClass()
+        CustomFileInfo()
         {
         }
 
-        public FileInfoClass(FileInfo fi)
+        public CustomFileInfo(FileInfo fi)
         {
             SystemFileInfo = fi;
         }
 
-        public FileInfoClass(Place fileplace, string filename = "", string filepath = "")
+        public CustomFileInfo(Place fileplace, string filename = "", string filepath = "")
         {
             Filename = filename;
             Filepath = filepath;
@@ -165,19 +165,19 @@ namespace TLIB
         }
 
         // User-defined conversion from Digit to double
-        public static implicit operator FileInfo(FileInfoClass fic)
+        public static implicit operator FileInfo(CustomFileInfo fic)
         {
             return fic?.SystemFileInfo;
         }
         //  User-defined conversion from double to Digit
-        public static implicit operator FileInfoClass(FileInfo fi)
+        public static implicit operator CustomFileInfo(FileInfo fi)
         {
-            return new FileInfoClass(fi);
+            return new CustomFileInfo(fi);
         }
 
-        public FileInfoClass Clone()
+        public CustomFileInfo Clone()
         {
-            return new FileInfoClass(this.Fileplace, this.Name, this.Path)
+            return new CustomFileInfo(this.Fileplace, this.Name, this.Path)
             {DateModified = this.DateModified, Token = this.Token, Size = this.Size };
         }
 

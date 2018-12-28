@@ -66,7 +66,7 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="FileContents">List of FileName and Content</param>
         /// <param name="FileInfo">Folder to save to</param>
-        public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, FileInfoClass FileInfo)
+        public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, CustomFileInfo FileInfo)
         {
             var d = new DirectoryInfo(FileInfo.Path);
             await CurrentIO?.GetAccess(d);
@@ -95,8 +95,8 @@ namespace TAPPLICATION.IO
         /// <param name="eUD"></param>
         /// 
         /// <exception cref="Exception"/>
-        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
+        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
+        public static async Task<CustomFileInfo> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
         {
             if (Object.FileInfo.Fileplace != Place.NotDefined 
                 && Object.FileInfo.Fileplace != Place.Temp
@@ -117,8 +117,8 @@ namespace TAPPLICATION.IO
         /// <param name="eUD"></param>
         /// 
         /// <exception cref="Exception"/>
-        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
+        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
+        public static async Task<CustomFileInfo> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
         {
             Object.FileInfo.Fileplace = GetCurrentSavePlace();
             Object.FileInfo.Filepath = GetCurrentSavePath();
@@ -130,10 +130,10 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="Object"></param>
         /// <exception cref="Exception"/>
-        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> SaveAtTempPlace(IMainType Object)
+        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
+        public static async Task<CustomFileInfo> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new FileInfoClass(Place.Temp, Object.FileInfo.Filename, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
+            return await Save(Object, UserDecision.ThrowError, Info: new CustomFileInfo(Place.Temp, Object.FileInfo.Filename, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
         }
         
         /// <summary>
@@ -144,8 +144,8 @@ namespace TAPPLICATION.IO
         /// <param name="Info"></param>
         /// 
         /// <exception cref="Exception"/>
-        /// <returns>Task<FileInfoClass> The place where it is actually saved</returns>
-        public static async Task<FileInfoClass> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfoClass Info = null)
+        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
+        public static async Task<CustomFileInfo> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, CustomFileInfo Info = null)
         {
             if (Object == null)
             {

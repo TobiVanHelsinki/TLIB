@@ -10,7 +10,7 @@ namespace TAPPLICATION_UWP
     {
         public virtual async Task<IEnumerable<FileInfo>> GetListofFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null)
         {
-            //List<FileInfoClass> ReturnList = new List<FileInfoClass>();
+            //List<CustomFileInfo> ReturnList = new List<CustomFileInfo>();
             var Liste = Info.GetFiles();
             //if (FileTypes == null || FileTypes.Count == 0)
             //{
@@ -23,7 +23,7 @@ namespace TAPPLICATION_UWP
             //foreach (var item in Liste.Where(x=> FileTypes.Contains (x.Extension)))
             //{
             //    //BasicProperties props = await item.GetBasicPropertiesAsync();
-            //    ReturnList.Add(new FileInfoClass(Place.NotDefined, item.Name, Info.FullName));
+            //    ReturnList.Add(new CustomFileInfo(Place.NotDefined, item.Name, Info.FullName));
             //}
             //return ReturnList;
         }
@@ -45,7 +45,7 @@ namespace TAPPLICATION_UWP
             //{
             //    throw new Exception("Writingerror", ex);
             //}
-            //FileInfoClass i = Info.Clone();
+            //CustomFileInfo i = Info.Clone();
             //i.Name = x.Name;
             //i.Filepath = x.Path.Remove(x.Path.Length - x.Name.Length, x.Name.Length);
             //return i;

@@ -12,7 +12,7 @@ namespace TAPPLICATION.Model
         string APP_VERSION_NUMBER { get; } 
         string FILE_VERSION_NUMBER { get; }
 
-        FileInfoClass FileInfo { get; set; }
+        CustomFileInfo FileInfo { get; set; }
 
         /// <summary>
         /// use this Event if you want to get this object saved

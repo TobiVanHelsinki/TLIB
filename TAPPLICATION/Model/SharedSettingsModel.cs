@@ -121,11 +121,11 @@ namespace TAPPLICATION.Model
         public string FOLDERMODE_PATH { get => Get(); set => Set(value); }
 
         [Setting("LAST_SAVE_INFO", null, SaveType.Nothing)]
-        public FileInfoClass LAST_SAVE_INFO
+        public CustomFileInfo LAST_SAVE_INFO
         {
             get
             {
-                return new FileInfoClass(LAST_SAVE_INFO_PLACE, LAST_SAVE_INFO_NAME, LAST_SAVE_INFO_PATH)
+                return new CustomFileInfo(LAST_SAVE_INFO_PLACE, LAST_SAVE_INFO_NAME, LAST_SAVE_INFO_PATH)
                 {
                     Token = LAST_SAVE_INFO_TOKEN
                 };
