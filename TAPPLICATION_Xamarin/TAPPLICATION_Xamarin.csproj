@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PCLStorage" Version="1.0.2" />
-    <PackageReference Include="Xam.Plugin.FilePicker" Version="1.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="TAPPLICATION">
       <HintPath>..\OutgoingReferences\TAPPLICATION.dll</HintPath>
     </Reference>

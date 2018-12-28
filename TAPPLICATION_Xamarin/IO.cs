@@ -23,10 +23,6 @@ namespace TAPPLICATION_Xamarin
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<FileInfo>> GetFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<bool> OpenFolder(DirectoryInfo Info)
         {
