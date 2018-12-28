@@ -1,0 +1,38 @@
+﻿using System;
+using System.IO;
+using TLIB;
+
+namespace TAPPLICATION.IO
+{
+    public class ExtendetFileInfo
+    {
+        public FileInfo FileInfo;
+        public string Name => FileInfo.Name;
+        public string Path => FileInfo.Path();
+        public string FullName => FileInfo.FullName;
+        public DirectoryInfo Directory => FileInfo.Directory;
+        public DateTime LastAccessTime;
+        public long Length;
+
+        public ExtendetFileInfo(string fullpath)
+        {
+            FileInfo = new FileInfo(fullpath);
+        }
+
+        public ExtendetFileInfo(string fileInfo, DateTime lastAccessTime, long length) : this(fileInfo)
+        {
+            LastAccessTime = lastAccessTime;
+            Length = length;
+        }
+
+        public static implicit operator FileInfo(ExtendetFileInfo efi)
+        {
+            return efi.FileInfo;
+        }
+
+        public override string ToString()
+        {
+            return FileInfo.ToString();
+        }
+    }
+}

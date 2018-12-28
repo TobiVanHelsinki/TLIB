@@ -2,91 +2,52 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace TLIB
+namespace TAPPLICATION.IO
 {
-    public enum UserDecision
+    public enum Place
     {
-        AskUser = 0,
-        ThrowError = 1
+        NotDefined = 0,
+        Extern = 2,
+        Roaming = 3,
+        Local = 4,
+        Assets = 5,
+        Temp = 6
     }
-
-    public enum FileNotFoundDecision
-    {
-        NotCreate,
-        Create,
-    }
-
+    
     public interface IPlatformIO
     {
-        /// <summary>
-        /// returns a system wide valid path to the given place
-        /// </summary>
-        /// <param name="relativ_local_path"></param>
-        /// <returns></returns>
-        Task<string> GetCompleteInternPath(Place place);
+        Task<IEnumerable<ExtendetFileInfo>> GetFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null);
 
-        /// <summary>
-        /// Save a string to the specified target file
-        /// Can throw
-        /// </summary>
-        /// <param name="saveChar"></param>
-        /// <param name="ePlace"></param>
-        /// <param name="strSaveName"></param>
-        /// <param name="strSavePath"></param>
-        Task SaveFileContent(string saveChar, FileInfo Info);
+        #region Basic File Operations
 
-        /// <summary>
-        /// Remove a string from the specified target file
-        /// Can throw
-        /// </summary>
-        /// <param name="delChar"></param>
-        /// <param name="ePlace"></param>
-        /// <param name="strSaveName"></param>
-        /// <param name="strSavePath"></param>
         Task RemoveFile(FileInfo Info);
-
-        /// <summary>
-        /// Load the specified target file and returns the content and filename
-        /// Can throw
-        /// </summary>
-        /// <param name="ePlace"></param>
-        /// <param name="strSaveName"></param>
-        /// <param name="strSavePath"></param>
-        /// <param name="FileTypes"></param>
-        /// <param name="eUD"></param>
-        /// <returns></returns>
-        Task<string> LoadFileContent(FileInfo Info);
-
-        /// <summary>
-        /// Can throw
-        /// </summary>
-        /// <param name="strPath"></param>
-        /// <returns></returns>
-        Task<IEnumerable<FileInfo>> GetListofFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null);
-
-        /// <summary>
-        /// Copys a File to a Folder with the new Name (if provided in Target) (do not forget the fileextension!)
-        /// </summary>
-        /// <param name="Target"></param>
-        /// <param name="Source"></param>
-        /// <returns></returns>
-        Task<FileInfo> CopyTo(FileInfo Source, FileInfo Target);
         Task<FileInfo> Rename(FileInfo SourceFile, string NewName);
+        Task<FileInfo> CopyTo(FileInfo Source, FileInfo Target);
+        Task MoveTo(FileInfo Source, FileInfo Target);
+
+        #endregion
+        #region Multiple File Operations
 
         Task MoveAllFiles(DirectoryInfo Source, DirectoryInfo Target, IEnumerable<string> FileTypes = null);
         Task CopyAllFiles(DirectoryInfo Source, DirectoryInfo Target, IEnumerable<string> FileTypes = null);
-        
-        //Task<FileInfo> GetFolderInfo(FileInfo Info, UserDecision eUser = UserDecision.AskUser);
-        //Task<FileInfo> GetFileInfo(FileInfo Info, UserDecision eUser = UserDecision.AskUser);
 
-        Task<bool> OpenFolder(DirectoryInfo Info);
-        void CreateSaveContainer();
 
+        #endregion
+        #region File Content
+        Task SaveFileContent(string saveChar, FileInfo Info);
+        Task<string> LoadFileContent(FileInfo Info);
+        #endregion
+        #region Helper
+        Task CreateFolder(DirectoryInfo Info);
+        #endregion
+        #region Picker
         Task<DirectoryInfo> PickFolder(string Token = null);
         Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null);
-
-        Task<bool> GetAccess(DirectoryInfo Info);
-        Task<bool> GetAccess(FileInfo Info);
-
+        #endregion
+        #region Other
+        Task<string> GetCompleteInternPath(Place place);
+        Task<bool> OpenFolder(DirectoryInfo Info);
+        void CreateSaveContainer();
+        #endregion
     }
 }

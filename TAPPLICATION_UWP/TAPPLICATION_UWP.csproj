@@ -109,7 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="TAPPLICATION">
-      <HintPath>..\..\TLIB\OutgoingReferences\TAPPLICATION.dll</HintPath>
+      <HintPath>..\OutgoingReferences\TAPPLICATION.dll</HintPath>
     </Reference>
     <Reference Include="TLIB">
       <HintPath>..\..\TLIB\OutgoingReferences\TLIB.dll</HintPath>

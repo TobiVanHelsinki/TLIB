@@ -1,58 +1,44 @@
-﻿using PCLStorage;
-using Plugin.FilePicker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using TAPPLICATION_UWP;
-using TLIB;
+using TAPPLICATION.IO;
 
 namespace TAPPLICATION_Xamarin
 {
     class IO : StandardIO, IPlatformIO
     {
-        public async Task<string> GetCompleteInternPath(Place place)
+        public Task CreateFolder(DirectoryInfo Info)
         {
-            if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
-            return "";
-            switch (place)
-            {
-                case Place.Temp:
-                case Place.Local:
-                case Place.Roaming:
-                case Place.Assets:
-                default:
-                    throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
 
         public void CreateSaveContainer()
         {
-
+            throw new NotImplementedException();
         }
 
-        public async Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)
+        public Task<string> GetCompleteInternPath(Place place)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<DirectoryInfo> PickFolder(string Token)
+        public Task<IEnumerable<FileInfo>> GetFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> GetAccess(DirectoryInfo Info)
+        public Task<bool> OpenFolder(DirectoryInfo Info)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> GetAccess(FileInfo Info)
+        public Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> OpenFolder(DirectoryInfo Info)
+        public Task<DirectoryInfo> PickFolder(string Token = null)
         {
             throw new NotImplementedException();
         }

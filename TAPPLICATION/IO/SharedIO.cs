@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
 using TLIB;
@@ -19,46 +20,27 @@ namespace TAPPLICATION.IO
 
         public static IPlatformIO CurrentIO;
 
-        /// <summary>
-        /// returns the current default save path
-        /// </summary>
-        public static string GetCurrentSavePath()
+        public static DirectoryInfo CurrentSaveDir => new DirectoryInfo(CurrentSavePath);
+        public static string CurrentSavePath
         {
-            if (SharedSettingsModel.I.FOLDERMODE)
+            get
             {
-                return SharedSettingsModel.I.FOLDERMODE_PATH;
-            }
-            else
-            {
-                var t = (CurrentIO?.GetCompleteInternPath(GetCurrentSavePlace()));
-                t.Wait();
-                var x = t.Result;
-                return x + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
-            }
-        }
-
-        /// <summary>
-        /// returns the current default save place
-        /// </summary>
-        public static Place GetCurrentSavePlace()
-        {
-            if (SharedSettingsModel.I.FOLDERMODE)
-            {
-                return Place.Extern;
-            }
-            else
-            {
-                if (SharedSettingsModel.I.INTERN_SYNC)
+                string ret;
+                if (SharedSettingsModel.I.FOLDERMODE)
                 {
-                    return Place.Roaming;
+                    ret = SharedSettingsModel.I.FOLDERMODE_PATH;
                 }
                 else
                 {
-                    return Place.Local;
+                    var t = CurrentIO?.GetCompleteInternPath(CurrentSavePlace);
+                    t.Wait();
+                    ret = t.Result + SharedConstants.INTERN_SAVE_CONTAINER;
                 }
-
+                return ret.LastOrDefault() == Path.DirectorySeparatorChar ? ret : ret + Path.DirectorySeparatorChar;
             }
         }
+
+        public static Place CurrentSavePlace { get { return SharedSettingsModel.I.FOLDERMODE ? Place.Extern : SharedSettingsModel.I.INTERN_SYNC ? Place.Roaming : Place.Local; } }
 
         /// <summary>
         /// Creates multiple files at the folder specified at info.
@@ -67,13 +49,11 @@ namespace TAPPLICATION.IO
         /// <param name="Dir">Folder to save to</param>
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, DirectoryInfo Dir)
         {
-            await CurrentIO?.GetAccess(Dir);
             foreach (var (Name, Content) in FileContents)
             {
-                //FileInfo.Filename = Name;
                 try
                 {
-                    var f = new FileInfo(Dir.FullName + Name);
+                    var f = new FileInfo(Path.Combine(Dir.FullName,Name));
                     await CurrentIO?.SaveFileContent(Content, f);
                 }
                 catch (Exception x)
@@ -89,21 +69,18 @@ namespace TAPPLICATION.IO
         /// Saves the MainType Object at the place, that is descriped at the Object. If saveplace is not defined or temp, it will be saved to current default location
         /// </summary>
         /// <param name="Object"></param>
-        /// <param name="eUD"></param>
-        /// 
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
-        public static async Task<FileInfo> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<FileInfo> SaveAtOriginPlace(IMainType Object)
         {
-            if (!Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.NotDefined))
-                && !Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Temp))
-                && !Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets))) //TODO Check these query
+            if (Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Temp))
+                || Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets))) //TODO Check these query
             {
-                return await Save(Object, eUD);
+                return await SaveAtCurrentPlace(Object);
             }
             else
             {
-                return await SaveAtCurrentPlace(Object, eUD);
+                return await Save(Object);
             }
         }
 
@@ -111,13 +88,11 @@ namespace TAPPLICATION.IO
         /// Saves the MainType Object to current default location
         /// </summary>
         /// <param name="Object"></param>
-        /// <param name="eUD"></param>
-        /// 
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
-        public static async Task<FileInfo> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
+        public static async Task<FileInfo> SaveAtCurrentPlace(IMainType Object)
         {
-            Object.FileInfo = await Save(Object, eUD, new FileInfo(GetCurrentSavePath() + Object.FileInfo.Name));
+            Object.FileInfo = await Save(Object, new FileInfo(CurrentSavePath + Object.FileInfo.Name));
             return Object.FileInfo;
         }
 
@@ -129,27 +104,28 @@ namespace TAPPLICATION.IO
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
         public static async Task<FileInfo> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new FileInfo(await CurrentIO?.GetCompleteInternPath(Place.Temp) + Object.FileInfo.Name));
+            return await Save(Object, Info: new FileInfo(await CurrentIO?.GetCompleteInternPath(Place.Temp) + Object.FileInfo.Name));
         }
         
         /// <summary>
         /// Saves the Object to the specified location at "info" or if null to the info at the object
         /// </summary>
         /// <param name="Object"></param>
-        /// <param name="eUD"></param>
         /// <param name="Info"></param>
+        /// 
         /// 
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
-        public static async Task<FileInfo> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfo Info = null)
+        public static async Task<FileInfo> Save(IMainType Object, FileInfo Info = null)
         {
             if (Object == null)
             {
                 throw new ArgumentNullException("MainObject was Empty");
             }
             System.Diagnostics.Debug.WriteLine("Saving" + Object.ToString());
-            await CurrentIO?.SaveFileContent(Serialize(Object), Info ?? Object.FileInfo);
-            return Info ?? Object.FileInfo;
+            var InfoToUse = Info ?? Object.FileInfo;
+            await CurrentIO?.SaveFileContent(Serialize(Object), InfoToUse);
+            return InfoToUse;
         }
 
         #endregion
@@ -257,11 +233,11 @@ namespace TAPPLICATION.IO
         /// <param name="eUD"></param>
         /// <exception cref="Exception"/>
         /// <returns></returns>
-        public static async Task<CurrentType> Load(FileInfo Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<CurrentType> Load(FileInfo Info, List<string> FileTypes = null)
         {
             var FileContent = await CurrentIO?.LoadFileContent(Info);
             var NewMainObject = Deserialize(FileContent);
-            //NewMainObject.FileInfo = Info;
+            NewMainObject.FileInfo = Info;
             return NewMainObject;
         }
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TAPPLICATION.IO;
 using TLIB;
 
 namespace TAPPLICATION.Model
@@ -124,7 +125,8 @@ namespace TAPPLICATION.Model
                 try
                 {
                     System.Diagnostics.Debug.WriteLine("SharedAppModel_PropertyChanged save");
-                    var T = IO.SharedIO.SaveAtOriginPlace(MainObject, eUD: UserDecision.ThrowError);
+                    //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                    var T = IO.SharedIO.SaveAtOriginPlace(MainObject);
                     T.Wait();
                     SharedSettingsModel.I.LAST_SAVE_INFO = T.Result;
                     MainObjectSaved?.Invoke(this, MainObject);

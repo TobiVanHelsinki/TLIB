@@ -20,5 +20,15 @@ namespace TLIB
         {
             return new DirectoryInfo(Dir.FullName);
         }
+
+        public static string Path(this FileInfo File)
+        {
+            return File.Directory.FullName + System.IO.Path.DirectorySeparatorChar;
+        }
+
+        public static string Path(this DirectoryInfo Dir)
+        {
+            return Dir.FullName + System.IO.Path.DirectorySeparatorChar;
+        }
     }
 }
