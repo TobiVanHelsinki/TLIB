@@ -125,7 +125,7 @@ namespace TAPPLICATION.Model
         {
             get
             {
-                return new CustomFileInfo(LAST_SAVE_INFO_PLACE, LAST_SAVE_INFO_NAME, LAST_SAVE_INFO_PATH)
+                return new CustomFileInfo(LAST_SAVE_INFO_NAME, LAST_SAVE_INFO_PATH)
                 {
                     Token = LAST_SAVE_INFO_TOKEN
                 };
@@ -143,7 +143,6 @@ namespace TAPPLICATION.Model
                 {
                     LAST_SAVE_INFO_NAME = value.Name;
                     LAST_SAVE_INFO_PATH = value.Directory.FullName;
-                    LAST_SAVE_INFO_PLACE = value.Fileplace;
                     LAST_SAVE_INFO_TOKEN = value.Token;
                 }
                 Instance.NotifyPropertyChanged();

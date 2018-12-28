@@ -24,20 +24,6 @@ namespace TLIB
         public DirectoryInfo Directory => SystemFileInfo?.Directory;
         public string Fullname => SystemFileInfo?.FullName;
 
-        Place _Fileplace = Place.NotDefined;
-        [Obsolete]
-        public Place Fileplace
-        {
-            get { return _Fileplace; }
-            set
-            {
-                if (value != _Fileplace)
-                {
-                    _Fileplace = value;
-                }
-            }
-        }
-
         string _FolderToken = "";
         [Obsolete]
         public string Token
@@ -67,9 +53,8 @@ namespace TLIB
             SystemFileInfo = fi;
         }
 
-        public CustomFileInfo(Place fileplace, string Filename, string Filepath)
+        public CustomFileInfo(string Filename, string Filepath)
         {
-            Fileplace = fileplace;
             try
             {
                 SystemFileInfo = new FileInfo(Filepath + Filename);
@@ -98,8 +83,8 @@ namespace TLIB
 
         public CustomFileInfo Clone()
         {
-            return new CustomFileInfo(this.Fileplace, this.Name, this.Directory.FullName)
-            {Token = this.Token};
+            return new CustomFileInfo(this.Name, this.Directory.FullName)
+            { Token = this.Token};
         }
 
         public override string ToString()

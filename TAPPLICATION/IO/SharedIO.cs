@@ -98,9 +98,9 @@ namespace TAPPLICATION.IO
         /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
         public static async Task<CustomFileInfo> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
         {
-            if (Object.FileInfo.Fileplace != Place.NotDefined 
-                && Object.FileInfo.Fileplace != Place.Temp
-                && Object.FileInfo.Fileplace != Place.Assets)
+            if (!Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.NotDefined))
+                && !Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Temp))
+                && !Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets))) //TODO Check these query
             {
                 return await Save(Object, eUD);
             }
@@ -132,7 +132,7 @@ namespace TAPPLICATION.IO
         /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
         public static async Task<CustomFileInfo> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new CustomFileInfo(Place.Temp, Object.FileInfo.Name, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
+            return await Save(Object, UserDecision.ThrowError, Info: new CustomFileInfo(Object.FileInfo.Name, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
         }
         
         /// <summary>
