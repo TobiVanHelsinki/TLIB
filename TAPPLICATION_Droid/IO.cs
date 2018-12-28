@@ -1,6 +1,4 @@
-﻿using PCLStorage;
-using Plugin.FilePicker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,7 +6,7 @@ using System.Threading.Tasks;
 using TAPPLICATION_UWP;
 using TLIB;
 
-namespace TAPPLICATION_Xamarin
+namespace TAPPLICATION_Droid
 {
     class IO : StandardIO, IPlatformIO
     {
@@ -32,27 +30,27 @@ namespace TAPPLICATION_Xamarin
 
         }
 
-        public async Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)
+        public Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<DirectoryInfo> PickFolder(string Token)
+        Task<DirectoryInfo> IPlatformIO.PickFolder(string Token)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> GetAccess(DirectoryInfo Info)
+        public Task<bool> GetAccess(DirectoryInfo Info)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> GetAccess(FileInfo Info)
+        public Task<bool> GetAccess(FileInfo Info)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> OpenFolder(DirectoryInfo Info)
+        public Task<bool> OpenFolder(DirectoryInfo Info)
         {
             throw new NotImplementedException();
         }

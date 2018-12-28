@@ -70,11 +70,11 @@ namespace TLIB
         /// <param name="Target"></param>
         /// <param name="Source"></param>
         /// <returns></returns>
-        Task<FileInfo> CopyTo(FileInfo Target, FileInfo Source);
+        Task<FileInfo> CopyTo(FileInfo Source, FileInfo Target);
         Task<FileInfo> Rename(FileInfo SourceFile, string NewName);
 
-        Task MoveAllFiles(DirectoryInfo Target, DirectoryInfo Source, IEnumerable<string> FileTypes = null);
-        Task CopyAllFiles(DirectoryInfo Target, DirectoryInfo Source, IEnumerable<string> FileTypes = null);
+        Task MoveAllFiles(DirectoryInfo Source, DirectoryInfo Target, IEnumerable<string> FileTypes = null);
+        Task CopyAllFiles(DirectoryInfo Source, DirectoryInfo Target, IEnumerable<string> FileTypes = null);
         
         //Task<FileInfo> GetFolderInfo(FileInfo Info, UserDecision eUser = UserDecision.AskUser);
         //Task<FileInfo> GetFileInfo(FileInfo Info, UserDecision eUser = UserDecision.AskUser);
@@ -82,8 +82,8 @@ namespace TLIB
         Task<bool> OpenFolder(DirectoryInfo Info);
         void CreateSaveContainer();
 
-        Task<DirectoryInfo> FolderPicker();
-        Task<FileInfo> FilePicker(IEnumerable<string> lststrFileEndings);
+        Task<DirectoryInfo> PickFolder(string Token = null);
+        Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null);
 
         Task<bool> GetAccess(DirectoryInfo Info);
         Task<bool> GetAccess(FileInfo Info);

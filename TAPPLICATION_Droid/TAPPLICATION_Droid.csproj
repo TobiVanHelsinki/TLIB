@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="TAPPLICATION">
+      <HintPath>..\..\TLIB\OutgoingReferences\TAPPLICATION.dll</HintPath>
+    </Reference>
+    <Reference Include="TLIB">
+      <HintPath>..\..\TLIB\OutgoingReferences\TLIB.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+</Project>

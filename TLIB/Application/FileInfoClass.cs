@@ -34,7 +34,7 @@ namespace TLIB
                 }
             }
         }
-        public string Name { get => SystemFileInfo.Name; set { SystemFileInfo = new FileInfo(Path + value); } }
+        public string Name { get => SystemFileInfo?.Name ?? _Filename; set { CreateFileInfo(); } }
 
         string _Filepath = "";
         [Obsolete]
@@ -144,24 +144,30 @@ namespace TLIB
             SystemFileInfo = fi;
         }
 
-        public FileInfoClass(Place fileplace, string filename = "", string filepath = "") 
+        public FileInfoClass(Place fileplace, string filename = "", string filepath = "")
         {
             Filename = filename;
             Filepath = filepath;
             Fileplace = fileplace;
+            CreateFileInfo();
+        }
+
+        private void CreateFileInfo()
+        {
             try
             {
                 SystemFileInfo = new FileInfo(Filepath + Filename);
             }
             catch (Exception)
             {
+                if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
             }
         }
 
         // User-defined conversion from Digit to double
         public static implicit operator FileInfo(FileInfoClass fic)
         {
-            return fic.SystemFileInfo;
+            return fic?.SystemFileInfo;
         }
         //  User-defined conversion from double to Digit
         public static implicit operator FileInfoClass(FileInfo fi)

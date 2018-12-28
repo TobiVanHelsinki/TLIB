@@ -31,7 +31,10 @@ namespace TAPPLICATION.IO
             }
             else
             {
-                return CurrentIO?.GetCompleteInternPath(GetCurrentSavePlace()) + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
+                var t = (CurrentIO?.GetCompleteInternPath(GetCurrentSavePlace()));
+                t.Wait();
+                var x = t.Result;
+                return x + SharedConstants.INTERN_SAVE_CONTAINER + @"\";
             }
         }
 
@@ -258,18 +261,11 @@ namespace TAPPLICATION.IO
         /// <param name="eUD"></param>
         /// <exception cref="Exception"/>
         /// <returns></returns>
-        public static async Task<CurrentType> Load(FileInfoClass Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
+        public static async Task<CurrentType> Load(FileInfo Info, List<string> FileTypes = null, UserDecision eUD = UserDecision.AskUser)
         {
-            var A = DateTimeOffset.Now;
-            var File = await CurrentIO?.LoadFileContent(Info);
-            var B = DateTimeOffset.Now;
-            var NewMainObject = Deserialize(File);
-            var C = DateTimeOffset.Now;
-            NewMainObject.FileInfo = Info;
-            if (SharedSettingsModel.I.DEBUG_FEATURES)
-            {
-                SharedAppModel.Instance?.NewNotification("LoadTime:\nFileloading\t" + (B - A).ToString()+"\nDeserialize\t" + (C - B).ToString());
-            }
+            var FileContent = await CurrentIO?.LoadFileContent(Info);
+            var NewMainObject = Deserialize(FileContent);
+            //NewMainObject.FileInfo = Info;
             return NewMainObject;
         }
         #endregion
