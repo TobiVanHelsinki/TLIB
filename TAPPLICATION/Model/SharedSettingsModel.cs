@@ -141,8 +141,8 @@ namespace TAPPLICATION.Model
                 }
                 else
                 {
-                    LAST_SAVE_INFO_NAME = value.Filename;
-                    LAST_SAVE_INFO_PATH = value.Filepath;
+                    LAST_SAVE_INFO_NAME = value.Name;
+                    LAST_SAVE_INFO_PATH = value.Directory.FullName;
                     LAST_SAVE_INFO_PLACE = value.Fileplace;
                     LAST_SAVE_INFO_TOKEN = value.Token;
                 }

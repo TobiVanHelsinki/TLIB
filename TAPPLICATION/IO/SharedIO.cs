@@ -68,7 +68,7 @@ namespace TAPPLICATION.IO
         /// <param name="FileInfo">Folder to save to</param>
         public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, CustomFileInfo FileInfo)
         {
-            var d = new DirectoryInfo(FileInfo.Path);
+            var d = new DirectoryInfo(FileInfo.Directory.FullName);
             await CurrentIO?.GetAccess(d);
             //FileInfo = await CurrentIO?.GetFolderInfo(FileInfo, UserDecision.AskUser);
             foreach (var (Name, Content) in FileContents)
@@ -120,9 +120,8 @@ namespace TAPPLICATION.IO
         /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
         public static async Task<CustomFileInfo> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
         {
-            Object.FileInfo.Fileplace = GetCurrentSavePlace();
-            Object.FileInfo.Filepath = GetCurrentSavePath();
-            return await Save(Object, eUD, Object.FileInfo);
+            Object.FileInfo = await Save(Object, eUD, new FileInfo(GetCurrentSavePath() + Object.FileInfo.Name));
+            return Object.FileInfo;
         }
 
         /// <summary>
@@ -133,7 +132,7 @@ namespace TAPPLICATION.IO
         /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
         public static async Task<CustomFileInfo> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new CustomFileInfo(Place.Temp, Object.FileInfo.Filename, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
+            return await Save(Object, UserDecision.ThrowError, Info: new CustomFileInfo(Place.Temp, Object.FileInfo.Name, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
         }
         
         /// <summary>
