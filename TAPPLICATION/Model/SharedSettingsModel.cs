@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using TLIB;
 using TLIB.Settings;
+using System.IO;
 
 namespace TAPPLICATION.Model
 {
@@ -121,45 +122,21 @@ namespace TAPPLICATION.Model
         public string FOLDERMODE_PATH { get => Get(); set => Set(value); }
 
         [Setting("LAST_SAVE_INFO", null, SaveType.Nothing)]
-        public CustomFileInfo LAST_SAVE_INFO
+        public FileInfo LAST_SAVE_INFO
         {
             get
             {
-                return new CustomFileInfo(LAST_SAVE_INFO_NAME, LAST_SAVE_INFO_PATH)
-                {
-                    Token = LAST_SAVE_INFO_TOKEN
-                };
+                return new FileInfo(LAST_SAVE_INFO_PATH);
             }
             set
             {
-                if (value == null)
-                {
-                    LAST_SAVE_INFO_NAME = "";
-                    LAST_SAVE_INFO_PATH = "";
-                    LAST_SAVE_INFO_PLACE = Place.NotDefined;
-                    LAST_SAVE_INFO_TOKEN = "";
-                }
-                else
-                {
-                    LAST_SAVE_INFO_NAME = value.Name;
-                    LAST_SAVE_INFO_PATH = value.Directory.FullName;
-                    LAST_SAVE_INFO_TOKEN = value.Token;
-                }
+                LAST_SAVE_INFO_PATH = value?.FullName ?? "";
                 Instance.NotifyPropertyChanged();
             }
         }
 
-        [Setting("SETTINGS_LAST_CHAR_NAME", "", SaveType.Local)]
-        public string LAST_SAVE_INFO_NAME { get => Get(); set => Set(value); }
-
-        [Setting("SETTINGS_LAST_SAVE_PATH", "", SaveType.Local)]
+        [Setting("LAST_SAVE_INFO_PATH", "", SaveType.Local)]
         public string LAST_SAVE_INFO_PATH { get => Get(); set => Set(value); }
-
-        [Setting("SETTINGS_LAST_SAVE_PLACE", Place.NotDefined, SaveType.Local, typeof(int))]
-        public Place LAST_SAVE_INFO_PLACE { get => (Place)Get(); set => Set(value); }
-
-        [Setting("SETTINGS_LAST_SAVE_TOKEN", "", SaveType.Local)]
-        public string LAST_SAVE_INFO_TOKEN { get => Get(); set => Set(value); }
 
         #endregion
         #region Methods

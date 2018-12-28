@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
 using TLIB;
@@ -65,18 +64,16 @@ namespace TAPPLICATION.IO
         /// Creates multiple files at the folder specified at info.
         /// </summary>
         /// <param name="FileContents">List of FileName and Content</param>
-        /// <param name="FileInfo">Folder to save to</param>
-        public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, CustomFileInfo FileInfo)
+        /// <param name="Dir">Folder to save to</param>
+        public async static void SaveTextesToFiles(IEnumerable<(string Name, string Content)> FileContents, DirectoryInfo Dir)
         {
-            var d = new DirectoryInfo(FileInfo.Directory.FullName);
-            await CurrentIO?.GetAccess(d);
-            //FileInfo = await CurrentIO?.GetFolderInfo(FileInfo, UserDecision.AskUser);
+            await CurrentIO?.GetAccess(Dir);
             foreach (var (Name, Content) in FileContents)
             {
                 //FileInfo.Filename = Name;
                 try
                 {
-                    var f = new FileInfo(d.FullName + Name);
+                    var f = new FileInfo(Dir.FullName + Name);
                     await CurrentIO?.SaveFileContent(Content, f);
                 }
                 catch (Exception x)
@@ -95,8 +92,8 @@ namespace TAPPLICATION.IO
         /// <param name="eUD"></param>
         /// 
         /// <exception cref="Exception"/>
-        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
-        public static async Task<CustomFileInfo> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
+        /// <returns>Task<FileInfo> The place where it is actually saved</returns>
+        public static async Task<FileInfo> SaveAtOriginPlace(IMainType Object, UserDecision eUD = UserDecision.AskUser)
         {
             if (!Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.NotDefined))
                 && !Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Temp))
@@ -117,8 +114,8 @@ namespace TAPPLICATION.IO
         /// <param name="eUD"></param>
         /// 
         /// <exception cref="Exception"/>
-        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
-        public static async Task<CustomFileInfo> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
+        /// <returns>Task<FileInfo> The place where it is actually saved</returns>
+        public static async Task<FileInfo> SaveAtCurrentPlace(IMainType Object, UserDecision eUD = UserDecision.ThrowError)
         {
             Object.FileInfo = await Save(Object, eUD, new FileInfo(GetCurrentSavePath() + Object.FileInfo.Name));
             return Object.FileInfo;
@@ -129,10 +126,10 @@ namespace TAPPLICATION.IO
         /// </summary>
         /// <param name="Object"></param>
         /// <exception cref="Exception"/>
-        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
-        public static async Task<CustomFileInfo> SaveAtTempPlace(IMainType Object)
+        /// <returns>Task<FileInfo> The place where it is actually saved</returns>
+        public static async Task<FileInfo> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, UserDecision.ThrowError, Info: new CustomFileInfo(Object.FileInfo.Name, await CurrentIO?.GetCompleteInternPath(Place.Temp)));
+            return await Save(Object, UserDecision.ThrowError, Info: new FileInfo(await CurrentIO?.GetCompleteInternPath(Place.Temp) + Object.FileInfo.Name));
         }
         
         /// <summary>
@@ -143,8 +140,8 @@ namespace TAPPLICATION.IO
         /// <param name="Info"></param>
         /// 
         /// <exception cref="Exception"/>
-        /// <returns>Task<CustomFileInfo> The place where it is actually saved</returns>
-        public static async Task<CustomFileInfo> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, CustomFileInfo Info = null)
+        /// <returns>Task<FileInfo> The place where it is actually saved</returns>
+        public static async Task<FileInfo> Save(IMainType Object, UserDecision eUD = UserDecision.AskUser, FileInfo Info = null)
         {
             if (Object == null)
             {

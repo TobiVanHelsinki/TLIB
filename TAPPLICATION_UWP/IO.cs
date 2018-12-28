@@ -88,7 +88,7 @@ namespace TAPPLICATION_UWP
             return await Launcher.LaunchFolderAsync(await StorageFolder.GetFolderFromPathAsync(Info.FullName));
         }
 
-        //public async Task<CustomFileInfo> GetFileInfo(CustomFileInfo Info, UserDecision eUser = UserDecision.AskUser)
+        //public async Task<FileInfo> GetFileInfo(FileInfo Info, UserDecision eUser = UserDecision.AskUser)
         //{
         //    try
         //    {
@@ -125,7 +125,7 @@ namespace TAPPLICATION_UWP
         //}
 
 
-        //public async Task<CustomFileInfo> GetFolderInfo(CustomFileInfo Info, UserDecision eUser = UserDecision.AskUser)
+        //public async Task<FileInfo> GetFolderInfo(FileInfo Info, UserDecision eUser = UserDecision.AskUser)
         //{
         //    try
         //    {
@@ -252,7 +252,7 @@ namespace TAPPLICATION_UWP
         /// <param name="strPath"></param>
         /// <returns></returns>
         /// <throws>ArgumentException</throws>
-        //       internal async static Task<StorageFolder> GetFolder(CustomFileInfo Info, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
+        //       internal async static Task<StorageFolder> GetFolder(FileInfo Info, UserDecision eUser = UserDecision.AskUser, FileNotFoundDecision eCreation = FileNotFoundDecision.Create)
         //       {
         //           StorageFolder ReturnFolder = null;
         //           try
