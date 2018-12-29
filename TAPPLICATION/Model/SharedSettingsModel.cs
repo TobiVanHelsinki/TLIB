@@ -67,11 +67,11 @@ namespace TAPPLICATION.Model
                 switch (Attribute.DeviatingType ?? Setting.PropertyType)
                 {
                     case Type namedType when namedType == typeof(int):
-                        return int.Parse(UsedFunction(Attribute.SaveString).ToString());
+                        return int.Parse(UsedFunction(Attribute.SaveString)?.ToString());
                     case Type namedType when namedType == typeof(bool):
-                        return bool.Parse(UsedFunction(Attribute.SaveString).ToString());
+                        return bool.Parse(UsedFunction(Attribute.SaveString)?.ToString());
                     case Type namedType when namedType == typeof(string):
-                        return UsedFunction(Attribute.SaveString).ToString();
+                        return UsedFunction(Attribute.SaveString)?.ToString();
                     default:
                         return Attribute.DefaultValue;
                 }
