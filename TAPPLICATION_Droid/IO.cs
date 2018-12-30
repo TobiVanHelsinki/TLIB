@@ -14,9 +14,17 @@ namespace TAPPLICATION_Droid
     {
         public override async Task<string> LoadFileContent(FileInfo Info)
         {
-            if (Cache.TryGetValue(Info.FullName, out string retval))
+            var ret = "";
+            if (Cache.TryGetValue(Info.FullName, out Stream retval))
             {
-                return retval;
+                if (retval.CanRead)
+                {
+                    using (var r = new StreamReader(retval))
+                    {
+                        ret = r.ReadToEnd();
+                    }
+                }
+                return ret;
             }
             else
             {
@@ -47,8 +55,8 @@ namespace TAPPLICATION_Droid
         {
             throw new NotImplementedException();
         }
-        static Dictionary<string, string> Cache = new Dictionary<string, string>();
-        static void AddToCache(string key, string data)
+        static Dictionary<string, Stream> Cache = new Dictionary<string, Stream>();
+        static void AddToCache(string key, Stream data)
         {
             if (Cache.Count > 2)
             {
@@ -62,8 +70,9 @@ namespace TAPPLICATION_Droid
             if (fileData != null)
             {
                 var file = new FileInfo(Path.Combine(fileData.FilePath, fileData.FileName));
-                var contents = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
-                AddToCache(file.FullName, contents);
+                //var contents = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
+                //AddToCache(file.FullName, contents);
+                AddToCache(file.FullName, fileData.GetStream());
                 return file;
             }
             else

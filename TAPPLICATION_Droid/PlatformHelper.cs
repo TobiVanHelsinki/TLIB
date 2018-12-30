@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using TLIB;
+using TAPPLICATION;
 
 namespace TAPPLICATION_Droid
 {
@@ -28,11 +28,6 @@ namespace TAPPLICATION_Droid
             {
                 TAPPLICATION.Debugging.TraceException(ex);
             }
-        }
-
-        public string GetString(string strID)
-        {
-            return "";
         }
     }
 }

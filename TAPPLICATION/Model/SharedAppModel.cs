@@ -2,8 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using TAPPLICATION.IO;
-using TLIB;
 
 namespace TAPPLICATION.Model
 {

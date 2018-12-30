@@ -167,7 +167,7 @@ namespace TAPPLICATION.IO
             {
                 if (_JSON_Error_Notification == null)
                 {
-                    _JSON_Error_Notification = new Notification(PlatformHelper.GetString("Notification_Error_Loader_Error1/Text"));
+                    _JSON_Error_Notification = new Notification("There was an Error during deserialization. Your content migth be not complete.");
                 }
                 return _JSON_Error_Notification;
             }

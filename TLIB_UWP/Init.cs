@@ -4,7 +4,6 @@
     {
         public static void Do()
         {
-            TLIB.PlatformHelper.Platform = new PlatformHelper();
         }
     }
 }

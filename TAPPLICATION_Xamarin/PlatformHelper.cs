@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using TLIB;
+using TAPPLICATION;
 
-namespace TLIB_Xamarin
+namespace TAPPLICATION_Xamarin
 {
     internal class PlatformHelper : IPlatformHelper
     {
@@ -28,11 +28,6 @@ namespace TLIB_Xamarin
             {
                 TAPPLICATION.Debugging.TraceException(ex);
             }
-        }
-
-        public string GetString(string strID)
-        {
-            return "";
         }
     }
 }
