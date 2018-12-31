@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
-using TLIB;
 
 namespace TAPPLICATION.IO
 {
@@ -16,8 +15,6 @@ namespace TAPPLICATION.IO
     /// </summary>
     public class SharedIO 
     {
-        const string Prefix_Emergency = "EmergencySave_";
-
         public static IPlatformIO CurrentIO;
 
         public static DirectoryInfo CurrentSaveDir => new DirectoryInfo(CurrentSavePath);
@@ -92,7 +89,7 @@ namespace TAPPLICATION.IO
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
         public static async Task<FileInfo> SaveAtCurrentPlace(IMainType Object)
         {
-            Object.FileInfo = await Save(Object, new FileInfo(CurrentSavePath + Object.FileInfo.Name));
+            Object.FileInfo = await Save(Object, new FileInfo(Path.Combine(CurrentSavePath, Object.FileInfo.Name)));
             return Object.FileInfo;
         }
 
@@ -104,7 +101,8 @@ namespace TAPPLICATION.IO
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
         public static async Task<FileInfo> SaveAtTempPlace(IMainType Object)
         {
-            return await Save(Object, Info: new FileInfo(await CurrentIO?.GetCompleteInternPath(Place.Temp) + Object.FileInfo.Name));
+            string path = await CurrentIO?.GetCompleteInternPath(Place.Temp);
+            return await Save(Object, new FileInfo(Path.Combine(path, Object.FileInfo.Name)));
         }
         
         /// <summary>
@@ -229,11 +227,10 @@ namespace TAPPLICATION.IO
         /// <param name="ePlace"></param>
         /// <param name="strSaveName"></param>
         /// <param name="strSavePath"></param>
-        /// <param name="FileTypes"></param>
         /// <param name="eUD"></param>
         /// <exception cref="Exception"/>
         /// <returns></returns>
-        public static async Task<CurrentType> Load(FileInfo Info, List<string> FileTypes = null)
+        public static async Task<CurrentType> Load(FileInfo Info)
         {
             var FileContent = await CurrentIO?.LoadFileContent(Info);
             var NewMainObject = Deserialize(FileContent);

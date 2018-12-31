@@ -132,7 +132,7 @@ namespace TAPPLICATION_UWP
                 throw new IsOKException();
             }
             AddToFutureRequestList(Token, file);
-            return new FileInfo(file.Path + file.Name);
+            return new FileInfo(file.Path);
         }
 
         private static void AddToFutureRequestList(string Token, IStorageItem item)
