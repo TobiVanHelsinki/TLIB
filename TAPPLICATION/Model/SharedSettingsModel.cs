@@ -43,7 +43,6 @@ namespace TAPPLICATION.Model
         public static IPlatformSettings PlatformSettings;
         protected dynamic Get([CallerMemberName] string Name = "")
         {
-
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
             if (PlatformSettings == null)

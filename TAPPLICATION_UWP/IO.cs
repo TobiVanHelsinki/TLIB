@@ -94,7 +94,15 @@ namespace TAPPLICATION_UWP
         }
         async Task<StorageFolder> GetFolder(DirectoryInfo Info)
         {
-            return await StorageFolder.GetFolderFromPathAsync(Info.FullName);
+            try
+            {
+                return await StorageFolder.GetFolderFromPathAsync(Info.FullName);
+            }
+            catch (Exception ex)
+            {
+                TAPPLICATION.Debugging.TraceException(ex, Info.FullName);
+                throw;
+            }
         }
         async Task<StorageFolder> GetOrCreateFolder(DirectoryInfo Info)
         {
@@ -145,6 +153,7 @@ namespace TAPPLICATION_UWP
                 }
                 catch (Exception ex)
                 {
+                    if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
                     TAPPLICATION.Debugging.TraceException(ex, Token);
                 }
             }

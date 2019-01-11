@@ -1,5 +1,4 @@
 ﻿using Plugin.FilePicker;
-using Plugin.FilePicker.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,7 +57,7 @@ namespace TAPPLICATION_Droid
         static Dictionary<string, Stream> Cache = new Dictionary<string, Stream>();
         static void AddToCache(string key, Stream data)
         {
-            if (Cache.Count > 2)
+            if (Cache.Count > 10)
             {
                 Cache.Remove(Cache.Keys.First());
             }
@@ -66,12 +65,10 @@ namespace TAPPLICATION_Droid
         }
         public async Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)
         {
-            FileData fileData = await CrossFilePicker.Current.PickFile();
+            var fileData = await CrossFilePicker.Current.PickFile();
             if (fileData != null)
             {
                 var file = new FileInfo(Path.Combine(fileData.FilePath, fileData.FileName));
-                //var contents = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
-                //AddToCache(file.FullName, contents);
                 AddToCache(file.FullName, fileData.GetStream());
                 return file;
             }

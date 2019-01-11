@@ -78,6 +78,25 @@ namespace TLIB
         {
             return r.Next(maxValue);
         }
+
+        /// <summary>
+        /// retrieve a random datetime between.
+        /// </summary>
+        /// <param name="now"></param>
+        /// <param name="max"></param>
+        public static DateTime NextDateTime(DateTime now, DateTime max)
+        {
+            return new DateTime(NextLong(now.Ticks, max.Ticks));
+        }
+
+        public static long NextLong(long min, long max)
+        {
+            long result = r.Next((int)(min >> 32), (int)(max >> 32));
+            result = result << 32;
+            result = result | r.Next((int)min, (int)max);
+            return result;
+        }
+
         //
         // Zusammenfassung:
         //     Füllt die Elemente eines angegebenen Bytearrays mit Zufallszahlen.
