@@ -82,18 +82,19 @@ namespace TLIB
         /// <summary>
         /// retrieve a random datetime between.
         /// </summary>
-        /// <param name="now"></param>
-        /// <param name="max"></param>
-        public static DateTime NextDateTime(DateTime now, DateTime max)
+        /// <param name="minInclusive"></param>
+        /// <param name="maxExclusive"></param>
+        public static DateTime NextDateTime(DateTime minInclusive, DateTime maxExclusive)
         {
-            return new DateTime(NextLong(now.Ticks, max.Ticks));
+            return new DateTime(NextLong(minInclusive.Ticks, maxExclusive.Ticks));
         }
 
-        public static long NextLong(long min, long max)
+        public static long NextLong(long minInclusive, long maxExclusive)
         {
-            long result = r.Next((int)(min >> 32), (int)(max >> 32));
+            System.Diagnostics.Debug.WriteLine("minInclusive: {0}, maxExclusive: {1}", minInclusive, maxExclusive);
+            long result = r.Next((int)(minInclusive >> 32), (int)(maxExclusive >> 32));
             result = result << 32;
-            result = result | r.Next((int)min, (int)max);
+            result = result | (uint)r.Next((int)minInclusive, (int)maxExclusive);
             return result;
         }
 
