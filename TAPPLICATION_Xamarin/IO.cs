@@ -31,6 +31,27 @@ namespace TAPPLICATION_Xamarin
                 throw new KeyNotFoundException();
             }
         }
+
+        public override Task SaveFileContent(string saveChar, FileInfo Info)
+        {
+            //TODO Test
+            if (Cache.TryGetValue(Info.FullName, out Stream retval))
+            {
+                if (retval.CanRead)
+                {
+                    using (var r = new StreamWriter(retval))
+                    {
+                        r.Write(saveChar);
+                    }
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException();
+            }
+            return base.SaveFileContent(saveChar, Info);
+        }
+
         public Task CreateFolder(DirectoryInfo Info)
         {
             throw new NotImplementedException();
@@ -91,6 +112,11 @@ namespace TAPPLICATION_Xamarin
 
         public Task<DirectoryInfo> PickFolder(string Token = null)
         {
+            //TODO test
+            //Android Code
+            //Intent intent = new Intent(Intent.ActionOpenDocumentTree);
+            //intent.SetFlags(ActivityFlags.NewTask);
+            //Application.Context.StartActivity(intent);
             throw new NotImplementedException();
         }
     }
