@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using TAPPLICATION;
+using Xamarin.Essentials;
 
 namespace TAPPLICATION_Xamarin
 {
@@ -12,9 +13,19 @@ namespace TAPPLICATION_Xamarin
             {
                 Event?.Invoke(o, new PropertyChangedEventArgs(property));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                TAPPLICATION.Debugging.TraceException(ex);
+                try
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Event?.Invoke(o, new PropertyChangedEventArgs(property));
+                    });
+                }
+                catch (Exception ex)
+                {
+                    TAPPLICATION.Debugging.TraceException(ex);
+                }
             }
         }
 
@@ -22,7 +33,7 @@ namespace TAPPLICATION_Xamarin
         {
             try
             {
-                p?.Invoke();
+                MainThread.BeginInvokeOnMainThread(p);
             }
             catch (Exception ex)
             {

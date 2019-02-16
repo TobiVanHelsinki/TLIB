@@ -1,5 +1,6 @@
-﻿using System;
+﻿using TLIB;
 using TLIB.Settings;
+using Xamarin.Essentials;
 
 namespace TAPPLICATION_Xamarin
 {
@@ -7,24 +8,21 @@ namespace TAPPLICATION_Xamarin
     {
         public void SetLocal(string place, object value)
         {
-            return;
-            throw new ArgumentException();
+            Preferences.Set(place, value?.ToString());
         }
-        public void SetRoaming(string place, object value)
-        {
-            return;
-            throw new ArgumentException();
-        }
+        public void SetRoaming(string place, object value) => SetLocal(place, value);
 
         public object GetLocal(string place)
         {
-            return default;
-            throw new ArgumentException();
+            if (Preferences.ContainsKey(place))
+            {
+                return Preferences.Get(place, null);
+            }
+            else
+            {
+                throw new SettingNotPresentException();
+            }
         }
-        public object GetRoaming(string place)
-        {
-            return default;
-            throw new ArgumentException();
-        }
+        public object GetRoaming(string place) => GetLocal(place);
     }
 }

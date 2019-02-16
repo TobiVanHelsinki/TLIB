@@ -1,9 +1,9 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using TAPPLICATION;
 using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
 namespace TAPPLICATION_UWP
 {
@@ -19,10 +19,11 @@ namespace TAPPLICATION_UWP
             {
                 try
                 {
-                    Task T = DispatcherHelper.AwaitableRunAsync(CoreApplication.MainView?.Dispatcher, () =>
+                    Task T = CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.High,
+                    () =>
                     {
                         Event?.Invoke(o, new PropertyChangedEventArgs(property));
-                    });
+                    }).AsTask();
                     T.Wait();
                 }
                 catch (Exception)
@@ -33,7 +34,12 @@ namespace TAPPLICATION_UWP
 
         public void ExecuteOnUIThreadAsync(Action p)
         {
-            DispatcherHelper.ExecuteOnUIThreadAsync(p);
+            Task T = CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    () =>
+                    {
+                        p?.Invoke();
+                    }).AsTask();
+            T.Wait();
         }
     }
 }
