@@ -71,7 +71,7 @@ namespace TAPPLICATION.IO
         public static async Task<FileInfo> SaveAtOriginPlace(IMainType Object)
         {
             if (Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Temp))
-                || Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets))) //TODO Check these query
+                || Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets))) 
             {
                 return await SaveAtCurrentPlace(Object);
             }

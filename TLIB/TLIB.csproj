@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>tlibkey.snk</AssemblyOriginatorKeyFile>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
