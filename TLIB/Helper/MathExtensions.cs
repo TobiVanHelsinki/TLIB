@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TLIB
+﻿namespace TLIB
 {
     public static class MathExtensions
     {
