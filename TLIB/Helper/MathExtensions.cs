@@ -1,4 +1,6 @@
-﻿namespace TLIB
+﻿using System;
+
+namespace TLIB
 {
     public static class MathExtensions
     {
@@ -22,11 +24,27 @@
         {
             return toTest > Border ? toTest : (Fallback != null ? Fallback.Value : Border);
         }
+        public static float UpperB(this float toTest, float Border, float? Fallback = null)
+        {
+            return toTest < Border ? toTest : (Fallback != null ? Fallback.Value : Border);
+        }
+        public static float LowerB(this float toTest, float Border, float? Fallback = null)
+        {
+            return toTest > Border ? toTest : (Fallback != null ? Fallback.Value : Border);
+        }
         public static double UpperB(this double toTest, double Border, double? Fallback = null)
         {
             return toTest < Border ? toTest : (Fallback != null ? Fallback.Value : Border);
         }
         public static double LowerB(this double toTest, double Border, double? Fallback = null)
+        {
+            return toTest > Border ? toTest : (Fallback != null ? Fallback.Value : Border);
+        }
+        public static decimal UpperB(this decimal toTest, decimal Border, decimal? Fallback = null)
+        {
+            return toTest < Border ? toTest : (Fallback != null ? Fallback.Value : Border);
+        }
+        public static decimal LowerB(this decimal toTest, decimal Border, decimal? Fallback = null)
         {
             return toTest > Border ? toTest : (Fallback != null ? Fallback.Value : Border);
         }

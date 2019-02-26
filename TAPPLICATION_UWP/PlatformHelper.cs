@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using TAPPLICATION;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -17,29 +16,23 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception)
             {
-                try
-                {
-                    Task T = CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.High,
-                    () =>
-                    {
-                        Event?.Invoke(o, new PropertyChangedEventArgs(property));
-                    }).AsTask();
-                    T.Wait();
-                }
-                catch (Exception)
-                {
-                }
+                ExecuteOnUIThreadAsync(() => {
+                    Event?.Invoke(o, new PropertyChangedEventArgs(property));
+                });
             }
         }
 
         public void ExecuteOnUIThreadAsync(Action p)
         {
-            Task T = CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                    () =>
-                    {
-                        p?.Invoke();
-                    }).AsTask();
-            T.Wait();
+            try
+            {
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                     p?.Invoke();
+                 });
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
