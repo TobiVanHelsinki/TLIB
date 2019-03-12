@@ -7,13 +7,11 @@ namespace TLIB
 {
     public static class Log
     {
-        const string FileName = "LogFile.txt";
+        public static string LogFile { get; set; }
+        public static int InMemoryLogMaxCount { get; set; } = Int32.MaxValue;
         public static ObservableCollection<string> InMemoryLog { get; } = new ObservableCollection<string>();
 
-        public static string FileLocation { get; set; }
-        public static int InMemoryLogMaxCount { get; set; } = Int32.MaxValue;
-
-        public static bool IsFileLogEnabled => FileLocation != null;
+        public static bool IsFileLogEnabled => LogFile != null;
         public static bool IsInMemoryLogEnabled { get; set; }
         public static bool IsConsoleLogEnabled { get; set; }
 
@@ -64,7 +62,7 @@ namespace TLIB
             {
                 try
                 {
-                    File.AppendAllText(Path.Combine(FileLocation, FileName), DateTime.Now + "\t" + msg + "\r\n");
+                    File.AppendAllText(LogFile, msg + Environment.NewLine);
                 }
                 catch (Exception)
                 {
