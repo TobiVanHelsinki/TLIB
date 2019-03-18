@@ -77,12 +77,14 @@ namespace TLIB
             }
             return ret;
         }
-        public static void AddRange<T>(this ICollection<T> source, IEnumerable<T> param)
+        public static ICollection<T> AddRange<T>(this ICollection<T> source, IEnumerable<T> param)
         {
+            source = source.ToList();
             foreach (var item in param)
             {
                 source.Add(item);
             }
+            return source;
         }
         public static int MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
         {
