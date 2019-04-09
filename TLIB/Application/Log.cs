@@ -12,6 +12,7 @@ namespace TLIB
         Error,
         Question
     }
+    public delegate void LogEventHandler(LogType l, Exception ex, string msg);
     public static class Log
     {
         public static string LogFile { get; set; }
@@ -22,13 +23,21 @@ namespace TLIB
         public static bool IsInMemoryLogEnabled { get; set; }
         public static bool IsConsoleLogEnabled { get; set; }
 
-        public static event EventHandler<string> DisplayMessageRequested;
+        public static event LogEventHandler DisplayMessageRequested;
         public static LogMode Mode = LogMode.Moderat;
-        public static void Write(string msg, Exception ex = null, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
+        public static void Write(string msg, Exception ex = null, LogType logType = LogType.None, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
         {
             if (Mode == LogMode.Moderat)
             {
                 msg = DateTime.Now + " " + msg;
+            }
+            if (ex != null && logType == LogType.None)
+            {
+                logType = LogType.Error;
+            }
+            else if (logType == LogType.None)
+            {
+                logType = LogType.Info;
             }
             msg = logType + " " + msg;
             if (Mode == LogMode.Verbose)
@@ -78,10 +87,12 @@ namespace TLIB
             }
             if (InterruptUser)
             {
-                DisplayMessageRequested?.Invoke(msg, msg);
+                DisplayMessageRequested?.Invoke(logType, ex, msg);
             }
         }
     }
+
+
     public enum LogMode
     {
         Minimal,
