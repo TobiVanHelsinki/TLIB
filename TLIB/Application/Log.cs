@@ -5,6 +5,13 @@ using System.Runtime.CompilerServices;
 
 namespace TLIB
 {
+    public enum LogType
+    {
+        None,
+        Info,
+        Error,
+        Question
+    }
     public static class Log
     {
         public static string LogFile { get; set; }
@@ -17,13 +24,6 @@ namespace TLIB
 
         public static event EventHandler<string> DisplayMessageRequested;
         public static LogMode Mode = LogMode.Moderat;
-        public enum LogType
-        {
-            None,
-            Info,
-            Error,
-            Question
-        }
         public static void Write(string msg, Exception ex = null, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
         {
             if (Mode == LogMode.Moderat)
