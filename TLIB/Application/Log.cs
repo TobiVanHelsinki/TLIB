@@ -17,13 +17,21 @@ namespace TLIB
 
         public static event EventHandler<string> DisplayMessageRequested;
         public static LogMode Mode = LogMode.Moderat;
-        public static void Write(string msg, Exception ex = null, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
+        public enum LogType
+        {
+            None,
+            Info,
+            Error,
+            Question
+        }
+        public static void Write(string msg, Exception ex = null, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
         {
             if (Mode == LogMode.Moderat)
             {
                 msg = DateTime.Now + " " + msg;
             }
-            else if (Mode == LogMode.Verbose)
+            msg = logType + " " + msg;
+            if (Mode == LogMode.Verbose)
             {
                 msg += DateTime.Now + " " + msg + " (" + Caller + ":" + Number + ")";
             }
