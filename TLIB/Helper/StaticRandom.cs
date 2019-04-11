@@ -41,7 +41,7 @@ namespace TLIB
         //     minValue ist größer als maxValue.
         public static int Next(int minValueInclusiv, int maxValueExclusive, int not = int.MaxValue)
         {
-            int ret = 0;
+            int ret;
             do
             {
                 try
@@ -125,7 +125,5 @@ namespace TLIB
         {
             return r.NextDouble();
         }
-
     }
-
 }

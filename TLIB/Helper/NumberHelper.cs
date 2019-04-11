@@ -8,24 +8,23 @@ namespace TLIB
         /// <summary>
         /// Converts a string to a double
         /// this string can contain simple formulas like "-6.5+3,4" (=-3.1)
-        /// 
         /// </summary>
-        /// <param name="strOrigin"></param>
+        /// <param name="FormulaString"></param>
         /// <returns></returns>
-        public static double CalcToDouble(string strOrigin, bool treatKommataAsPoints = false)
+        public static double CalcToDouble(string FormulaString, bool treatKommataAsPoints = false)
         {
-            if (strOrigin == null)
+            if (FormulaString == null)
             {
                 return 0;
             }
-            string strTemp = "";
-            double dRetVal = 0;
-            strOrigin += "+";
+            string Temp = "";
+            double Ret = 0;
+            FormulaString += "+";
             if (treatKommataAsPoints)
             {
-                strOrigin = strOrigin.Replace(',', '.');
+                FormulaString = FormulaString.Replace(',', '.');
             }
-            foreach (char item in strOrigin)
+            foreach (char item in FormulaString)
             {
                 //filter out letters or special chars
                 if (char.IsNumber(item)
@@ -40,56 +39,26 @@ namespace TLIB
                     {
                         try
                         {
-                            dRetVal += Double.Parse(strTemp, CultureInfo.InvariantCulture);
+                            Ret += double.Parse(Temp, CultureInfo.InvariantCulture);
                         }
                         catch (Exception) { }
-                        strTemp = "";
+                        Temp = "";
                     }
-                    strTemp += item;
+                    Temp += item;
                 }
 
             }
-            return dRetVal;
+            return Ret;
         }
-
-        public static int CalcToInt(string strOrigin, bool treatKommataAsPoints = false)
+        /// <summary>
+        /// see CalcToDouble
+        /// </summary>
+        /// <param name="FormulaString"></param>
+        /// <param name="treatKommataAsPoints"></param>
+        /// <returns></returns>
+        public static int CalcToInt(string FormulaString, bool treatKommataAsPoints = false)
         {
-            if (strOrigin == null)
-            {
-                return 0;
-            }
-            string strTemp = "";
-            double dRetVal = 0;
-            strOrigin += "+";
-            if (treatKommataAsPoints)
-            {
-                strOrigin = strOrigin.Replace(',', '.');
-            }
-            foreach (char item in strOrigin)
-            {
-                //filter out letters or special chars
-                if (char.IsNumber(item)
-                        || char.IsDigit(item)
-                        || char.IsSeparator(item)
-                        || char.IsPunctuation(item)
-                        || item == '-'
-                        || item == '+'
-                        )
-                {
-                    if (item == '-' || item == '+')
-                    {
-                        try
-                        {
-                            dRetVal += Double.Parse(strTemp, CultureInfo.DefaultThreadCurrentUICulture);
-                        }
-                        catch (Exception) { }
-                        strTemp = "";
-                    }
-                    strTemp += item;
-                }
-
-            }
-            return (int)dRetVal;
+            return (int)CalcToDouble(FormulaString, treatKommataAsPoints);
         }
 
     }
