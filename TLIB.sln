@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TAPPLICATION", "TAPPLICATION\TAPPLICATION.csproj", "{C43E2365-5678-4E72-A123-71383DE9B2DC}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAPPLICATION_UWP", "TAPPLICATION_UWP\TAPPLICATION_UWP.csproj", "{97D66A85-F340-4678-AE0C-E7E996E748EE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TAPPLICATION_Xamarin", "TAPPLICATION_Xamarin\TAPPLICATION_Xamarin.csproj", "{FD9A3FA6-B905-41CD-B181-6662CBEBA424}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TLIB_Test", "TLIB_Test\TLIB_Test.csproj", "{EA316A98-258E-44CA-9177-A0FC6119264F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -89,6 +91,22 @@ Global
 		{FD9A3FA6-B905-41CD-B181-6662CBEBA424}.Release|x64.Build.0 = Release|Any CPU
 		{FD9A3FA6-B905-41CD-B181-6662CBEBA424}.Release|x86.ActiveCfg = Release|Any CPU
 		{FD9A3FA6-B905-41CD-B181-6662CBEBA424}.Release|x86.Build.0 = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|ARM.Build.0 = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|x64.Build.0 = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Debug|x86.Build.0 = Debug|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|ARM.ActiveCfg = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|ARM.Build.0 = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|x64.ActiveCfg = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|x64.Build.0 = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA316A98-258E-44CA-9177-A0FC6119264F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
