@@ -37,6 +37,14 @@ namespace TLIB
         {
             return toTest <= Border ? toTest : (Fallback != null ? Fallback.Value : Border);
         }
+
+        /// <summary>
+        /// Return the lower of two numbers or Fallback, if specified and toTest is higher then Border
+        /// </summary>
+        /// <param name="toTest"></param>
+        /// <param name="Border"></param>
+        /// <param name="Fallback"></param>
+        /// <returns></returns>
         public static int LowerB(this int toTest, int Border, int? Fallback = null)
         {
             return toTest >= Border ? toTest : (Fallback != null ? Fallback.Value : Border);
