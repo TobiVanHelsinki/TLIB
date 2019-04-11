@@ -4,12 +4,30 @@ namespace TLIB
 {
     public static class MathExtensions
     {
+        /// <summary>
+        /// returns the lower of two numbers
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
         public static uint Min(this uint A, uint B)
         {
             return A < B ? A : B;
         }
         /// <summary>
-        /// Return the lower of two numbers.
+        /// returns the lower of two elements
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public static T Min<T>(this T A, T B) where T : IComparable<T>
+        {
+            return A.CompareTo(B) < 0 ? A : B; //TODO Eval
+        }
+
+        /// <summary>
+        /// Return the lower of two numbers or Fallback, if specified and toTest is higher then Border
         /// </summary>
         /// <param name="toTest"></param>
         /// <param name="Border"></param>
