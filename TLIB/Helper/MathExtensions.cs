@@ -8,6 +8,13 @@ namespace TLIB
         {
             return A < B ? A : B;
         }
+        /// <summary>
+        /// Return the lower of two numbers.
+        /// </summary>
+        /// <param name="toTest"></param>
+        /// <param name="Border"></param>
+        /// <param name="Fallback"></param>
+        /// <returns></returns>
         public static int UpperB(this int toTest, int Border, int? Fallback = null)
         {
             return toTest <= Border ? toTest : (Fallback != null ? Fallback.Value : Border);

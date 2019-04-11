@@ -9,6 +9,7 @@ namespace TLIB
     {
         None,
         Info,
+        Warning,
         Error,
         Question
     }
