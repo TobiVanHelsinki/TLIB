@@ -39,7 +39,7 @@ namespace TLIB
         }
 
         /// <summary>
-        /// Return the lower of two numbers or Fallback, if specified and toTest is higher then Border
+        /// Return the upper of two numbers or Fallback, if specified and toTest is lower then Border
         /// </summary>
         /// <param name="toTest"></param>
         /// <param name="Border"></param>
