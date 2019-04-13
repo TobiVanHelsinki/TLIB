@@ -79,7 +79,6 @@ namespace TLIB
         }
         public static ICollection<T> AddRange<T>(this ICollection<T> source, IEnumerable<T> param)
         {
-            source = source.ToList();
             foreach (var item in param)
             {
                 source.Add(item);
