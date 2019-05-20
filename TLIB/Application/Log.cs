@@ -1,57 +1,99 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace TLIB
 {
+    public enum LogMode
+    {
+        Minimal,
+        Moderat,
+        Verbose
+    }
     public enum LogType
     {
-        None,
         Info,
         Warning,
         Error,
         Question
     }
-    public delegate void LogEventHandler(LogType l, Exception ex, string msg);
+    public delegate void LogEventHandler(LogMessage logmessage);
+    public struct LogMessage
+    {
+        public LogType LogType;
+        public string Message;
+        public DateTime ArrivedAt;
+        public string Caller;
+        public Exception ThrownException;
+        public string CombinedMessage;
+
+        public LogMessage(LogType logType, string message, DateTime arrivedAt, string caller, Exception thrownException, string combinedMessage)
+        {
+            LogType = logType;
+            Message = message;
+            ArrivedAt = arrivedAt;
+            Caller = caller;
+            ThrownException = thrownException;
+            CombinedMessage = combinedMessage;
+        }
+    }
     public static class Log
     {
         public static string LogFile { get; set; }
         public static int InMemoryLogMaxCount { get; set; } = Int32.MaxValue;
-        public static ObservableCollection<string> InMemoryLog { get; } = new ObservableCollection<string>();
+        public static List<string> InMemoryLog { get; } = new List<string>();
 
         public static bool IsFileLogEnabled => LogFile != null;
         public static bool IsInMemoryLogEnabled { get; set; }
         public static bool IsConsoleLogEnabled { get; set; }
 
         public static event LogEventHandler DisplayMessageRequested;
+        public static event LogEventHandler NewLogArrived;
         public static LogMode Mode = LogMode.Moderat;
-        public static void Write(string msg, Exception ex = null, LogType logType = LogType.None, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
+        public static void Write(string msg, Exception ex = null, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
         {
+            var ArrivedAt = DateTime.Now;
+            var CombinedMessage = logType + " \"" + msg + "\"";
             if (Mode == LogMode.Moderat)
             {
-                msg = DateTime.Now + " " + msg;
+                CombinedMessage = DateTime.Now + " " + CombinedMessage;
             }
-            if (ex != null && logType == LogType.None)
-            {
-                logType = LogType.Error;
-            }
-            else if (logType == LogType.None)
-            {
-                logType = LogType.Info;
-            }
-            msg = logType + " " + msg;
             if (Mode == LogMode.Verbose)
             {
-                msg += DateTime.Now + " " + msg + " (" + Caller + ":" + Number + ")";
+                CombinedMessage += ArrivedAt + " " + CombinedMessage + " (" + Caller + ":" + Number + ")";
             }
             if (ex != null)
             {
-                msg += Environment.NewLine
-                + "\t" + ex.Message
-                + Environment.NewLine
-                + "\t" + ex.StackTrace;
+                AddDetails(ex, ref CombinedMessage);
             }
+            AddToLog(CombinedMessage);
+            var logentry = new LogMessage(logType, msg, ArrivedAt, Caller + ":" + Number, ex, CombinedMessage);
+            if (ex != null)
+            {
+                logentry.LogType = LogType.Error;
+            }
+            NewLogArrived?.Invoke(logentry);
+            if (InterruptUser)
+            {
+                DisplayMessageRequested?.Invoke(logentry);
+            }
+        }
+
+        private static void AddDetails(Exception ex, ref string CombinedMessage)
+        {
+            CombinedMessage += Environment.NewLine
+            + "\t\"" + ex.Message + "\""
+            + Environment.NewLine
+            + "\t" + ex.StackTrace;
+            if (ex.InnerException is Exception x2)
+            {
+                AddDetails(x2, ref CombinedMessage);
+            }
+        }
+
+        static void AddToLog(string msg)
+        {
             if (IsInMemoryLogEnabled)
             {
                 try
@@ -86,18 +128,6 @@ namespace TLIB
                 {
                 }
             }
-            if (InterruptUser)
-            {
-                DisplayMessageRequested?.Invoke(logType, ex, msg);
-            }
         }
-    }
-
-
-    public enum LogMode
-    {
-        Minimal,
-        Moderat,
-        Verbose
     }
 }

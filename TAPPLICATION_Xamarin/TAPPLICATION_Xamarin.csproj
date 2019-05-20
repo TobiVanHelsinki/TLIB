@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Xamarin.Plugin.FilePicker"  Version="2.0.135"/>
-    <PackageReference Include="Xamarin.Essentials" Version="1.0.1" />
+    <PackageReference Include="Xamarin.Plugin.FilePicker" Version="2.1.14-beta" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="TAPPLICATION">
       <HintPath>..\OutgoingReferences\TAPPLICATION.dll</HintPath>
@@ -18,5 +15,4 @@
       <HintPath>..\OutgoingReferences\TLIB.dll</HintPath>
     </Reference>
   </ItemGroup>
-
 </Project>
