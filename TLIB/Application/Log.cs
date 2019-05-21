@@ -21,12 +21,12 @@ namespace TLIB
     public delegate void LogEventHandler(LogMessage logmessage);
     public struct LogMessage
     {
-        public LogType LogType;
-        public string Message;
-        public DateTime ArrivedAt;
-        public string Caller;
-        public Exception ThrownException;
-        public string CombinedMessage;
+        public LogType LogType { get; set; }
+        public string Message { get; set; }
+        public DateTime ArrivedAt { get; set; }
+        public string Caller { get; set; }
+        public Exception ThrownException { get; set; }
+        public string CombinedMessage { get; set; }
 
         public LogMessage(LogType logType, string message, DateTime arrivedAt, string caller, Exception thrownException, string combinedMessage)
         {
