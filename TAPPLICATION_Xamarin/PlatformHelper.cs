@@ -37,8 +37,8 @@ namespace TAPPLICATION_Xamarin
         {
             try
             {
-                Device.BeginInvokeOnMainThread(() => { afterLoad?.Invoke(t.Result); ContentPlace.Content = t.Result; });
-                MainThread.BeginInvokeOnMainThread(p);
+                Device.BeginInvokeOnMainThread(p);
+                //MainThread.BeginInvokeOnMainThread(p);
             }
             catch (Exception ex)
             {
