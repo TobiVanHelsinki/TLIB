@@ -28,7 +28,7 @@ namespace TAPPLICATION_UWP
         public override async Task<IEnumerable<ExtendetFileInfo>> GetFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null)
         {
             var folderhandle = await GetFolder(Info);
-            return (await folderhandle.GetFilesAsync()).Where(x => FileTypes != null ? FileTypes.Contains(x.FileType) : true).Select(x => x.ToFileInfo());
+             return (await folderhandle.GetFilesAsync()).Where(x => FileTypes != null ? FileTypes.Contains(x.FileType) : true).Select(x => x.ToFileInfo());
         }
         #region Basic File Operations
 
@@ -116,9 +116,9 @@ namespace TAPPLICATION_UWP
                 return await folderhandle.CreateFolderAsync(Info.Name, CreationCollisionOption.OpenIfExists);
             }
         }
-        public async Task CreateFolder(DirectoryInfo Info)
+        public async Task<DirectoryInfo> CreateFolder(DirectoryInfo Info)
         {
-            await GetOrCreateFolder(Info);
+            return new DirectoryInfo((await GetOrCreateFolder(Info)).Path);
         }
 
         #endregion

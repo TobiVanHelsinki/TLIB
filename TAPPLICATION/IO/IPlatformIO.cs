@@ -38,7 +38,7 @@ namespace TAPPLICATION.IO
         Task<string> LoadFileContent(FileInfo Info);
         #endregion
         #region Helper
-        Task CreateFolder(DirectoryInfo Info);
+        Task<DirectoryInfo> CreateFolder(DirectoryInfo Info);
         #endregion
         #region Picker
         Task<DirectoryInfo> PickFolder(string Token = null);

@@ -11,8 +11,8 @@ namespace TAPPLICATION.IO
         public string Path => FileInfo.Path();
         public string FullName => FileInfo.FullName;
         public DirectoryInfo Directory => FileInfo.Directory;
-        public DateTime LastAccessTime;
-        public long Length;
+        public DateTime LastAccessTime { get; set; }
+        public long Length { get; set; }
 
         public ExtendetFileInfo(string fullpath)
         {

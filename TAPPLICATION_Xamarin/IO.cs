@@ -52,7 +52,7 @@ namespace TAPPLICATION_Xamarin
             return base.SaveFileContent(saveChar, Info);
         }
 
-        public Task CreateFolder(DirectoryInfo Info)
+        public Task<DirectoryInfo> CreateFolder(DirectoryInfo Info)
         {
             throw new NotImplementedException();
         }
