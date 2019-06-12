@@ -2,10 +2,14 @@
 using System.ComponentModel;
 using TAPPLICATION;
 using Xamarin.Essentials;
+using System;
+using System.Threading.Tasks;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace TAPPLICATION_Xamarin
 {
-    internal class PlatformHelper : IPlatformHelper
+    public class PlatformHelper : IPlatformHelper
     {
         public void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
@@ -33,6 +37,7 @@ namespace TAPPLICATION_Xamarin
         {
             try
             {
+                Device.BeginInvokeOnMainThread(() => { afterLoad?.Invoke(t.Result); ContentPlace.Content = t.Result; });
                 MainThread.BeginInvokeOnMainThread(p);
             }
             catch (Exception ex)

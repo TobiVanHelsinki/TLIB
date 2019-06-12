@@ -6,7 +6,7 @@ using Windows.UI.Core;
 
 namespace TAPPLICATION_UWP
 {
-    internal class PlatformHelper : IPlatformHelper
+    public class PlatformHelper : IPlatformHelper
     {
         public void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {

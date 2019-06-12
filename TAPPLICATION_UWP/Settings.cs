@@ -5,7 +5,7 @@ using Windows.Storage;
 
 namespace TAPPLICATION_UWP
 {
-    internal class Settings : IPlatformSettings
+    public class Settings : IPlatformSettings
     {
         ApplicationDataContainer LocalSettings = ApplicationData.Current.LocalSettings;
         ApplicationDataContainer RoamingSettings = ApplicationData.Current.RoamingSettings;

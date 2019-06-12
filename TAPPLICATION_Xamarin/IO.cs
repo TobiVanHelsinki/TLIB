@@ -10,7 +10,7 @@ using Xamarin.Essentials;
 
 namespace TAPPLICATION_Xamarin
 {
-    class IO : StandardIO, IPlatformIO
+    public class IO : StandardIO, IPlatformIO
     {
         public override async Task<string> LoadFileContent(FileInfo Info)
         {

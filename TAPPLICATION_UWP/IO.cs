@@ -23,7 +23,7 @@ namespace TAPPLICATION_UWP
             return new ExtendetFileInfo(d.Path, att.DateModified.DateTime, (long)att.Size);
         }
     }
-    class IO : StandardIO, IPlatformIO
+    public class IO : StandardIO, IPlatformIO
     {
         public override async Task<IEnumerable<ExtendetFileInfo>> GetFiles(DirectoryInfo Info, IEnumerable<string> FileTypes = null)
         {

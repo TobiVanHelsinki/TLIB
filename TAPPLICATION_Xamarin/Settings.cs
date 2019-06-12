@@ -4,7 +4,7 @@ using Xamarin.Essentials;
 
 namespace TAPPLICATION_Xamarin
 {
-    internal class Settings : IPlatformSettings
+    public class Settings : IPlatformSettings
     {
         public void SetLocal(string place, object value)
         {
