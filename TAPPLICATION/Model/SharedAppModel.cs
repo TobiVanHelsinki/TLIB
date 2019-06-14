@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using TLIB;
 
 namespace TAPPLICATION.Model
 {
@@ -83,31 +86,57 @@ namespace TAPPLICATION.Model
         {
             get
             {
-                return (SharedAppModel < MainType > )instance;
+                return (SharedAppModel<MainType>)instance;
             }
         }
         MainType _MainObject;
         public MainType MainObject
         {
-            get { return this._MainObject; }
+            get { return this._MainObjects.FirstOrDefault(); }
             set
             {
+
                 if (value != null)
                 {
-                    if (!value.Equals(_MainObject))
-                    {
-                        this._MainObject = value;
-                        NotifyPropertyChanged();
-                    }
+                    AddMainObject(value);
+                    //if (!value.Equals(_MainObject))
+                    //{
+                    //    this._MainObject = value;
+                    //    NotifyPropertyChanged();
+                    //}
                 }
                 else
                 {
-                    if (!_MainObject.Equals(value))
-                    {
-                        this._MainObject = value;
-                        NotifyPropertyChanged();
-                    }
+                    RemoveMainObject(value);
+                    //if (!_MainObject.Equals(value))
+                    //{
+                    //    this._MainObject = value;
+                    //    NotifyPropertyChanged();
+                    //}
                 }
+            }
+        }
+
+        List<MainType> _MainObjects = new List<MainType>();
+        public IEnumerable<MainType> MainObjects => _MainObjects;
+
+        public void AddMainObject(MainType sender)
+        {
+            if (!_MainObjects.Contains(sender))
+            {
+                _MainObjects.Add(sender);
+                sender.SaveRequest += SaveMainType;
+                NotifyPropertyChanged(nameof(MainObject));
+            }
+        }
+
+        public void RemoveMainObject(MainType sender)
+        {
+            if (_MainObjects.Contains(sender))
+            {
+                _MainObjects.Remove(sender);
+                sender.SaveRequest -= SaveMainType;
+                NotifyPropertyChanged(nameof(MainObject));
             }
         }
 
@@ -118,43 +147,12 @@ namespace TAPPLICATION.Model
 
         private void SharedAppModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            void save(object sender2, IMainType MainObject)
-            {
-                try
-                {
-                    System.Diagnostics.Debug.WriteLine("SharedAppModel_PropertyChanged save");
-                    //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
-                    var T = IO.SharedIO.SaveAtOriginPlace(MainObject);
-                    T.Wait();
-                    SharedSettingsModel.I.LAST_SAVE_INFO = T.Result;
-                    MainObjectSaved?.Invoke(this, MainObject);
-                    System.Diagnostics.Debug.WriteLine("MainObject Saved " + MainObject.ToString());
-                }
-                catch (Exception ex)
-                {
-                    TAPPLICATION.Debugging.TraceException(ex);
-                    System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
-                    try
-                    {
-                        NewNotification("Error saving Char", ex, 2);
-                    }
-                    catch (Exception ex2)
-                    {
-                        TAPPLICATION.Debugging.TraceException(ex2);
-                    }
-                    if (System.Diagnostics.Debugger.IsAttached)
-                    {
-                        //System.Diagnostics.Debugger.Break();
-                    }
-                }
-            }
-
             if (e.PropertyName == nameof(MainObject))
             {
                 if (MainObject != null)
                 {
                     SharedSettingsModel.I.LAST_SAVE_INFO = MainObject.FileInfo;
-                    MainObject.SaveRequest += save;
+                    //MainObject.SaveRequest += SaveMainType;
                 }
                 else
                 {
@@ -162,6 +160,39 @@ namespace TAPPLICATION.Model
                 }
             }
         }
+
+
+        public void SaveMainType(object sender2, IMainType MainObject)
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("SharedAppModel_PropertyChanged save");
+                //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                var T = IO.SharedIO.SaveAtOriginPlace(MainObject);
+                T.Wait();
+                SharedSettingsModel.I.LAST_SAVE_INFO = T.Result;
+                MainObjectSaved?.Invoke(MainObject, MainObject);
+                System.Diagnostics.Debug.WriteLine("MainObject Saved " + MainObject.ToString());
+            }
+            catch (Exception ex)
+            {
+                TAPPLICATION.Debugging.TraceException(ex);
+                System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
+                try
+                {
+                    Log.Write("Error saving Char", ex);
+                }
+                catch (Exception ex2)
+                {
+                    TAPPLICATION.Debugging.TraceException(ex2);
+                }
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    //System.Diagnostics.Debugger.Break();
+                }
+            }
+        }
+
 
         public MainType NewMainType()
         {
