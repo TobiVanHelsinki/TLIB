@@ -69,6 +69,7 @@ namespace TAPPLICATION_Xamarin
                 case Place.Roaming:
                     break;
                 case Place.Local:
+                    return FileSystem.
                     break;
                 case Place.Assets:
                     return FileSystem.AppDataDirectory; //TODO Test. Eventuell muss noch ein "assets" dran
