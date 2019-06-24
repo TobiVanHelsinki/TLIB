@@ -47,7 +47,6 @@ namespace TAPPLICATION.IO
         #region Other
         Task<string> GetCompleteInternPath(Place place);
         Task<bool> OpenFolder(DirectoryInfo Info);
-        void CreateSaveContainer();
         #endregion
     }
 }

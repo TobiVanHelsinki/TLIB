@@ -7,5 +7,7 @@ namespace TLIB.Settings
         object GetLocal(string place);
         void SetRoaming(string place, object value);
         void SetLocal(string place, object value);
+        void PrepareSettingsSavePlace();
+        void RemoveAllSettings();
     }
 }

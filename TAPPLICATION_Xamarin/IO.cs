@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TAPPLICATION.IO;
 using TLIB;
 using Xamarin.Essentials;
+using static System.Environment;
 
 namespace TAPPLICATION_Xamarin
 {
@@ -55,6 +56,7 @@ namespace TAPPLICATION_Xamarin
         public Task<DirectoryInfo> CreateFolder(DirectoryInfo Info)
         {
             throw new NotImplementedException();
+            //Info
         }
 
         public void CreateSaveContainer()
@@ -67,19 +69,19 @@ namespace TAPPLICATION_Xamarin
             switch (place)
             {
                 case Place.Roaming:
-                    break;
+                    return PCLStorage.FileSystem.Current.RoamingStorage.Path;
+                    return GetFolderPath(SpecialFolder.ApplicationData);
                 case Place.Local:
-                    return FileSystem.
-                    break;
+                    return PCLStorage.FileSystem.Current.LocalStorage.Path;
+                    return GetFolderPath(SpecialFolder.LocalApplicationData);
                 case Place.Assets:
                     return FileSystem.AppDataDirectory; //TODO Test. Eventuell muss noch ein "assets" dran
                     //TODO aber vielleicht kann man assets auch durch app dir ersetzen, wäre sinnvoller
                 case Place.Temp:
                     return FileSystem.CacheDirectory;
                 default:
-                    break;
+                    throw new NotImplementedException();
             }
-            throw new NotImplementedException();
         }
 
 

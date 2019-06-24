@@ -201,13 +201,6 @@ namespace TAPPLICATION_UWP
             }
         }
 
-        public void CreateSaveContainer()
-        {
-            ApplicationData.Current.LocalSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
-            //ApplicationData.Current.LocalFolder.CreateFolderAsync(Constants., ApplicationDataCreateDisposition.Always);
-            ApplicationData.Current.RoamingSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
-        }
-
         public async Task<bool> OpenFolder(DirectoryInfo Info)
         {
             return await Launcher.LaunchFolderAsync(await StorageFolder.GetFolderFromPathAsync(Info.FullName));

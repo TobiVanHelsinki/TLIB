@@ -24,5 +24,14 @@ namespace TAPPLICATION_Xamarin
             }
         }
         public object GetRoaming(string place) => GetLocal(place);
+
+        public void RemoveAllSettings()
+        {
+            Preferences.Clear();
+        }
+
+        public void PrepareSettingsSavePlace()
+        {
+        }
     }
 }

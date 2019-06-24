@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using TAPPLICATION;
 using TLIB;
 using TLIB.Settings;
 using Windows.Storage;
@@ -66,6 +68,24 @@ namespace TAPPLICATION_UWP
             {
                 throw new SettingNotPresentException();
             }
+        }
+
+        public void RemoveAllSettings()
+        {
+            foreach (var item in LocalSettings.Containers.ToArray())
+            {
+                LocalSettings.DeleteContainer(item.Key);
+            }
+            foreach (var item in RoamingSettings.Containers.ToArray())
+            {
+                RoamingSettings.DeleteContainer(item.Key);
+            }
+        }
+
+        public void PrepareSettingsSavePlace()
+        {
+            ApplicationData.Current.LocalSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
+            ApplicationData.Current.RoamingSettings.CreateContainer(SharedConstants.CONTAINER_SETTINGS, ApplicationDataCreateDisposition.Always);
         }
     }
 }
