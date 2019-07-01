@@ -31,7 +31,7 @@ namespace TAPPLICATION.IO
                 {
                     var t = CurrentIO?.GetCompleteInternPath(CurrentSavePlace);
                     t.Wait();
-                    ret = t.Result + SharedConstants.INTERN_SAVE_CONTAINER;
+                    ret = Path.Combine(t.Result, SharedConstants.INTERN_SAVE_CONTAINER);
                 }
                 return ret.LastOrDefault() == Path.DirectorySeparatorChar ? ret : ret + Path.DirectorySeparatorChar;
             }

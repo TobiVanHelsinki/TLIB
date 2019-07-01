@@ -2,10 +2,7 @@
 using System.ComponentModel;
 using TAPPLICATION;
 using Xamarin.Essentials;
-using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace TAPPLICATION_Xamarin
 {
@@ -13,6 +10,7 @@ namespace TAPPLICATION_Xamarin
     {
         public void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
+            //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
             try
             {
                 Event?.Invoke(o, new PropertyChangedEventArgs(property));

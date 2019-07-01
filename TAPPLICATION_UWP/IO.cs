@@ -120,7 +120,29 @@ namespace TAPPLICATION_UWP
         {
             return new DirectoryInfo((await GetOrCreateFolder(Info)).Path);
         }
-
+        public async Task<bool> HasAccess(FileInfo Path)
+        {
+            try
+            {
+                return Path.Exists;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> HasAccess(DirectoryInfo Path)
+        {
+            try
+            {
+                var folderhandle = await StorageFolder.GetFolderFromPathAsync(Path.FullName);
+                return Path.Exists;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         #endregion
         #region Picker
         public async Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)

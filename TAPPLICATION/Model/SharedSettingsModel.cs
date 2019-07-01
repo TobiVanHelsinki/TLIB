@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using TLIB;
 using TLIB.Settings;
-using System.IO;
 
 namespace TAPPLICATION.Model
 {
@@ -85,6 +85,8 @@ namespace TAPPLICATION.Model
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
             value = Attribute.DeviatingType == null ? value : Convert.ChangeType(value, Attribute.DeviatingType);
+            dynamic oldvalue = Convert.ChangeType(Setting.GetValue(this), Setting.PropertyType);
+            dynamic newvalue = Convert.ChangeType(value, Setting.PropertyType);
             switch (Attribute.Sync)
             {
                 case SaveType.Roaming:
@@ -96,7 +98,10 @@ namespace TAPPLICATION.Model
                 default:
                     break;
             }
-            Instance.NotifyPropertyChanged(Name);
+            if (oldvalue != newvalue)
+            {
+                Instance.NotifyPropertyChanged(Name);
+            }
         }
         #endregion
 

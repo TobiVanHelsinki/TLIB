@@ -39,6 +39,9 @@ namespace TAPPLICATION.IO
         #endregion
         #region Helper
         Task<DirectoryInfo> CreateFolder(DirectoryInfo Info);
+        Task<bool> HasAccess(FileInfo Path);
+        Task<bool> HasAccess(DirectoryInfo Path);
+
         #endregion
         #region Picker
         Task<DirectoryInfo> PickFolder(string Token = null);

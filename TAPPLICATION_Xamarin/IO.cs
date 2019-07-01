@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using TAPPLICATION.IO;
 using TLIB;
 using Xamarin.Essentials;
-using static System.Environment;
 
 namespace TAPPLICATION_Xamarin
 {
@@ -15,29 +14,33 @@ namespace TAPPLICATION_Xamarin
     {
         public override async Task<string> LoadFileContent(FileInfo Info)
         {
-            var ret = "";
-            if (Cache.TryGetValue(Info.FullName, out Stream retval))
+            if (Cache.TryGetValue(Info.FullName, out var retval)) // use cached version
             {
                 if (retval.CanRead)
                 {
+                    var ret = "";
                     using (var r = new StreamReader(retval))
                     {
                         ret = r.ReadToEnd();
                     }
+                    return ret;
                 }
-                return ret;
+                else
+                {
+                    throw new AccessViolationException("cannot read from cache stream");
+                }
             }
             else
             {
-                throw new KeyNotFoundException();
+                return await base.LoadFileContent(Info);
             }
         }
 
-        public override Task SaveFileContent(string saveChar, FileInfo Info)
+        public async override Task SaveFileContent(string saveChar, FileInfo Info)
         {
-            //TODO Test
-            if (Cache.TryGetValue(Info.FullName, out Stream retval))
+            if (Cache.TryGetValue(Info.FullName, out var retval)) // use cached version
             {
+                //TODO Test
                 if (retval.CanRead)
                 {
                     using (var r = new StreamWriter(retval))
@@ -48,40 +51,40 @@ namespace TAPPLICATION_Xamarin
             }
             else
             {
-                throw new KeyNotFoundException();
+                await base.SaveFileContent(saveChar, Info);
             }
-            return base.SaveFileContent(saveChar, Info);
         }
 
-        public Task<DirectoryInfo> CreateFolder(DirectoryInfo Info)
+        public async Task<DirectoryInfo> CreateFolder(DirectoryInfo Info)
         {
-            throw new NotImplementedException();
-            //Info
-        }
-
-        public void CreateSaveContainer()
-        {
-            throw new NotImplementedException();
+            var statusO = Info.Exists;
+            Info.Create();
+            var statusN = Info.Exists;
+            return Info;
         }
 
         public async Task<string> GetCompleteInternPath(Place place)
         {
+            string ret;
             switch (place)
             {
                 case Place.Roaming:
-                    return PCLStorage.FileSystem.Current.RoamingStorage.Path;
-                    return GetFolderPath(SpecialFolder.ApplicationData);
+                    ret =  PCLStorage.FileSystem.Current.RoamingStorage?.Path ?? PCLStorage.FileSystem.Current.LocalStorage.Path;
+                    break;
                 case Place.Local:
-                    return PCLStorage.FileSystem.Current.LocalStorage.Path;
-                    return GetFolderPath(SpecialFolder.LocalApplicationData);
+                    ret = PCLStorage.FileSystem.Current.LocalStorage.Path;
+                    break;
                 case Place.Assets:
-                    return FileSystem.AppDataDirectory; //TODO Test. Eventuell muss noch ein "assets" dran
+                    ret = FileSystem.AppDataDirectory; //TODO Test. Eventuell muss noch ein "assets" dran
                     //TODO aber vielleicht kann man assets auch durch app dir ersetzen, wäre sinnvoller
+                    break;
                 case Place.Temp:
-                    return FileSystem.CacheDirectory;
+                    ret = FileSystem.CacheDirectory;
+                    break;
                 default:
                     throw new NotImplementedException();
             }
+            return ret.LastOrDefault() == Path.DirectorySeparatorChar ? ret : ret + Path.DirectorySeparatorChar;
         }
 
 
@@ -121,6 +124,29 @@ namespace TAPPLICATION_Xamarin
             //intent.SetFlags(ActivityFlags.NewTask);
             //Application.Context.StartActivity(intent);
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> HasAccess(FileInfo Path)
+        {
+            try
+            {
+                return Path.Exists;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<bool> HasAccess(DirectoryInfo Path)
+        {
+            try
+            {
+                return Path.Exists;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
