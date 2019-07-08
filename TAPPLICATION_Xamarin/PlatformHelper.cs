@@ -10,7 +10,6 @@ namespace TAPPLICATION_Xamarin
     {
         public void CallPropertyChanged(PropertyChangedEventHandler Event, object o, string property)
         {
-            //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
             try
             {
                 Event?.Invoke(o, new PropertyChangedEventArgs(property));
@@ -36,7 +35,6 @@ namespace TAPPLICATION_Xamarin
             try
             {
                 Device.BeginInvokeOnMainThread(p);
-                //MainThread.BeginInvokeOnMainThread(p);
             }
             catch (Exception ex)
             {

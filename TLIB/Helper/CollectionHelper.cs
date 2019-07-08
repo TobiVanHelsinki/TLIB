@@ -4,8 +4,18 @@ using System.Linq;
 
 namespace TLIB
 {
+    /// <summary>
+    /// Provides extension methods for IEnumerable
+    /// </summary>
     public static class CollectionHelper
     {
+        /// <summary>
+        /// Is a given predicate true for all elements
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="match"></param>
+        /// <returns></returns>
         public static bool TrueForAll<TSource>(this IEnumerable<TSource> source, Predicate<TSource> match)
         {
             if (match == null)
@@ -14,17 +24,9 @@ namespace TLIB
             }
             return source.Aggregate(true, (b, i) => b && match.Invoke(i));
         }
-        public static IEnumerable<IEnumerable<TSource>> CartesianProduct<TSource>(this IEnumerable<IEnumerable<TSource>> source)
-        {
-            IEnumerable<IEnumerable<TSource>> emptyProduct = new[] { Enumerable.Empty<TSource>() };
-            return source.Aggregate(
-              emptyProduct,
-              (accumulator, sequence) =>
-                from accseq in accumulator
-                from item in sequence
-                select accseq.Concat(new[] { item }));
-        }
+
         /// <summary>
+        /// calculates the power set for the given set
         /// works for source.Count() values 0-30, 190
         /// works not for source.Count() values 31-35, 191-200
         /// other not tested
@@ -46,10 +48,25 @@ namespace TLIB
             return shouldCount == retCount ? ret : throw new Exception("Wrong count after calculation");
         }
 
+        /// <summary>
+        /// returns a random element of a sequence or throws an exception when the sequence is empty
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static TSource RandomElement<TSource>(this IEnumerable<TSource> source)
         {
             return source.ElementAtOrDefault(StaticRandom.Next(0, source.Count()));
         }
+
+        /// <summary>
+        /// returns a number of random elements of a sequence or throws an exception when there are to less elements
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="number">how many elements to return</param>
+        /// <param name="AllowRepeatants">shall the set be unique?</param>
+        /// <returns></returns>
         public static IEnumerable<TSource> RandomElements<TSource>(this IEnumerable<TSource> source, int number, bool AllowRepeatants = true)
         {
             var ret = new List<TSource>();
@@ -77,6 +94,14 @@ namespace TLIB
             }
             return ret;
         }
+
+        /// <summary>
+        /// Adds multiple Elements to an ICollection
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public static ICollection<T> AddRange<T>(this ICollection<T> source, IEnumerable<T> param)
         {
             foreach (var item in param)
@@ -85,11 +110,20 @@ namespace TLIB
             }
             return source;
         }
-        public static int MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
+
+        /// <summary>
+        /// Returns the maximum Element of an set or default in case of an error
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TReturn"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static TReturn MaxOrDefault<TSource, TReturn>(this IEnumerable<TSource> source, Func<TSource, TReturn> selector)
         {
             if (source.Count() == 0)
             {
-                return 0;
+                return default;
             }
             try
             {
@@ -97,29 +131,23 @@ namespace TLIB
             }
             catch (Exception)
             {
-                return 0;
+                return default;
             }
         }
-        public static double MaxOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+
+        /// <summary>
+        /// Returns the minimum Element of an set or default in case of an error
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TReturn"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public static TReturn MinOrDefault<TSource, TReturn>(this IEnumerable<TSource> source, Func<TSource, TReturn> selector)
         {
             if (source.Count() == 0)
             {
-                return 0.0;
-            }
-            try
-            {
-                return source.Max(selector);
-            }
-            catch (Exception)
-            {
-                return 0.0;
-            }
-        }
-        public static int MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector)
-        {
-            if (source.Count() == 0)
-            {
-                return 0;
+                return default;
             }
             try
             {
@@ -127,22 +155,7 @@ namespace TLIB
             }
             catch (Exception)
             {
-                return 0;
-            }
-        }
-        public static double MinOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
-        {
-            if (source.Count() == 0)
-            {
-                return 0.0;
-            }
-            try
-            {
-                return source.Min(selector);
-            }
-            catch (Exception)
-            {
-                return 0;
+                return default;
             }
         }
     }

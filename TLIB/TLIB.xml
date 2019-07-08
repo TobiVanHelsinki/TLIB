@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TLIB</name>
+    </assembly>
+    <members>
+        <member name="T:TLIB.FileInfoExtension">
+            <summary>
+            Provides Extensional Methods for the FileInfo class
+            </summary>
+        </member>
+        <member name="M:TLIB.FileInfoExtension.ChangeName(System.IO.FileInfo,System.String)">
+            <summary>
+            returns a new FileInfo, that has the given name
+            </summary>
+            <param name="File"></param>
+            <param name="Name"></param>
+        </member>
+        <member name="M:TLIB.FileInfoExtension.Clone(System.IO.FileInfo)">
+            <summary>
+            Create a copy of this instance 
+            </summary>
+            <param name="File"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.FileInfoExtension.Clone(System.IO.DirectoryInfo)">
+            <summary>
+            Create a copy of this instance 
+            </summary>
+            <param name="Dir"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.FileInfoExtension.Path(System.IO.FileInfo)">
+            <summary>
+            returns the Fulle Path of this File
+            </summary>
+            <param name="File"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.FileInfoExtension.Path(System.IO.DirectoryInfo)">
+            <summary>
+            returns the Fulle Path of this Directory
+            </summary>
+            <param name="Dir"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TLIB.IsOKException">
+            <summary>
+            An Exception that indicates, that an behavior is acceptable. e.g.: 
+            * a user closed a file chooser dialog without choosing a file
+            * 
+            </summary>
+        </member>
+        <member name="M:TLIB.IsOKException.#ctor">
+            <summary>
+            Default Exception ctor
+            </summary>
+        </member>
+        <member name="M:TLIB.IsOKException.#ctor(System.String)">
+            <summary>
+            Default Exception ctor
+            </summary>
+        </member>
+        <member name="M:TLIB.IsOKException.#ctor(System.String,System.Exception)">
+            <summary>
+            Default Exception ctor
+            </summary>
+        </member>
+        <member name="T:TLIB.LogMode">
+            <summary>
+            Detaildegree of an logmessage
+            </summary>
+        </member>
+        <member name="F:TLIB.LogMode.Minimal">
+            <summary>
+            just the message
+            </summary>
+        </member>
+        <member name="F:TLIB.LogMode.Moderat">
+            <summary>
+            add datetime
+            </summary>
+        </member>
+        <member name="F:TLIB.LogMode.Verbose">
+            <summary>
+            all details
+            </summary>
+        </member>
+        <member name="T:TLIB.LogType">
+            <summary>
+            type of the log may determine color or how it is handeld
+            </summary>
+        </member>
+        <member name="F:TLIB.LogType.Info">
+            <summary>
+            standard
+            </summary>
+        </member>
+        <member name="F:TLIB.LogType.Warning">
+            <summary>
+            possible unwanted behavior noticed
+            </summary>
+        </member>
+        <member name="F:TLIB.LogType.Error">
+            <summary>
+            unwanted behavior noticed
+            </summary>
+        </member>
+        <member name="F:TLIB.LogType.Question">
+            <summary>
+            for the future, displays a question to the user and provide an answere
+            </summary>
+        </member>
+        <member name="T:TLIB.LogEventHandler">
+            <summary>
+            The used event handler for new arrived logs
+            </summary>
+            <param name="logmessage"></param>
+        </member>
+        <member name="T:TLIB.LogMessage">
+            <summary>
+            the wrapper for an log
+            </summary>
+        </member>
+        <member name="P:TLIB.LogMessage.LogType">
+            <summary>
+            What kind of log is this
+            </summary>
+        </member>
+        <member name="P:TLIB.LogMessage.Message">
+            <summary>
+            What does it say
+            </summary>
+        </member>
+        <member name="P:TLIB.LogMessage.ArrivedAt">
+            <summary>
+            When did it arrived
+            </summary>
+        </member>
+        <member name="P:TLIB.LogMessage.Caller">
+            <summary>
+            Who send this log
+            </summary>
+        </member>
+        <member name="P:TLIB.LogMessage.ThrownException">
+            <summary>
+            Had it have an exception
+            </summary>
+        </member>
+        <member name="P:TLIB.LogMessage.CombinedMessage">
+            <summary>
+            A string containing the message and for example the arrivetime or the priority. depends at the LogType
+            </summary>
+        </member>
+        <member name="M:TLIB.LogMessage.#ctor(TLIB.LogType,System.String,System.DateTime,System.String,System.Exception,System.String)">
+            <summary>
+            Create a log message
+            </summary>
+            <param name="logType">What kind of log is this</param>
+            <param name="message">What does it say</param>
+            <param name="arrivedAt">When did it arrived</param>
+            <param name="caller">Who send this log</param>
+            <param name="thrownException">Had it have an exception</param>
+            <param name="combinedMessage">A short string for this instance</param>
+        </member>
+        <member name="T:TLIB.Log">
+            <summary>
+            Provides a basic logsystem. 
+            You can log to file or just hold the log messages in memory.
+            Use the "In*Enabled" Properties to choose, how to log.
+            Specify a LogFile
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.LogFile">
+            <summary>
+            The path to the file, the logs are written in. Note: You have to have access to this file. System.IO.File.AppendAllText is used for file operations.
+            If you set a filepath not null, the IsFileLogEnabled is automaticly set.
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.InMemoryLogMaxCount">
+            <summary>
+            How many items shall be stored in memory?
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.InMemoryLog">
+            <summary>
+            save place for the logs. if full, the earliest messages are removed. You can edit the list as you whish.
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.IsFileLogEnabled">
+            <summary>
+            Enables the file Log. Just possible if a Filepath is specified
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.IsInMemoryLogEnabled">
+            <summary>
+            Enables the in memory Log.
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.IsConsoleLogEnabled">
+            <summary>
+            Enables std console output
+            </summary>
+        </member>
+        <member name="E:TLIB.Log.DisplayMessageRequested">
+            <summary>
+            Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
+            </summary>
+        </member>
+        <member name="E:TLIB.Log.NewLogArrived">
+            <summary>
+            Occures, when a new log arrived
+            </summary>
+        </member>
+        <member name="F:TLIB.Log.Mode">
+            <summary>
+            How detailled shall the message be
+            </summary>
+        </member>
+        <member name="M:TLIB.Log.Write(System.String,System.Exception,TLIB.LogType,System.Boolean,System.Int32,System.String)">
+            <summary>
+            Adds a new log
+            </summary>
+            <param name="msg">Your message</param>
+            <param name="ex">optional, an exception</param>
+            <param name="logType">optional, a special logtype</param>
+            <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
+            <param name="Number">automatic, the line number from wich the call came</param>
+            <param name="Caller">automatic, the membername from wich the call came</param>
+        </member>
+        <member name="T:TLIB.CollectionHelper">
+            <summary>
+            Provides extension methods for IEnumerable
+            </summary>
+        </member>
+        <member name="M:TLIB.CollectionHelper.TrueForAll``1(System.Collections.Generic.IEnumerable{``0},System.Predicate{``0})">
+            <summary>
+            Is a given predicate true for all elements
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <param name="source"></param>
+            <param name="match"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.CollectionHelper.ToPowerSet``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            calculates the power set for the given set
+            works for source.Count() values 0-30, 190
+            works not for source.Count() values 31-35, 191-200
+            other not tested
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.CollectionHelper.RandomElement``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            returns a random element of a sequence or throws an exception when the sequence is empty
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.CollectionHelper.RandomElements``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Boolean)">
+            <summary>
+            returns a number of random elements of a sequence or throws an exception when there are to less elements
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <param name="source"></param>
+            <param name="number">how many elements to return</param>
+            <param name="AllowRepeatants">shall the set be unique?</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.CollectionHelper.AddRange``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds multiple Elements to an ICollection
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.CollectionHelper.MaxOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Returns the maximum Element of an set or default in case of an error
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TReturn"></typeparam>
+            <param name="source"></param>
+            <param name="selector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.CollectionHelper.MinOrDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Returns the minimum Element of an set or default in case of an error
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TReturn"></typeparam>
+            <param name="source"></param>
+            <param name="selector"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TLIB.MathExtensions">
+            <summary>
+            Extension methods for IComparable Types, aka Numbers
+            </summary>
+        </member>
+        <member name="M:TLIB.MathExtensions.Min``1(``0,``0)">
+            <summary>
+            returns the lower of two elements
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="A"></param>
+            <param name="B"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.Max``1(``0,``0)">
+            <summary>
+            returns the higher of two elements
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="A"></param>
+            <param name="B"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.UpperB``1(``0,``0)">
+            <summary>
+            Return the lower of two elements
+            </summary>
+            <param name="toTest"></param>
+            <param name="Border"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.UpperB``1(``0,``0,``0)">
+            <summary>
+            Returns the lower of two numbers or Fallback, if toTest is not lower then Border
+            </summary>
+            <param name="toTest"></param>
+            <param name="Border"></param>
+            <param name="Fallback"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.LowerB``1(``0,``0)">
+            <summary>
+            Return the higher of two elements
+            </summary>
+            <param name="toTest"></param>
+            <param name="Border"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.LowerB``1(``0,``0,``0)">
+            <summary>
+            Returns the higher of two numbers or Fallback, if toTest is not higher then Border
+            </summary>
+            <param name="toTest"></param>
+            <param name="Border"></param>
+            <param name="Fallback"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.Pow(System.Double,System.Double)">
+            <summary>
+            See Math.Pow
+            </summary>
+            <param name="Base"></param>
+            <param name="Exponent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.Pow(System.Int32,System.Int32)">
+            <summary>
+            See Math.Pow
+            </summary>
+            <param name="Base"></param>
+            <param name="Exponent"></param>
+            <returns>the double from Math.Pow cast to int</returns>
+        </member>
+        <member name="M:TLIB.MathExtensions.Pow(System.UInt32,System.UInt32)">
+            <summary>
+            See Math.Pow
+            </summary>
+            <param name="Base"></param>
+            <param name="Exponent"></param>
+            <returns>the double from Math.Pow cast to uint</returns>
+        </member>
+        <member name="T:TLIB.NumberHelper">
+            <summary>
+            Provides Mathematical Complex Operations
+            </summary>
+        </member>
+        <member name="M:TLIB.NumberHelper.CalcToDouble(System.String,System.Boolean)">
+            <summary>
+            Converts a string to a double
+            this string can contain simple formulas like "-6.5+3,4" (=-3.1)
+            Never throws exceptions, parts that can not be interpret as numbers are removed. (43a.4+1=44.4)
+            </summary>
+            <param name="FormulaString">e.g. "3.1+4,2"</param>
+            <param name="treatKommataAsPoints">, is seen as .</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.NumberHelper.CalcToInt(System.String,System.Boolean)">
+            <summary>
+            see CalcToDouble
+            </summary>
+            <param name="FormulaString"></param>
+            <param name="treatKommataAsPoints"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TLIB.ReflectionHelper">
+            <summary>
+            Methods providing short access for recurring tasks involving reflection
+            </summary>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetMethods(System.Object,System.Type)">
+            <summary>
+            returns MethodInfos of the type of obj, that have type as Attributes
+            </summary>
+            <param name="obj"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetProperties(System.Object,System.Type)">
+            <summary>
+            returns PropertyInfos of the type of obj, that have type as Attributes
+            </summary>
+            <param name="obj"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TLIB.StaticRandom">
+            <summary>
+            Provides static Random Methods, that can be used over a whole project
+            </summary>
+        </member>
+        <member name="F:TLIB.StaticRandom.r">
+            <summary>
+            the used Random object
+            </summary>
+        </member>
+        <member name="M:TLIB.StaticRandom.Next">
+            <summary>
+            @see Random.Next();
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.StaticRandom.Next(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            returns a renadom number from the given area
+            </summary>
+            <param name="minValueInclusiv">The inclusive lower limit of the random number returned.</param>
+            <param name="maxValueExclusive">The exclusive upper limit of the random number returned. maxValuemust be greater than or equal to minValue.</param>
+            <param name="not">a number that is excluded from result set</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">minValue is bigger then maxValue.</exception>
+        </member>
+        <member name="M:TLIB.StaticRandom.Next(System.Int32)">
+            <summary>
+            @see Random.Next(int);
+            </summary>
+            <param name="maxValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.StaticRandom.NextDateTime(System.DateTime,System.DateTime)">
+            <summary>
+            retrieve a random datetime between minInclusive and maxExclusive.
+            </summary>
+            <param name="minInclusive"></param>
+            <param name="maxExclusive"></param>
+        </member>
+        <member name="M:TLIB.StaticRandom.NextLong(System.Int64,System.Int64)">
+            <summary>
+            Returns a random long number from min to max
+            </summary>
+            <param name="minInclusive"></param>
+            <param name="maxExclusive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.StaticRandom.NextBytes(System.Byte[])">
+            <summary>
+            see Random.NextBytes(byte[]);
+            </summary>
+            <param name="buffer"></param>
+        </member>
+        <member name="M:TLIB.StaticRandom.NextDouble">
+            <summary>
+            see Random.NextDouble();
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

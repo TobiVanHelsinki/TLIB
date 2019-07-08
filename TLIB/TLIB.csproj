@@ -6,16 +6,30 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>tlibkey.snk</AssemblyOriginatorKeyFile>
-    <Version>2.2.0</Version>
+    <Version>2.2.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>TobiVanHelsinki</Authors>
     <RepositoryUrl>https://github.com/Tobivanhelsinki/TLIB</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Tobivanhelsinki/TLIB</PackageProjectUrl>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
-    <Description>Library for varoius often used stuff of my apps and projects</Description>
+    <AssemblyVersion>2.2.1.0</AssemblyVersion>
+    <FileVersion>2.2.1.0</FileVersion>
+    <Description>Library with some usefull extension to standard types.
+
+With Extension Methods for IEnumerable (Random Element, Max-/MinOrDefault), FileInfo (DirPath), DirectoryInfo, 
+Math (Min, Max, UpperBorder, LowerBorder, Pow), Reflection (GetPropertiesOfType&lt;&gt;).
+
+With a low level log system.
+
+With new Exceptions.</Description>
     <PackageTags>tlib</PackageTags>
-    <PackageReleaseNotes>First nuget version</PackageReleaseNotes>
+    <PackageReleaseNotes>removed unneccesary stuff and added coments</PackageReleaseNotes>
+    <PackageLicenseFile></PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright 2019</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageId>TLIB</PackageId>
+    <RepositoryType>GitHub</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,10 +43,6 @@
     <EmbeddedResource Remove="_site\**" />
     <None Remove="api\**" />
     <None Remove="_site\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

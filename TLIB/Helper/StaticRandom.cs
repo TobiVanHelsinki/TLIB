@@ -4,41 +4,33 @@ using System.Text;
 
 namespace TLIB
 {
+    /// <summary>
+    /// Provides static Random Methods, that can be used over a whole project
+    /// </summary>
     public static class StaticRandom
     {
+        /// <summary>
+        /// the used Random object
+        /// </summary>
         public static Random r = new Random(DateTime.Now.Second);
 
-        //
-        // Zusammenfassung:
-        //     Gibt eine nicht negative Zufallsganzzahl zurück.
-        //
-        // Rückgabewerte:
-        //     Eine 32-Bit-Ganzzahl mit Vorzeichen, die größer als oder gleich 0 und kleiner
-        //     ist als System.Int32.MaxValue.
+        /// <summary>
+        /// @see Random.Next();
+        /// </summary>
+        /// <returns></returns>
         public static int Next()
         {
             return r.Next();
         }
-        //
-        // Zusammenfassung:
-        //     Gibt eine Zufallsganzzahl zurück, die in einem angegebenen Bereich liegt.
-        //
-        // Parameter:
-        //   minValue:
-        //     Die inklusive untere Grenze der zufälligen Zahl zurückgegeben.
-        //
-        //   maxValue:
-        //     Die exklusive obere Grenze der zufälligen Zahl zurückgegeben. maxValuemuss größer
-        //     als oder gleich minValue.
-        //
-        // Rückgabewerte:
-        //     Eine 32-Bit-Ganzzahl mit Vorzeichen größer oder gleich minValue und weniger als
-        //     maxValue; ist, enthält des Bereichs der Rückgabewerte minValue , aber nicht maxValue.
-        //     Wenn minValue gleich maxValue, minValue wird zurückgegeben.
-        //
-        // Ausnahmen:
-        //   T:System.ArgumentOutOfRangeException:
-        //     minValue ist größer als maxValue.
+
+        /// <summary>
+        /// returns a renadom number from the given area
+        /// </summary>
+        /// <param name="minValueInclusiv">The inclusive lower limit of the random number returned.</param>
+        /// <param name="maxValueExclusive">The exclusive upper limit of the random number returned. maxValuemust be greater than or equal to minValue.</param>
+        /// <param name="not">a number that is excluded from result set</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">minValue is bigger then maxValue.</exception>
         public static int Next(int minValueInclusiv, int maxValueExclusive, int not = int.MaxValue)
         {
             int ret;
@@ -56,31 +48,19 @@ namespace TLIB
 
             return ret;
         }
-        //
-        // Zusammenfassung:
-        //     Gibt eine nicht negative Zufallsganzzahl zurück, die kleiner als das angegebene
-        //     Maximum ist.
-        //
-        // Parameter:
-        //   maxValue:
-        //     Die exklusive obere Grenze der Zufallszahl generiert werden soll. maxValuemuss
-        //     größer als oder gleich 0 sein.
-        //
-        // Rückgabewerte:
-        //     Eine 32-Bit-Ganzzahl mit Vorzeichen, die größer als oder gleich 0 und kleiner
-        //     ist als maxValue; d. h. des Bereichs von Werten in der Regel 0 umfasst jedoch
-        //     nicht maxValue. Jedoch wenn maxValue gleich 0 ist, maxValue zurückgegeben wird.
-        //
-        // Ausnahmen:
-        //   T:System.ArgumentOutOfRangeException:
-        //     maxValue ist kleiner als 0.
+
+        /// <summary>
+        /// @see Random.Next(int);
+        /// </summary>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
         public static int Next(int maxValue)
         {
             return r.Next(maxValue);
         }
 
         /// <summary>
-        /// retrieve a random datetime between.
+        /// retrieve a random datetime between minInclusive and maxExclusive.
         /// </summary>
         /// <param name="minInclusive"></param>
         /// <param name="maxExclusive"></param>
@@ -89,6 +69,12 @@ namespace TLIB
             return new DateTime(NextLong(minInclusive.Ticks, maxExclusive.Ticks));
         }
 
+        /// <summary>
+        /// Returns a random long number from min to max
+        /// </summary>
+        /// <param name="minInclusive"></param>
+        /// <param name="maxExclusive"></param>
+        /// <returns></returns>
         public static long NextLong(long minInclusive, long maxExclusive)
         {
             System.Diagnostics.Debug.WriteLine("minInclusive: {0}, maxExclusive: {1}", minInclusive, maxExclusive);
@@ -98,29 +84,19 @@ namespace TLIB
             return result;
         }
 
-        //
-        // Zusammenfassung:
-        //     Füllt die Elemente eines angegebenen Bytearrays mit Zufallszahlen.
-        //
-        // Parameter:
-        //   buffer:
-        //     Ein Array von Bytes, die Zufallszahlen enthalten.
-        //
-        // Ausnahmen:
-        //   T:System.ArgumentNullException:
-        //     buffer ist null.
+        /// <summary>
+        /// see Random.NextBytes(byte[]);
+        /// </summary>
+        /// <param name="buffer"></param>
         public static void NextBytes(byte[] buffer)
         {
             r.NextBytes(buffer);
         }
-        //
-        // Zusammenfassung:
-        //     Gibt eine zufällige Gleitkommazahl zurück, die größer oder gleich 0,0 und kleiner
-        //     als 1,0 ist.
-        //
-        // Rückgabewerte:
-        //     Eine Gleitkommazahl mit doppelter Genauigkeit, die größer oder gleich 0,0 und
-        //     kleiner als 1,0 ist.
+
+        /// <summary>
+        /// see Random.NextDouble();
+        /// </summary>
+        /// <returns></returns>
         public static double NextDouble()
         {
             return r.NextDouble();

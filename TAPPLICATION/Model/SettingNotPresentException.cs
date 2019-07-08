@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TLIB
+namespace TAPPLICATION.Model
 {
     public class SettingNotPresentException : Exception
     {

@@ -2,6 +2,9 @@
 
 namespace TLIB
 {
+    /// <summary>
+    /// Extension methods for IComparable Types, aka Numbers
+    /// </summary>
     public static class MathExtensions
     {
         /// <summary>
@@ -33,7 +36,6 @@ namespace TLIB
         /// </summary>
         /// <param name="toTest"></param>
         /// <param name="Border"></param>
-        /// <param name="Fallback"></param>
         /// <returns></returns>
         public static T UpperB<T>(this T toTest, T Border) where T : IComparable<T>
         {
@@ -41,7 +43,7 @@ namespace TLIB
         }
 
         /// <summary>
-        /// Returns Fallback if toTest is not lower then Border
+        /// Returns the lower of two numbers or Fallback, if toTest is not lower then Border
         /// </summary>
         /// <param name="toTest"></param>
         /// <param name="Border"></param>
@@ -57,7 +59,6 @@ namespace TLIB
         /// </summary>
         /// <param name="toTest"></param>
         /// <param name="Border"></param>
-        /// <param name="Fallback"></param>
         /// <returns></returns>
         public static T LowerB<T>(this T toTest, T Border) where T : IComparable<T>
         {
@@ -65,7 +66,7 @@ namespace TLIB
         }
 
         /// <summary>
-        /// Returns Fallback if toTest is not higher then Border
+        /// Returns the higher of two numbers or Fallback, if toTest is not higher then Border
         /// </summary>
         /// <param name="toTest"></param>
         /// <param name="Border"></param>
@@ -92,7 +93,7 @@ namespace TLIB
         /// </summary>
         /// <param name="Base"></param>
         /// <param name="Exponent"></param>
-        /// <returns></returns>
+        /// <returns>the double from Math.Pow cast to int</returns>
         public static int Pow(this int Base, int Exponent)
         {
             return (int)Math.Pow(Base, Exponent);
@@ -103,7 +104,7 @@ namespace TLIB
         /// </summary>
         /// <param name="Base"></param>
         /// <param name="Exponent"></param>
-        /// <returns></returns>
+        /// <returns>the double from Math.Pow cast to uint</returns>
         public static uint Pow(this uint Base, uint Exponent)
         {
             return (uint)Math.Pow(Base, Exponent);
