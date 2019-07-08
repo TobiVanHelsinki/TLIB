@@ -6,15 +6,37 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>tlibkey.snk</AssemblyOriginatorKeyFile>
-    <Version>2.0.0</Version>
+    <Version>2.2.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>TobiVanHelsinki</Authors>
+    <RepositoryUrl>https://github.com/Tobivanhelsinki/TLIB</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Tobivanhelsinki/TLIB</PackageProjectUrl>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+    <FileVersion>2.1.0.0</FileVersion>
+    <Description>Library for varoius often used stuff of my apps and projects</Description>
+    <PackageTags>tlib</PackageTags>
+    <PackageReleaseNotes>First nuget version</PackageReleaseNotes>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\Tobiv\Source\TLIB\TLIB\TLIB.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="api\**" />
+    <Compile Remove="_site\**" />
+    <EmbeddedResource Remove="api\**" />
+    <EmbeddedResource Remove="_site\**" />
+    <None Remove="api\**" />
+    <None Remove="_site\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy $(TargetDir)$(TargetName).dll $(SolutionDir)\OutgoingReferences\ /Y&#xD;&#xA;xcopy $(TargetDir)$(TargetName).pdb $(SolutionDir)\OutgoingReferences\ /Y" />
+    <Exec Command="xcopy $(TargetDir)$(TargetName).dll $(SolutionDir)\OutgoingReferences\ /Y&#xD;&#xA;xcopy $(TargetDir)$(TargetName).pdb $(SolutionDir)\OutgoingReferences\ /Y&#xD;&#xA;" />
   </Target>
 
 </Project>
