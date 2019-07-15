@@ -112,9 +112,12 @@
     <Reference Include="TAPPLICATION">
       <HintPath>..\OutgoingReferences\TAPPLICATION.dll</HintPath>
     </Reference>
-    <Reference Include="TLIB">
-      <HintPath>..\..\TLIB\OutgoingReferences\TLIB.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TLIB\TLIB.csproj">
+      <Project>{9265a8bc-cd26-451c-b44f-d266b15ddece}</Project>
+      <Name>TLIB</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

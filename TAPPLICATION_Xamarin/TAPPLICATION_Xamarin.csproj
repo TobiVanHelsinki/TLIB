@@ -10,11 +10,11 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TLIB\TLIB.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="TAPPLICATION">
       <HintPath>..\OutgoingReferences\TAPPLICATION.dll</HintPath>
-    </Reference>
-    <Reference Include="TLIB">
-      <HintPath>..\OutgoingReferences\TLIB.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
