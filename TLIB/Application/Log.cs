@@ -170,11 +170,11 @@ namespace TLIB
             var CombinedMessage = logType + " \"" + msg + "\"";
             if (Mode == LogMode.Moderat)
             {
-                CombinedMessage = DateTime.Now + " " + CombinedMessage;
+                CombinedMessage = ArrivedAt + " " + CombinedMessage;
             }
-            if (Mode == LogMode.Verbose)
+            else if (Mode == LogMode.Verbose)
             {
-                CombinedMessage += ArrivedAt + " " + CombinedMessage + " (" + Caller + ":" + Number + ")";
+                CombinedMessage = ArrivedAt + " " + CombinedMessage + " (" + Caller + ":" + Number + ")";
             }
             if (ex != null)
             {
