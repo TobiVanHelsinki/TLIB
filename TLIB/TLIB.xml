@@ -66,56 +66,108 @@
             Default Exception ctor
             </summary>
         </member>
-        <member name="T:TLIB.LogMode">
-            <summary>
-            Detaildegree of an logmessage
-            </summary>
-        </member>
-        <member name="F:TLIB.LogMode.Minimal">
-            <summary>
-            just the message
-            </summary>
-        </member>
-        <member name="F:TLIB.LogMode.Moderat">
-            <summary>
-            add datetime
-            </summary>
-        </member>
-        <member name="F:TLIB.LogMode.Verbose">
-            <summary>
-            all details
-            </summary>
-        </member>
-        <member name="T:TLIB.LogType">
-            <summary>
-            type of the log may determine color or how it is handeld
-            </summary>
-        </member>
-        <member name="F:TLIB.LogType.Info">
-            <summary>
-            standard
-            </summary>
-        </member>
-        <member name="F:TLIB.LogType.Warning">
-            <summary>
-            possible unwanted behavior noticed
-            </summary>
-        </member>
-        <member name="F:TLIB.LogType.Error">
-            <summary>
-            unwanted behavior noticed
-            </summary>
-        </member>
-        <member name="F:TLIB.LogType.Question">
-            <summary>
-            for the future, displays a question to the user and provide an answere
-            </summary>
-        </member>
         <member name="T:TLIB.LogEventHandler">
             <summary>
             The used event handler for new arrived logs
             </summary>
             <param name="logmessage"></param>
+        </member>
+        <member name="T:TLIB.ChoiceEventHandler">
+            <summary>
+            The used event handler for new arrived choices
+            </summary>
+            <param name="title">A short but strong text that describes your intend</param>
+            <param name="text">The Question you have, the feedback you want, etc.</param>
+            <param name="choice">an object where the selected answere should be places</param>
+            <param name="choices">an array of Choices</param>
+        </member>
+        <member name="T:TLIB.Log">
+            <summary>
+            Provides a basic logsystem. 
+            You can log to file or just hold the log messages in memory.
+            Use the "In*Enabled" Properties to choose, how to log.
+            Specify a LogFile
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.LogFile">
+            <summary>
+            The path to the file, the logs are written in. Note: You have to have access to this file. System.IO.File.AppendAllText is used for file operations.
+            If you set a filepath not null, the IsFileLogEnabled is automaticly set.
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.InMemoryLogMaxCount">
+            <summary>
+            How many items shall be stored in memory?
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.InMemoryLog">
+            <summary>
+            save place for the logs. if full, the earliest messages are removed. You can edit the list as you whish.
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.IsFileLogEnabled">
+            <summary>
+            Enables the file Log. Just possible if a Filepath is specified
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.IsInMemoryLogEnabled">
+            <summary>
+            Enables the in memory Log.
+            </summary>
+        </member>
+        <member name="P:TLIB.Log.IsConsoleLogEnabled">
+            <summary>
+            Enables std console output
+            </summary>
+        </member>
+        <member name="E:TLIB.Log.DisplayQuestionRequested">
+            <summary>
+            Occures, when a Question arrives. The handler then should give a user a choice and send the answere back to the .
+            </summary>
+        </member>
+        <member name="E:TLIB.Log.DisplayMessageRequested">
+            <summary>
+            Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
+            </summary>
+        </member>
+        <member name="E:TLIB.Log.NewLogArrived">
+            <summary>
+            Occures, when a new log arrived
+            </summary>
+        </member>
+        <member name="F:TLIB.Log.Mode">
+            <summary>
+            How detailled shall the message be
+            </summary>
+        </member>
+        <member name="M:TLIB.Log.Write(System.String,System.Exception,TLIB.LogType,System.Boolean,System.Int32,System.String)">
+            <summary>
+            Adds a new log
+            </summary>
+            <param name="msg">Your message</param>
+            <param name="ex">optional, an exception</param>
+            <param name="logType">optional, a special logtype</param>
+            <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
+            <param name="Number">automatic, the line number from wich the call came</param>
+            <param name="Caller">automatic, the membername from wich the call came</param>
+        </member>
+        <member name="M:TLIB.Log.Write(System.String,TLIB.LogType,System.Boolean,System.Int32,System.String)">
+            <summary>
+            Adds a new log
+            </summary>
+            <param name="msg">Your message</param>
+            <param name="logType">optional, a special logtype</param>
+            <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
+            <param name="number">automatic, the line number from wich the call came</param>
+            <param name="caller">automatic, the membername from wich the call came</param>
+        </member>
+        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,System.ValueTuple{System.String,System.Action}[])">
+            <summary>
+            Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+            </summary>
+            <param name="title">A short but strong text that describes your intend</param>
+            <param name="text">The Question you have, the feedback you want, etc.</param>
+            <param name="options">and array of Choice-Result-Tuples</param>
         </member>
         <member name="T:TLIB.LogMessage">
             <summary>
@@ -163,70 +215,68 @@
             <param name="thrownException">Had it have an exception</param>
             <param name="combinedMessage">A short string for this instance</param>
         </member>
-        <member name="T:TLIB.Log">
+        <member name="T:TLIB.LogMode">
             <summary>
-            Provides a basic logsystem. 
-            You can log to file or just hold the log messages in memory.
-            Use the "In*Enabled" Properties to choose, how to log.
-            Specify a LogFile
+            Detaildegree of an logmessage
             </summary>
         </member>
-        <member name="P:TLIB.Log.LogFile">
+        <member name="F:TLIB.LogMode.Minimal">
             <summary>
-            The path to the file, the logs are written in. Note: You have to have access to this file. System.IO.File.AppendAllText is used for file operations.
-            If you set a filepath not null, the IsFileLogEnabled is automaticly set.
+            just the message
             </summary>
         </member>
-        <member name="P:TLIB.Log.InMemoryLogMaxCount">
+        <member name="F:TLIB.LogMode.Moderat">
             <summary>
-            How many items shall be stored in memory?
+            add datetime
             </summary>
         </member>
-        <member name="P:TLIB.Log.InMemoryLog">
+        <member name="F:TLIB.LogMode.Verbose">
             <summary>
-            save place for the logs. if full, the earliest messages are removed. You can edit the list as you whish.
+            all details
             </summary>
         </member>
-        <member name="P:TLIB.Log.IsFileLogEnabled">
+        <member name="T:TLIB.LogType">
             <summary>
-            Enables the file Log. Just possible if a Filepath is specified
+            type of the log may determine color or how it is handeld
             </summary>
         </member>
-        <member name="P:TLIB.Log.IsInMemoryLogEnabled">
+        <member name="F:TLIB.LogType.Info">
             <summary>
-            Enables the in memory Log.
+            standard
             </summary>
         </member>
-        <member name="P:TLIB.Log.IsConsoleLogEnabled">
+        <member name="F:TLIB.LogType.Warning">
             <summary>
-            Enables std console output
+            possible unwanted behavior noticed
             </summary>
         </member>
-        <member name="E:TLIB.Log.DisplayMessageRequested">
+        <member name="F:TLIB.LogType.Error">
             <summary>
-            Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
+            unwanted behavior noticed
             </summary>
         </member>
-        <member name="E:TLIB.Log.NewLogArrived">
+        <member name="F:TLIB.LogType.Question">
             <summary>
-            Occures, when a new log arrived
+            for the future, displays a question to the user and provide an answere
             </summary>
         </member>
-        <member name="F:TLIB.Log.Mode">
+        <member name="T:TLIB.ResultCallback">
             <summary>
-            How detailled shall the message be
+            stores an callback action for answering 
             </summary>
         </member>
-        <member name="M:TLIB.Log.Write(System.String,System.Exception,TLIB.LogType,System.Boolean,System.Int32,System.String)">
+        <member name="M:TLIB.ResultCallback.SendResultNo(System.Int32)">
             <summary>
-            Adds a new log
+            Use this to send the number of the selected choice back to sender
+            the callback will just work once
             </summary>
-            <param name="msg">Your message</param>
-            <param name="ex">optional, an exception</param>
-            <param name="logType">optional, a special logtype</param>
-            <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
-            <param name="Number">automatic, the line number from wich the call came</param>
-            <param name="Caller">automatic, the membername from wich the call came</param>
+            <param name="n">the selected index</param>
+        </member>
+        <member name="M:TLIB.ResultCallback.#ctor(System.Action{System.Int32})">
+            <summary>
+            specify the callback to get executed when a selection is made
+            </summary>
+            <param name="callback">the callback to executes, parameter is int index</param>
         </member>
         <member name="T:TLIB.CollectionHelper">
             <summary>

@@ -1,105 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace TLIB
 {
     /// <summary>
-    /// Detaildegree of an logmessage
-    /// </summary>
-    public enum LogMode
-    {
-        /// <summary>
-        /// just the message
-        /// </summary>
-        Minimal,
-        /// <summary>
-        /// add datetime
-        /// </summary>
-        Moderat,
-        /// <summary>
-        /// all details
-        /// </summary>
-        Verbose
-    }
-    /// <summary>
-    /// type of the log may determine color or how it is handeld
-    /// </summary>
-    public enum LogType
-    {
-        /// <summary>
-        /// standard
-        /// </summary>
-        Info,
-        /// <summary>
-        /// possible unwanted behavior noticed
-        /// </summary>
-        Warning,
-        /// <summary>
-        /// unwanted behavior noticed
-        /// </summary>
-        Error,
-        /// <summary>
-        /// for the future, displays a question to the user and provide an answere
-        /// </summary>
-        Question
-    }
-
-    /// <summary>
     /// The used event handler for new arrived logs
     /// </summary>
     /// <param name="logmessage"></param>
     public delegate void LogEventHandler(LogMessage logmessage);
-/// <summary>
-/// the wrapper for an log
-/// </summary>
-    public struct LogMessage
-    {
-        /// <summary>
-        /// What kind of log is this
-        /// </summary>
-        public LogType LogType { get; set; }
-        /// <summary>
-        /// What does it say
-        /// </summary>
-        public string Message { get; set; }
-        /// <summary>
-        /// When did it arrived
-        /// </summary>
-        public DateTime ArrivedAt { get; set; }
-        /// <summary>
-        /// Who send this log
-        /// </summary>
-        public string Caller { get; set; }
-        /// <summary>
-        /// Had it have an exception
-        /// </summary>
-        public Exception ThrownException { get; set; }
-        /// <summary>
-        /// A string containing the message and for example the arrivetime or the priority. depends at the LogType
-        /// </summary>
-        public string CombinedMessage { get; set; }
 
-        /// <summary>
-        /// Create a log message
-        /// </summary>
-        /// <param name="logType">What kind of log is this</param>
-        /// <param name="message">What does it say</param>
-        /// <param name="arrivedAt">When did it arrived</param>
-        /// <param name="caller">Who send this log</param>
-        /// <param name="thrownException">Had it have an exception</param>
-        /// <param name="combinedMessage">A short string for this instance</param>
-        public LogMessage(LogType logType, string message, DateTime arrivedAt, string caller, Exception thrownException, string combinedMessage)
-        {
-            LogType = logType;
-            Message = message;
-            ArrivedAt = arrivedAt;
-            Caller = caller;
-            ThrownException = thrownException;
-            CombinedMessage = combinedMessage;
-        }
-    }
+    /// <summary>
+    /// The used event handler for new arrived choices
+    /// </summary>
+    /// <param name="title">A short but strong text that describes your intend</param>
+    /// <param name="text">The Question you have, the feedback you want, etc.</param>
+    /// <param name="choice">an object where the selected answere should be places</param>
+    /// <param name="choices">an array of Choices</param>
+    public delegate void ChoiceEventHandler(string title, string text, ResultCallback choice, params string[] choices);
 
     /// <summary>
     /// Provides a basic logsystem. 
@@ -142,6 +62,10 @@ namespace TLIB
         /// </summary>
         public static bool IsConsoleLogEnabled { get; set; }
 
+        /// <summary>
+        /// Occures, when a Question arrives. The handler then should give a user a choice and send the answere back to the .
+        /// </summary>
+        public static event ChoiceEventHandler DisplayQuestionRequested;
         /// <summary>
         /// Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
         /// </summary>
@@ -193,6 +117,19 @@ namespace TLIB
             }
         }
 
+        /// <summary>
+        /// Adds a new log
+        /// </summary>
+        /// <param name="msg">Your message</param>
+        /// <param name="logType">optional, a special logtype</param>
+        /// <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
+        /// <param name="number">automatic, the line number from wich the call came</param>
+        /// <param name="caller">automatic, the membername from wich the call came</param>
+        public static void Write(string msg, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
+        {
+            Write(msg, null, logType, InterruptUser, number, caller);
+        }
+
         static void AddDetails(Exception ex, ref string CombinedMessage)
         {
             CombinedMessage += Environment.NewLine
@@ -241,6 +178,33 @@ namespace TLIB
                 {
                 }
             }
+        }
+
+        /// <summary>
+        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+        /// </summary>
+        /// <param name="title">A short but strong text that describes your intend</param>
+        /// <param name="text">The Question you have, the feedback you want, etc.</param>
+        /// <param name="options">and array of Choice-Result-Tuples</param>
+        public static void DisplayChoice(string title, string text, params (string, Action)[] options)
+        {
+            var choice = new ResultCallback(
+                (x) =>
+                {
+                    string answere;
+                    if (x < options.Count() && x >= 0)
+                    {
+                        options[x].Item2?.Invoke();
+                        answere = options[x].Item1;
+                    }
+                    else
+                    {
+                        answere = "Nothing";
+                    }
+                    Write(title + "\"  was asked: \"" + text + "\". The Answere is: \"" + answere, LogType.Question, false, 0, "");
+                }
+                );
+            DisplayQuestionRequested?.Invoke(title, text, choice, options.Select(x => x.Item1).ToArray());
         }
     }
 }
