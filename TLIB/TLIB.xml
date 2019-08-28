@@ -161,6 +161,14 @@
             <param name="number">automatic, the line number from wich the call came</param>
             <param name="caller">automatic, the membername from wich the call came</param>
         </member>
+        <member name="M:TLIB.Log.Write(System.String,System.Int32,System.String)">
+            <summary>
+            Adds a new log
+            </summary>
+            <param name="msg">Your message</param>
+            <param name="number">automatic, the line number from wich the call came</param>
+            <param name="caller">automatic, the membername from wich the call came</param>
+        </member>
         <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,System.ValueTuple{System.String,System.Action}[])">
             <summary>
             Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected

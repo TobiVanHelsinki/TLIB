@@ -130,6 +130,17 @@ namespace TLIB
             Write(msg, null, logType, InterruptUser, number, caller);
         }
 
+        /// <summary>
+        /// Adds a new log
+        /// </summary>
+        /// <param name="msg">Your message</param>
+        /// <param name="number">automatic, the line number from wich the call came</param>
+        /// <param name="caller">automatic, the membername from wich the call came</param>
+        public static void Write(string msg, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
+        {
+            Write(msg, null, LogType.Info, false, number, caller);
+        }
+
         static void AddDetails(Exception ex, ref string CombinedMessage)
         {
             CombinedMessage += Environment.NewLine
