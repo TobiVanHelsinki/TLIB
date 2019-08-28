@@ -161,11 +161,12 @@
             <param name="number">automatic, the line number from wich the call came</param>
             <param name="caller">automatic, the membername from wich the call came</param>
         </member>
-        <member name="M:TLIB.Log.Write(System.String,System.Int32,System.String)">
+        <member name="M:TLIB.Log.Write(System.String,System.Boolean,System.Int32,System.String)">
             <summary>
             Adds a new log
             </summary>
             <param name="msg">Your message</param>
+            <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
             <param name="number">automatic, the line number from wich the call came</param>
             <param name="caller">automatic, the membername from wich the call came</param>
         </member>

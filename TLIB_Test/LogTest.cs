@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using TLIB;
 
 namespace TLIB_Test
@@ -6,6 +7,20 @@ namespace TLIB_Test
     [TestClass]
     public class LogTest
     {
+
+        [TestMethod]
+        public void LogOverloads()
+        {
+            Log.Write("");
+            Log.Write("", InterruptUser: true);
+
+            Log.Write("", new Exception());
+            Log.Write("", new Exception(), LogType.Question);
+            Log.Write("", new Exception(), LogType.Question, InterruptUser: true);
+
+            Log.Write("", LogType.Question);
+            Log.Write("", LogType.Question, InterruptUser: true);
+        }
 
         [TestMethod]
         public void MyMethod()

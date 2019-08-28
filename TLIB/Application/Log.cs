@@ -88,7 +88,7 @@ namespace TLIB
         /// <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
         /// <param name="Number">automatic, the line number from wich the call came</param>
         /// <param name="Caller">automatic, the membername from wich the call came</param>
-        public static void Write(string msg, Exception ex = null, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
+        public static void Write(string msg, Exception ex, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
         {
             var ArrivedAt = DateTime.Now;
             var CombinedMessage = logType + " \"" + msg + "\"";
@@ -125,7 +125,7 @@ namespace TLIB
         /// <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
         /// <param name="number">automatic, the line number from wich the call came</param>
         /// <param name="caller">automatic, the membername from wich the call came</param>
-        public static void Write(string msg, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
+        public static void Write(string msg, LogType logType, bool InterruptUser = false, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
         {
             Write(msg, null, logType, InterruptUser, number, caller);
         }
@@ -134,12 +134,24 @@ namespace TLIB
         /// Adds a new log
         /// </summary>
         /// <param name="msg">Your message</param>
+        /// <param name="InterruptUser">optional, request, that a user get's rigth away notified</param>
         /// <param name="number">automatic, the line number from wich the call came</param>
         /// <param name="caller">automatic, the membername from wich the call came</param>
-        public static void Write(string msg, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
+        public static void Write(string msg, bool InterruptUser = false, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
         {
-            Write(msg, null, LogType.Info, false, number, caller);
+            Write(msg, null, LogType.Info, InterruptUser, number, caller);
         }
+
+        ///// <summary>
+        ///// Adds a new log
+        ///// </summary>
+        ///// <param name="msg">Your message</param>
+        ///// <param name="number">automatic, the line number from wich the call came</param>
+        ///// <param name="caller">automatic, the membername from wich the call came</param>
+        //public static void Write(string msg, [CallerLineNumber] int number = 0, [CallerMemberName] string caller = "")
+        //{
+        //    Write(msg, null, LogType.Info, false, number, caller);
+        //}
 
         static void AddDetails(Exception ex, ref string CombinedMessage)
         {
