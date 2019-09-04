@@ -34,7 +34,20 @@ namespace TLIB
         /// The path to the file, the logs are written in. Note: You have to have access to this file. System.IO.File.AppendAllText is used for file operations.
         /// If you set a filepath not null, the IsFileLogEnabled is automaticly set.
         /// </summary>
-        public static string LogFile { get => _LogFile; set { _LogFile = value; IsFileLogEnabled = value != null; } }
+        public static string LogFile
+        {
+            get => _LogFile;
+            set {
+                _LogFile = value;
+                IsFileLogEnabled = value != null;
+                try { Directory.CreateDirectory(new FileInfo(LogFile).DirectoryName); }
+                catch (UnauthorizedAccessException) { }
+                catch (PathTooLongException) { }
+                catch (DirectoryNotFoundException) { }
+                catch (IOException) { }
+                catch (System.Security.SecurityException) { }
+            }
+        }
         /// <summary>
         /// How many items shall be stored in memory?
         /// </summary>
