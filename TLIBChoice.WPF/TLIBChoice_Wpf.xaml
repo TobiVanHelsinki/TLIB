@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TLIBChoice.WPF.TLIBChoice"
+﻿<UserControl x:Class="TLIB.Choice.WPF.TLIBChoice_Wpf"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

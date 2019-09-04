@@ -1,14 +1,14 @@
 ﻿using System.Windows;
 using TLIB;
 
-namespace TLIBMessageControl_Test
+namespace TLIBChoice.WPF_Test
 {
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            Log.DisplayChoiceRequested += TLIBChoice.WPF.TLIBChoice.Log_DisplayQuestionRequested;
+            Log.DisplayChoiceRequested += TLIB.Choice.WPF.Builder.Log_DisplayQuestionRequested;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
