@@ -120,7 +120,7 @@
             Enables std console output
             </summary>
         </member>
-        <member name="E:TLIB.Log.DisplayQuestionRequested">
+        <member name="E:TLIB.Log.DisplayChoiceRequested">
             <summary>
             Occures, when a Question arrives. The handler then should give a user a choice and send the answere back to the .
             </summary>

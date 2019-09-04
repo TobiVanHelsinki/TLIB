@@ -65,7 +65,7 @@ namespace TLIB
         /// <summary>
         /// Occures, when a Question arrives. The handler then should give a user a choice and send the answere back to the .
         /// </summary>
-        public static event ChoiceEventHandler DisplayQuestionRequested;
+        public static event ChoiceEventHandler DisplayChoiceRequested;
         /// <summary>
         /// Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
         /// </summary>
@@ -227,7 +227,7 @@ namespace TLIB
                     Write(title + "\"  was asked: \"" + text + "\". The Answere is: \"" + answere, LogType.Question, false, 0, "");
                 }
                 );
-            DisplayQuestionRequested?.Invoke(title, text, choice, options.Select(x => x.Item1).ToArray());
+            DisplayChoiceRequested?.Invoke(title, text, choice, options.Select(x => x.Item1).ToArray());
         }
     }
 }

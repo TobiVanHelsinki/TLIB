@@ -29,7 +29,7 @@ namespace TLIB_Test
             Log.IsInMemoryLogEnabled = true;
             Log.IsConsoleLogEnabled = true;
 
-            Log.DisplayQuestionRequested += Log_DisplayQuestionRequested;
+            Log.DisplayChoiceRequested += Log_DisplayQuestionRequested;
 
             int SelectedOption = -1;
             Log.DisplayChoice("The text is the answere", "1"
