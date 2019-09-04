@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+	<repository type="git" url="https://github.com/Tobivanhelsinki/TLIB.git"/>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A packe to extend TLIB. Contains an Eventhandler for TLIB.LOG Choice mechanism, that displays a wpf ui.</description>
+    <language>en</language>
+    <license type="expression">MIT</license>
+  </metadata>
+</package>
