@@ -73,7 +73,7 @@ namespace TLIB_Test
             Assert.AreEqual(SelectedOption, 1);
         }
 
-        private void Log_DisplayQuestionRequested(string title, string text, ResultCallback choice, string[] choices, Options o)
+        private void Log_DisplayQuestionRequested(string title, string text, ResultCallback choice, object[] choices, Options o)
         {
             //Imagine show a messagebox or so
             // Selecting answere 2

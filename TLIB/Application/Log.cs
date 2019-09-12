@@ -20,7 +20,7 @@ namespace TLIB
     /// <param name="choice">an object where the selected answere should be places</param>
     /// <param name="choices">an array of Choices</param>
     /// <param name="options">an struct of various how-to-display settings</param>
-    public delegate void ChoiceEventHandler(string title, string text, ResultCallback choice, string[] choices, Options options);
+    public delegate void ChoiceEventHandler(string title, string text, ResultCallback choice, object[] choices, Options options);
 
     /// <summary>
     /// Determines an Orientation, used for ui description
@@ -275,7 +275,7 @@ namespace TLIB
         /// <param name="title">A short but strong text that describes your intend</param>
         /// <param name="text">The Question you have, the feedback you want, etc.</param>
         /// <param name="choices">and array of Choice-Result-Tuples</param>
-        public static void DisplayChoice(string title, string text, params (string, Action)[] choices)
+        public static void DisplayChoice(string title, string text, params (object, Action)[] choices)
         {
             DisplayChoice(title, text, new Options(), choices);
         }
@@ -287,7 +287,7 @@ namespace TLIB
         /// <param name="text">The Question you have, the feedback you want, etc.</param>
         /// <param name="options">an object of the Settings struct</param>
         /// <param name="choices">and array of Choice-Result-Tuples</param>
-        public static void DisplayChoice(string title, string text, Options options, IEnumerable<(string, Action)> choices)
+        public static void DisplayChoice(string title, string text, Options options, IEnumerable<(object, Action)> choices)
         {
             DisplayChoice(title, text, options, choices.ToArray());
         }
@@ -299,7 +299,7 @@ namespace TLIB
         /// <param name="text">The Question you have, the feedback you want, etc.</param>
         /// <param name="options">an object of the Settings struct</param>
         /// <param name="choices">and array of Choice-Result-Tuples</param>
-        public static void DisplayChoice(string title, string text, Options options, params (string, Action)[] choices)
+        public static void DisplayChoice(string title, string text, Options options, params (object, Action)[] choices)
         {
             var choice = new ResultCallback(
                 (x) =>
@@ -308,7 +308,7 @@ namespace TLIB
                     if (x < choices.Count() && x >= 0)
                     {
                         choices[x].Item2?.Invoke();
-                        answere = choices[x].Item1;
+                        answere = choices[x].Item1.ToString();
                     }
                     else
                     {
