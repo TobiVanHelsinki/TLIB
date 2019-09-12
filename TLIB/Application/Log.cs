@@ -19,7 +19,58 @@ namespace TLIB
     /// <param name="text">The Question you have, the feedback you want, etc.</param>
     /// <param name="choice">an object where the selected answere should be places</param>
     /// <param name="choices">an array of Choices</param>
-    public delegate void ChoiceEventHandler(string title, string text, ResultCallback choice, params string[] choices);
+    /// <param name="options">an struct of various how-to-display settings</param>
+    public delegate void ChoiceEventHandler(string title, string text, ResultCallback choice, string[] choices, Options options);
+
+    /// <summary>
+    /// Determines an Orientation, used for ui description
+    /// </summary>
+    public enum Orientation
+    {
+        /// <summary>
+        /// from top to bottom
+        /// </summary>
+        Vertical,
+        /// <summary>
+        /// from left to right
+        /// </summary>
+        Horizontal,
+    }
+    /// <summary>
+    /// Determines an Presentation Mode, used for ui description
+    /// </summary>
+    public enum Presentation
+    {
+        /// <summary>
+        /// simplest form
+        /// </summary>
+        Stackpanel,
+        /// <summary>
+        /// use the property ButtonColumns
+        /// </summary>
+        Grid,
+    }
+    /// <summary>
+    /// Contains various information about how to dispaly the choice
+    /// </summary>
+    public class Options
+    {
+        /// <summary>
+        /// How should the button orientation be
+        /// </summary>
+        public Orientation ButtonOrientation;
+        /// <summary>
+        /// How should the buttons be displayed
+        /// </summary>
+        public Presentation ButtonPresentation { get; set; }
+
+        int _ButtonColumns = 3;
+        /// <summary>
+        /// how many columns should there be
+        /// pay atten
+        /// </summary>
+        public int ButtonColumns { get => _ButtonColumns; set => _ButtonColumns = value.LowerB(3); }
+    }
 
     /// <summary>
     /// Provides a basic logsystem. 
@@ -37,7 +88,8 @@ namespace TLIB
         public static string LogFile
         {
             get => _LogFile;
-            set {
+            set
+            {
                 _LogFile = value;
                 IsFileLogEnabled = value != null;
                 try { Directory.CreateDirectory(new FileInfo(LogFile).DirectoryName); }
@@ -216,22 +268,47 @@ namespace TLIB
             }
         }
 
+
         /// <summary>
         /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
         /// </summary>
         /// <param name="title">A short but strong text that describes your intend</param>
         /// <param name="text">The Question you have, the feedback you want, etc.</param>
-        /// <param name="options">and array of Choice-Result-Tuples</param>
-        public static void DisplayChoice(string title, string text, params (string, Action)[] options)
+        /// <param name="choices">and array of Choice-Result-Tuples</param>
+        public static void DisplayChoice(string title, string text, params (string, Action)[] choices)
+        {
+            DisplayChoice(title, text, new Options(), choices);
+        }
+
+        /// <summary>
+        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+        /// </summary>
+        /// <param name="title">A short but strong text that describes your intend</param>
+        /// <param name="text">The Question you have, the feedback you want, etc.</param>
+        /// <param name="options">an object of the Settings struct</param>
+        /// <param name="choices">and array of Choice-Result-Tuples</param>
+        public static void DisplayChoice(string title, string text, Options options, IEnumerable<(string, Action)> choices)
+        {
+            DisplayChoice(title, text, options, choices.ToArray());
+        }
+
+        /// <summary>
+        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+        /// </summary>
+        /// <param name="title">A short but strong text that describes your intend</param>
+        /// <param name="text">The Question you have, the feedback you want, etc.</param>
+        /// <param name="options">an object of the Settings struct</param>
+        /// <param name="choices">and array of Choice-Result-Tuples</param>
+        public static void DisplayChoice(string title, string text, Options options, params (string, Action)[] choices)
         {
             var choice = new ResultCallback(
                 (x) =>
                 {
                     string answere;
-                    if (x < options.Count() && x >= 0)
+                    if (x < choices.Count() && x >= 0)
                     {
-                        options[x].Item2?.Invoke();
-                        answere = options[x].Item1;
+                        choices[x].Item2?.Invoke();
+                        answere = choices[x].Item1;
                     }
                     else
                     {
@@ -240,7 +317,8 @@ namespace TLIB
                     Write(title + "\"  was asked: \"" + text + "\". The Answere is: \"" + answere, LogType.Question, false, 0, "");
                 }
                 );
-            DisplayChoiceRequested?.Invoke(title, text, choice, options.Select(x => x.Item1).ToArray());
+            DisplayChoiceRequested?.Invoke(title, text, choice, choices.Select(x => x.Item1).ToArray(), options);
         }
+
     }
 }

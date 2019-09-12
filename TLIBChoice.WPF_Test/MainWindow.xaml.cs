@@ -1,19 +1,67 @@
 ﻿using System.Windows;
 using TLIB;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace TLIBChoice.WPF_Test
 {
-    public partial class MainWindow : Window
-    {
+    public partial class MainWindow : Window, INotifyPropertyChanged
+	{
+        #region NotifyPropertyChanged
+		public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+        string _Title = "ATTANTION! Importanté!";
+        public string Caption
+        {
+            get { return _Title; }
+            set { if (_Title != value) { _Title = value; NotifyPropertyChanged(); } }
+        }
+
+        string _Text = "This is a very important choice you have to made, young padawan. Choose wise and an not unimportant amount of money will be granted to you.";
+        public string Text
+        {
+            get { return _Text; }
+            set { if (_Text != value) { _Text = value; NotifyPropertyChanged(); NotifyPropertyChanged(nameof(TextLength)); } }
+        }
+        public int TextLength => _Text.Length;
+
+
+        int _Columns;
+        public int Columns
+        {
+            get { return _Columns; }
+            set { if (_Columns != value) { _Columns = value; NotifyPropertyChanged(); } }
+        }
+
+        int _Presentation;
+        public int Presentation
+        {
+            get { return _Presentation; }
+            set { if (_Presentation != value) { _Presentation = value; NotifyPropertyChanged(); } }
+        }
+        int _Orientation;
+        public int Orientation
+        {
+            get { return _Orientation; }
+            set { if (_Orientation != value) { _Orientation = value; NotifyPropertyChanged(); } }
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
             Log.DisplayChoiceRequested += TLIB.Choice.WPF.Builder.Log_DisplayQuestionRequested;
+            DataContext = this;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Log.DisplayChoice("ATTANTION! Importanté!", "This is a very important choice you have to made, young padawan. Choose wise and an not unimportant amount of money will be granted to you.",
+            Log.DisplayChoice(Caption, Text
+                , new Options() {ButtonColumns = Columns, ButtonOrientation = (Orientation)Orientation, ButtonPresentation = (Presentation)Presentation },
                 ("Opt1",()=>Result.Text = "Opt1"),
                 ("Opt2",()=>Result.Text = "Opt2"),
                 ("Opt3",()=>Result.Text = "Opt3"),

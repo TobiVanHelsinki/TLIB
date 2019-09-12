@@ -80,6 +80,58 @@
             <param name="text">The Question you have, the feedback you want, etc.</param>
             <param name="choice">an object where the selected answere should be places</param>
             <param name="choices">an array of Choices</param>
+            <param name="options">an struct of various how-to-display settings</param>
+        </member>
+        <member name="T:TLIB.Orientation">
+            <summary>
+            Determines an Orientation, used for ui description
+            </summary>
+        </member>
+        <member name="F:TLIB.Orientation.Vertical">
+            <summary>
+            from top to bottom
+            </summary>
+        </member>
+        <member name="F:TLIB.Orientation.Horizontal">
+            <summary>
+            from left to right
+            </summary>
+        </member>
+        <member name="T:TLIB.Presentation">
+            <summary>
+            Determines an Presentation Mode, used for ui description
+            </summary>
+        </member>
+        <member name="F:TLIB.Presentation.Stackpanel">
+            <summary>
+            simplest form
+            </summary>
+        </member>
+        <member name="F:TLIB.Presentation.Grid">
+            <summary>
+            use the property ButtonColumns
+            </summary>
+        </member>
+        <member name="T:TLIB.Options">
+            <summary>
+            Contains various information about how to dispaly the choice
+            </summary>
+        </member>
+        <member name="F:TLIB.Options.ButtonOrientation">
+            <summary>
+            How should the button orientation be
+            </summary>
+        </member>
+        <member name="P:TLIB.Options.ButtonPresentation">
+            <summary>
+            How should the buttons be displayed
+            </summary>
+        </member>
+        <member name="P:TLIB.Options.ButtonColumns">
+            <summary>
+            how many columns should there be
+            pay atten
+            </summary>
         </member>
         <member name="T:TLIB.Log">
             <summary>
@@ -176,7 +228,25 @@
             </summary>
             <param name="title">A short but strong text that describes your intend</param>
             <param name="text">The Question you have, the feedback you want, etc.</param>
-            <param name="options">and array of Choice-Result-Tuples</param>
+            <param name="choices">and array of Choice-Result-Tuples</param>
+        </member>
+        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Action}})">
+            <summary>
+            Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+            </summary>
+            <param name="title">A short but strong text that describes your intend</param>
+            <param name="text">The Question you have, the feedback you want, etc.</param>
+            <param name="options">an object of the Settings struct</param>
+            <param name="choices">and array of Choice-Result-Tuples</param>
+        </member>
+        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.ValueTuple{System.String,System.Action}[])">
+            <summary>
+            Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+            </summary>
+            <param name="title">A short but strong text that describes your intend</param>
+            <param name="text">The Question you have, the feedback you want, etc.</param>
+            <param name="options">an object of the Settings struct</param>
+            <param name="choices">and array of Choice-Result-Tuples</param>
         </member>
         <member name="T:TLIB.LogMessage">
             <summary>
@@ -357,6 +427,19 @@
             <typeparam name="TReturn"></typeparam>
             <param name="source"></param>
             <param name="selector"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TLIB.FileHelper">
+            <summary>
+            Provides extension methods for Files, Folders and Directories
+            </summary>
+        </member>
+        <member name="M:TLIB.FileHelper.RemoveFileTypeExtension(System.String,System.Int32)">
+            <summary>
+            returns a string, where depth-extens are removed
+            </summary>
+            <param name="filepath"></param>
+            <param name="depth"></param>
             <returns></returns>
         </member>
         <member name="T:TLIB.MathExtensions">

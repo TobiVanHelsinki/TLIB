@@ -3,11 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TLIBMessageControl_Test"
         mc:Ignorable="d"
-        Title="MainWindow" Height="100" Width="100">
+        Title="MainWindow" Height="300" Width="200">
     <StackPanel>
         <Button Content="Ask" Click="Button_Click"/>
         <TextBlock x:Name="Result"/>
+        <TextBlock Text="Columns"/>
+        <TextBox Text="{Binding Columns}"/>
+        <TextBlock Text="Orientation"/>
+        <TextBox Text="{Binding Orientation}"/>
+        <TextBlock Text="Presentation"/>
+        <TextBox Text="{Binding Presentation}"/>
+        <TextBlock Text="Title"/>
+        <TextBox Text="{Binding Caption}"/>
+        <TextBlock Text="Text"/>
+        <TextBox Text="{Binding Text}"/>
+        <TextBlock Text="{Binding TextLength}"/>
     </StackPanel>
 </Window>

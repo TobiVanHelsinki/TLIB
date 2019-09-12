@@ -12,27 +12,47 @@ namespace TLIB.Choice.WPF
         /// <summary>
         /// Property to determine how many columns the ui have for the choices
         /// </summary>
-        public static int Columns { get; set; } = 3;
-        public static void Log_DisplayQuestionRequested(string title, string text, ResultCallback choice, params string[] choices)
+        public static void Log_DisplayQuestionRequested(string title, string text, ResultCallback choice, string[] choices, Options options)
         {
             var ctrl = new TLIBChoice_Wpf();
             var win = new Window
             {
                 Title = title,
                 Content = ctrl,
-                Height = 60 * choices.Length / Columns + 50,
-                Width = 180 * Columns,
+                SizeToContent = SizeToContent.Height
             };
             ctrl.Text.Text = text;
+            win.Width = ctrl.Text.Text.Length * 3.4;
             int optionscounter = 0;
-            for (int i = 0; i < Columns; i++)
+            int buttonColumns = options.ButtonColumns;
+            if (buttonColumns < 1)
             {
-                ctrl.OptionsGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                buttonColumns = 3;
             }
-            for (int i = 0; i < Math.Ceiling(choices.Length / (double)Columns); i++)
+            for (int i = 0; i < buttonColumns; i++)
             {
-                ctrl.OptionsGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                if (options.ButtonOrientation == Orientation.Horizontal)
+                {
+                    ctrl.OptionsGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                }
+                else
+                {
+                    ctrl.OptionsGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                }
             }
+            for (int i = 0; i < Math.Ceiling(choices.Length / (double)buttonColumns); i++)
+            {
+                if (options.ButtonOrientation == Orientation.Horizontal)
+                {
+                    ctrl.OptionsGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                }
+                else
+                {
+                    ctrl.OptionsGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+                }
+            }
+            
+            ctrl.OptionsStack.Orientation = options.ButtonOrientation == Orientation.Horizontal ? System.Windows.Controls.Orientation.Horizontal : System.Windows.Controls.Orientation.Vertical;
             foreach (var item in choices)
             {
                 var b = new Button
@@ -42,9 +62,24 @@ namespace TLIB.Choice.WPF
                     Style = ctrl.Resources["ButtonStyle"] as Style,
                 };
                 b.Click += (s, e) => { choice.SendResultNo((int)(s as Button).Tag); win.Close(); };
-                Grid.SetColumn(b, optionscounter % Columns);
-                Grid.SetRow(b, optionscounter / Columns);
-                ctrl.OptionsGrid.Children.Add(b);
+                if (options.ButtonPresentation == Presentation.Stackpanel)
+                {
+                    ctrl.OptionsStack.Children.Add(b);
+                }
+                else
+                {
+                    if (options.ButtonOrientation == Orientation.Horizontal)
+                    {
+                        Grid.SetColumn(b, optionscounter % buttonColumns);
+                        Grid.SetRow(b, optionscounter / buttonColumns);
+                    }
+                    else
+                    {
+                        Grid.SetColumn(b, optionscounter / buttonColumns);
+                        Grid.SetRow(b, optionscounter % buttonColumns);
+                    }
+                    ctrl.OptionsGrid.Children.Add(b);
+                }
                 optionscounter++;
             }
             try
