@@ -12,7 +12,7 @@ namespace TLIB.Choice.WPF
         /// <summary>
         /// Property to determine how many columns the ui have for the choices
         /// </summary>
-        public static void Log_DisplayQuestionRequested(string title, string text, ResultCallback choice, obje[] choices, Options options)
+        public static void Log_DisplayQuestionRequested(string title, string text, ResultCallback choice, object[] choices, Options options)
         {
             var ctrl = new TLIBChoice_Wpf();
             var win = new Window

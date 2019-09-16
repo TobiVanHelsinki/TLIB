@@ -222,7 +222,7 @@
             <param name="number">automatic, the line number from wich the call came</param>
             <param name="caller">automatic, the membername from wich the call came</param>
         </member>
-        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,System.ValueTuple{System.Object,System.Action{System.Object}}[])">
+        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,System.ValueTuple{System.Object,System.Action}[])">
             <summary>
             Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
             </summary>
@@ -230,7 +230,7 @@
             <param name="text">The Question you have, the feedback you want, etc.</param>
             <param name="choices">and array of Choice-Result-Tuples</param>
         </member>
-        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,System.Action{System.Object}}})">
+        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,System.Action}})">
             <summary>
             Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
             </summary>
@@ -239,7 +239,7 @@
             <param name="options">an object of the Settings struct</param>
             <param name="choices">and array of Choice-Result-Tuples</param>
         </member>
-        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.ValueTuple{System.Object,System.Action{System.Object}}[])">
+        <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.ValueTuple{System.Object,System.Action}[])">
             <summary>
             Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
             </summary>
