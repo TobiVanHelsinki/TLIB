@@ -65,6 +65,16 @@ namespace TAPPLICATION.Model
                 }
                 switch (Attribute.DeviatingType ?? Setting.PropertyType)
                 {
+                    case Type namedType when namedType.IsEnum:
+                        var no = int.Parse(UsedFunction(Attribute.SaveString)?.ToString());
+                        if (Enum.IsDefined(namedType, no))
+                        {
+                            return Enum.ToObject(namedType, no);
+                        }
+                        else
+                        {
+                            return Attribute.DefaultValue;
+                        }
                     case Type namedType when namedType == typeof(int):
                         return int.Parse(UsedFunction(Attribute.SaveString)?.ToString());
                     case Type namedType when namedType == typeof(bool):
@@ -80,13 +90,20 @@ namespace TAPPLICATION.Model
                 return Attribute?.DefaultValue;
             }
         }
+        /// <summary>
+        /// Saves an value under the key provided by their attribute
+        /// supports: string, int, double, float, enum. (enum ist castet to ints)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="Name"></param>
         protected void Set(object value, [CallerMemberName] string Name = "")
         {
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
             var Attribute = Setting?.GetCustomAttribute<SettingAttribute>(true);
-            value = Attribute.DeviatingType == null ? value : Convert.ChangeType(value, Attribute.DeviatingType);
-            dynamic oldvalue = Convert.ChangeType(Setting.GetValue(this), Setting.PropertyType);
-            dynamic newvalue = Convert.ChangeType(value, Setting.PropertyType);
+            if (Setting.PropertyType.IsEnum)
+            {
+                value = Convert.ChangeType(value, typeof(int));
+            }
             switch (Attribute.Sync)
             {
                 case SaveType.Roaming:
@@ -98,6 +115,8 @@ namespace TAPPLICATION.Model
                 default:
                     break;
             }
+            dynamic oldvalue = Convert.ChangeType(Setting.GetValue(this), Setting.PropertyType);
+            dynamic newvalue = Setting.PropertyType.IsEnum ? Enum.ToObject(Setting.PropertyType, value): Convert.ChangeType(value, Setting.PropertyType);
             if (oldvalue != newvalue)
             {
                 Instance.NotifyPropertyChanged(Name);
