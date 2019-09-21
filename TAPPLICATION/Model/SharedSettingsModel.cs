@@ -13,7 +13,6 @@ namespace TAPPLICATION.Model
     public class SharedSettingsModel : INotifyPropertyChanged
     {
         IEnumerable<PropertyInfo> Settings => ReflectionHelper.GetProperties(this, typeof(SettingAttribute));
-        //public Type UsedConstants { get; set; }
 
         #region Attributes
 
@@ -104,6 +103,7 @@ namespace TAPPLICATION.Model
             {
                 value = Convert.ChangeType(value, typeof(int));
             }
+            dynamic oldvalue = Convert.ChangeType(Setting.GetValue(this), Setting.PropertyType);
             switch (Attribute.Sync)
             {
                 case SaveType.Roaming:
@@ -115,7 +115,6 @@ namespace TAPPLICATION.Model
                 default:
                     break;
             }
-            dynamic oldvalue = Convert.ChangeType(Setting.GetValue(this), Setting.PropertyType);
             dynamic newvalue = Setting.PropertyType.IsEnum ? Enum.ToObject(Setting.PropertyType, value): Convert.ChangeType(value, Setting.PropertyType);
             if (oldvalue != newvalue)
             {
