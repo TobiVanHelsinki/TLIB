@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="TLIBChoice.Xamarin_Test.MainPage">
+
+    <StackLayout>
+        <Button Text="Ask" Clicked="Button_Click"/>
+        <Label x:Name="Result"/>
+        <Label Text="Columns"/>
+        <Entry Text="{Binding Columns}"/>
+        <Label Text="Orientation"/>
+        <Entry Text="{Binding Orientation}"/>
+        <Label Text="Presentation"/>
+        <Entry Text="{Binding Presentation}"/>
+        <Label Text="Title"/>
+        <Entry Text="{Binding Caption}"/>
+        <Label Text="Text"/>
+        <Entry Text="{Binding Text}"/>
+        <Label Text="{Binding TextLength}"/>
+    </StackLayout>
+
+</ContentPage>

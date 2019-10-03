@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.848062" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TLIB\TLIB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TLIBChoice_Xamarin.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
