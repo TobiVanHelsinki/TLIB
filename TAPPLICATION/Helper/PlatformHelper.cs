@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using TLIB;
 
 namespace TAPPLICATION
 {
@@ -49,7 +50,7 @@ namespace TAPPLICATION
             }
             catch (Exception ex)
             {
-                TAPPLICATION.Debugging.TraceException(ex);
+                Log.Write("Could not CallPropertyChanged", ex, logType: LogType.Error);
             }
         }
 

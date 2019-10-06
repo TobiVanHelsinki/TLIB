@@ -49,7 +49,7 @@ namespace TAPPLICATION.IO
                 }
                 catch (Exception ex)
                 {
-                    TAPPLICATION.Debugging.TraceException(ex, Target.ToString() + Source.ToString());
+                    Log.Write("Could not CopyAllFiles from " + Source.ToString() +" to " + Target.ToString(), ex, logType: LogType.Error);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace TAPPLICATION.IO
                 }
                 catch (Exception ex)
                 {
-                    TAPPLICATION.Debugging.TraceException(ex, Target.ToString() + Source.ToString());
+                    Log.Write("Could not MoveAllFiles from " + Source.ToString() +" to " + Target.ToString(), ex, logType: LogType.Error);
                 }
             }
         }

@@ -100,7 +100,7 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception ex)
             {
-                TAPPLICATION.Debugging.TraceException(ex, Info.FullName);
+                Log.Write("Could not GetFolder", ex, logType: LogType.Error);
                 throw;
             }
         }
@@ -176,7 +176,7 @@ namespace TAPPLICATION_UWP
                 catch (Exception ex)
                 {
                     if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
-                    TAPPLICATION.Debugging.TraceException(ex, Token);
+                    Log.Write("Could not AddToFutureRequestList: " + Token, ex, logType: LogType.Error);
                 }
             }
         }

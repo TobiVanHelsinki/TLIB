@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TAPPLICATION.Model;
+using TLIB;
 
 namespace TAPPLICATION.IO
 {
@@ -53,9 +54,9 @@ namespace TAPPLICATION.IO
                     var f = new FileInfo(Path.Combine(Dir.FullName,Name));
                     await CurrentIO?.SaveFileContent(Content, f);
                 }
-                catch (Exception x)
+                catch (Exception ex)
                 {
-                    SharedAppModel.Instance?.NewNotification("Writing Error", x);
+                    Log.Write("Could not SaveTextesToFiles", ex, logType: LogType.Error);
                 }
             }
         }
@@ -134,11 +135,9 @@ namespace TAPPLICATION.IO
         /// <param name="a"></param>
         public static void ErrorHandler(object o, Newtonsoft.Json.Serialization.ErrorEventArgs a)
         {
-            if (SharedAppModel.Instance?.lstNotifications.Contains(JSON_Error_Notification) == false)
-            {
-                SharedAppModel.Instance?.lstNotifications.Insert(0, JSON_Error_Notification);
-            }
+            var JSON_Error_Notification = new LogMessage(LogType.Error, "Error during deserialization. Your content migth be not complete.", DateTime.Now, nameof(SharedIO), null, "");
             JSON_Error_Notification.Message += "\n\t" + a.ErrorContext.Path;
+            SharedAppModel.Instance?.lstNotifications.Insert(0, JSON_Error_Notification);
             a.ErrorContext.Handled = true;
         }
 
@@ -157,18 +156,6 @@ namespace TAPPLICATION.IO
                 Error = ErrorHandler
             };
             return JsonConvert.SerializeObject(ObjectToSerialize, settings);
-        }
-        static Notification _JSON_Error_Notification;
-        static Notification JSON_Error_Notification
-        {
-            get
-            {
-                if (_JSON_Error_Notification == null)
-                {
-                    _JSON_Error_Notification = new Notification("There was an Error during deserialization. Your content migth be not complete.");
-                }
-                return _JSON_Error_Notification;
-            }
         }
 
         public static string CorrectFilenameExtension(string Filename, string Extension)

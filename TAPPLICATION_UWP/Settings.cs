@@ -2,6 +2,7 @@
 using System.Linq;
 using TAPPLICATION;
 using TAPPLICATION.Model;
+using TLIB;
 using TLIB.Settings;
 using Windows.Storage;
 
@@ -20,7 +21,7 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception ex)
             {
-                TAPPLICATION.Debugging.TraceException(ex);
+                Log.Write("Could not save setting " + place, ex, logType: LogType.Error);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();
@@ -35,7 +36,7 @@ namespace TAPPLICATION_UWP
             }
             catch (Exception ex)
             {
-                TAPPLICATION.Debugging.TraceException(ex);
+                Log.Write("Could not save setting " + place, ex, logType: LogType.Error);
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
                     System.Diagnostics.Debugger.Break();

@@ -10,60 +10,13 @@ namespace TAPPLICATION.Model
 {
     public class SharedAppModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Notification> lstNotifications = new ObservableCollection<Notification>();
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        #region NotifyPropertyChanged
+		public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public void NewNotification(Notification Not)
-        {
-            PlatformHelper.ExecuteOnUIThreadAsync(() =>
-            {
-                lstNotifications.Insert(0, Not);
-            });
-        }
-
-        public void NewNotification(string Message)
-        {
-            NewNotification(new Notification(Message));
-        }
-
-        public void NewNotification(string Message, Exception ex)
-        {
-            NewNotification(new Notification(Message) { ThrownException = ex });
-        }
-
-        public void NewNotification(string Message, bool Ligth)
-        {
-            NewNotification(new Notification(Message) { IsLight = Ligth });
-        }
-
-        public void NewNotification(string Message, int time)
-        {
-            NewNotification(new Notification(Message) { ShownTime = time });
-        }
-
-        public void NewNotification(string Message, bool Ligth, int time)
-        {
-            NewNotification(new Notification(Message) { IsLight = Ligth, ShownTime = time });
-        }
-
-        public void NewNotification(string Message, Exception ex, bool Ligth)
-        {
-            NewNotification(new Notification(Message) { ThrownException = ex, IsLight = Ligth });
-        }
-
-        public void NewNotification(string Message, Exception ex, int time)
-        {
-            NewNotification(new Notification(Message) { ThrownException = ex, ShownTime = time });
-        }
-
-        public void NewNotification(string Message, Exception ex, bool Ligth, int time)
-        {
-            NewNotification(new Notification(Message) { ThrownException = ex, IsLight = Ligth, ShownTime = time });
-        }
+        #endregion
 
         protected static SharedAppModel instance;
         public static SharedAppModel Instance
@@ -77,6 +30,12 @@ namespace TAPPLICATION.Model
                 return instance;
             }
         }
+
+        public ObservableCollection<LogMessage> lstNotifications = new ObservableCollection<LogMessage>();
+        public SharedAppModel()
+        {
+            Log.NewLogArrived += (logmessage) => lstNotifications.Insert(0, logmessage);
+        }
     }
     public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new()
     {
@@ -89,7 +48,6 @@ namespace TAPPLICATION.Model
                 return (SharedAppModel<MainType>)instance;
             }
         }
-        MainType _MainObject;
         public MainType MainObject
         {
             get { return this._MainObjects.FirstOrDefault(); }
@@ -117,7 +75,7 @@ namespace TAPPLICATION.Model
             }
         }
 
-        List<MainType> _MainObjects = new List<MainType>();
+        readonly List<MainType> _MainObjects = new List<MainType>();
         public IEnumerable<MainType> MainObjects => _MainObjects;
 
         public void AddMainObject(MainType sender)
@@ -152,7 +110,6 @@ namespace TAPPLICATION.Model
                 if (MainObject != null)
                 {
                     SharedSettingsModel.I.LAST_SAVE_INFO = MainObject.FileInfo;
-                    //MainObject.SaveRequest += SaveMainType;
                 }
                 else
                 {
@@ -166,30 +123,16 @@ namespace TAPPLICATION.Model
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("SharedAppModel_PropertyChanged save");
-                //if (System.Diagnostics.Debugger.IsAttached) System.Diagnostics.Debugger.Break();
+                Log.Write("SharedAppModel_PropertyChanged save");
                 var T = IO.SharedIO.SaveAtOriginPlace(MainObject);
                 T.Wait();
                 SharedSettingsModel.I.LAST_SAVE_INFO = T.Result;
                 MainObjectSaved?.Invoke(MainObject, MainObject);
-                System.Diagnostics.Debug.WriteLine("MainObject Saved " + MainObject.ToString());
+                Log.Write("MainObject Saved " + MainObject.ToString());
             }
             catch (Exception ex)
             {
-                TAPPLICATION.Debugging.TraceException(ex);
-                System.Diagnostics.Debug.WriteLine("Error Saving the MainObject " + MainObject.ToString() + ex.Message);
-                try
-                {
-                    Log.Write("Error saving Char", ex);
-                }
-                catch (Exception ex2)
-                {
-                    TAPPLICATION.Debugging.TraceException(ex2);
-                }
-                if (System.Diagnostics.Debugger.IsAttached)
-                {
-                    //System.Diagnostics.Debugger.Break();
-                }
+                Log.Write("Could not save mainmodel", ex, logType: LogType.Error);
             }
         }
 

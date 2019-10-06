@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using TAPPLICATION;
+using TLIB;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -25,7 +26,7 @@ namespace TAPPLICATION_Xamarin
                 }
                 catch (Exception ex)
                 {
-                    TAPPLICATION.Debugging.TraceException(ex);
+                    Log.Write("Could not CallPropertyChanged", ex, logType: LogType.Error);
                 }
             }
         }
@@ -38,7 +39,7 @@ namespace TAPPLICATION_Xamarin
             }
             catch (Exception ex)
             {
-                TAPPLICATION.Debugging.TraceException(ex);
+                Log.Write("Could not ExecuteOnUIThreadAsync", ex, logType: LogType.Error);
             }
         }
     }
