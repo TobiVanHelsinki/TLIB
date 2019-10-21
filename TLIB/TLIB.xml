@@ -135,7 +135,7 @@
         </member>
         <member name="T:TLIB.Log">
             <summary>
-            Provides a basic logsystem. 
+            Provides a basic logsystem.
             You can log to file or just hold the log messages in memory.
             Use the "In*Enabled" Properties to choose, how to log.
             Specify a LogFile
@@ -336,7 +336,12 @@
         </member>
         <member name="F:TLIB.LogType.Question">
             <summary>
-            for the future, displays a question to the user and provide an answere
+            Displays a question to the user and provide an answere, to use with the Choose Methode
+            </summary>
+        </member>
+        <member name="F:TLIB.LogType.Success">
+            <summary>
+            The success is a log type with special font or color
             </summary>
         </member>
         <member name="T:TLIB.ResultCallback">
