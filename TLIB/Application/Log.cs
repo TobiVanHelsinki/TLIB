@@ -275,15 +275,7 @@ namespace TLIB
                 catch (IOException)
                 {
                 }
-
                 Console.ForegroundColor = backup;
-                try
-                {
-                    Console.WriteLine(log.CombinedMessage);
-                }
-                catch (Exception)
-                {
-                }
             }
             if (IsFileLogEnabled)
             {

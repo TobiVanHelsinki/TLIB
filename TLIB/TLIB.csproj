@@ -6,13 +6,13 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>tlibkey.snk</AssemblyOriginatorKeyFile>
-    <Version>3.3.2</Version>
+    <Version>3.3.3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>TobiVanHelsinki</Authors>
     <RepositoryUrl>https://github.com/Tobivanhelsinki/TLIB</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Tobivanhelsinki/TLIB</PackageProjectUrl>
-    <AssemblyVersion>3.3.2.0</AssemblyVersion>
-    <FileVersion>3.3.2.0</FileVersion>
+    <AssemblyVersion>3.3.3.0</AssemblyVersion>
+    <FileVersion>3.3.3.0</FileVersion>
     <Description>Library with some usefull extension to standard types.
 
 With Extension Methods for IEnumerable (Random Element, Max-/MinOrDefault), FileInfo (DirPath), DirectoryInfo, 
