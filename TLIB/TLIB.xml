@@ -558,19 +558,60 @@
         </member>
         <member name="M:TLIB.ReflectionHelper.GetMethods(System.Object,System.Type)">
             <summary>
-            returns MethodInfos of the type of obj, that have type as Attributes
+            Obsolete
             </summary>
-            <param name="obj"></param>
-            <param name="type"></param>
+            <param name="obj">The object.</param>
+            <param name="type">The type.</param>
             <returns></returns>
         </member>
         <member name="M:TLIB.ReflectionHelper.GetProperties(System.Object,System.Type)">
             <summary>
-            returns PropertyInfos of the type of obj, that have type as Attributes
+            Obsolete
+            </summary>
+            <param name="obj">The object.</param>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetPropertiesWithAttribute(System.Type,System.Type)">
+            <summary>
+            returns a collection of PropertyInfos, which have the given attribute
+            </summary>
+            <param name="type"></param>
+            <param name="attributeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetPropertiesWithAttribute(System.Object,System.Type)">
+            <summary>
+            returns a collection of PropertyInfos, which have the given attribute
             </summary>
             <param name="obj"></param>
-            <param name="type"></param>
+            <param name="attributeType"></param>
             <returns></returns>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetMethodsWithAttribute(System.Type,System.Type)">
+            <summary>
+            returns a collection of MethodInfos, which have the given attribute
+            </summary>
+            <param name="type"></param>
+            <param name="attributeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetMethodsWithAttribute(System.Object,System.Type)">
+            <summary>
+            returns a collection of MethodInfos, which have the given attribute
+            </summary>
+            <param name="obj"></param>
+            <param name="attributeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TLIB.ReflectionHelper.GetCustomAttributesFromEnum``1(System.Enum)">
+            <summary>
+            Get all CustomAttributes with type TAttribute from this EnumValue
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+            <exception cref="T:System.TypeLoadException"></exception>
         </member>
         <member name="T:TLIB.StaticRandom">
             <summary>

@@ -9,7 +9,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
-    <PackageReference Include="TLIB" Version="3.3.2" />
+    <PackageReference Include="TLIB" Version="3.3.3" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="xcopy $(TargetDir)$(TargetName).dll $(SolutionDir)\OutgoingReferences\ /Y&#xD;&#xA;xcopy $(TargetDir)$(TargetName).pdb $(SolutionDir)\OutgoingReferences\ /Y" />

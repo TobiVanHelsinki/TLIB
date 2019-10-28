@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿//Author: Tobi van Helsinki
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,11 +12,10 @@ using TLIB;
 
 namespace TAPPLICATION.IO
 {
-
     /// <summary>
     /// Provides Basic IO for the Framework
     /// </summary>
-    public class SharedIO 
+    public class SharedIO
     {
         public static IPlatformIO CurrentIO;
 
@@ -51,7 +52,7 @@ namespace TAPPLICATION.IO
             {
                 try
                 {
-                    var f = new FileInfo(Path.Combine(Dir.FullName,Name));
+                    var f = new FileInfo(Path.Combine(Dir.FullName, Name));
                     await CurrentIO?.SaveFileContent(Content, f);
                 }
                 catch (Exception ex)
@@ -72,7 +73,7 @@ namespace TAPPLICATION.IO
         public static async Task<FileInfo> SaveAtOriginPlace(IMainType Object)
         {
             if (Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Temp))
-                || Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets))) 
+                || Object.FileInfo.Directory.FullName.Contains(await CurrentIO.GetCompleteInternPath(Place.Assets)))
             {
                 return await SaveAtCurrentPlace(Object);
             }
@@ -105,14 +106,14 @@ namespace TAPPLICATION.IO
             string path = await CurrentIO?.GetCompleteInternPath(Place.Temp);
             return await Save(Object, new FileInfo(Path.Combine(path, Object.FileInfo.Name)));
         }
-        
+
         /// <summary>
         /// Saves the Object to the specified location at "info" or if null to the info at the object
         /// </summary>
         /// <param name="Object"></param>
         /// <param name="Info"></param>
-        /// 
-        /// 
+        ///
+        ///
         /// <exception cref="Exception"/>
         /// <returns>Task<FileInfo> The place where it is actually saved</returns>
         public static async Task<FileInfo> Save(IMainType Object, FileInfo Info = null)
@@ -127,9 +128,10 @@ namespace TAPPLICATION.IO
             return InfoToUse;
         }
 
-        #endregion
+        #endregion Saving
+
         /// <summary>
-        /// Default Error Handler. Gives a notification and set .Handled = true 
+        /// Default Error Handler. Gives a notification and set .Handled = true
         /// </summary>
         /// <param name="o"></param>
         /// <param name="a"></param>
@@ -142,6 +144,7 @@ namespace TAPPLICATION.IO
         }
 
         #region Serialization
+
         /// <summary>
         /// can throw
         /// </summary>
@@ -153,8 +156,10 @@ namespace TAPPLICATION.IO
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 PreserveReferencesHandling = PreserveReferencesHandling.All,
+                Formatting = SharedSettingsModel.I.FORMAT_SAVEFILE ? Formatting.Indented : Formatting.None,
                 Error = ErrorHandler
             };
+
             return JsonConvert.SerializeObject(ObjectToSerialize, settings);
         }
 
@@ -167,11 +172,11 @@ namespace TAPPLICATION.IO
             return Filename;
         }
 
-        #endregion
+        #endregion Serialization
     }
 
     /// <summary>
-    /// Provides MainType Specific IO for the framework. 
+    /// Provides MainType Specific IO for the framework.
     /// Use this class to derive from in your application
     /// </summary>
     /// <typeparam name="CurrentType"></typeparam>
@@ -187,6 +192,7 @@ namespace TAPPLICATION.IO
 
             return MainTypeConvert(strAppVersion, strFileVersion, fileContent);
         }
+
         /// <summary>
         /// Converter, that does to actual deserialization, you can provide your own by setting this var
         /// </summary>
@@ -205,7 +211,8 @@ namespace TAPPLICATION.IO
                 return JsonConvert.DeserializeObject<CurrentType>(fileContent, settings);
             };
 
-        #endregion
+        #endregion Deserialization
+
         #region Loading
 
         /// <summary>
@@ -224,7 +231,6 @@ namespace TAPPLICATION.IO
             NewMainObject.FileInfo = Info;
             return NewMainObject;
         }
-        #endregion
-
+        #endregion Loading
     }
 }

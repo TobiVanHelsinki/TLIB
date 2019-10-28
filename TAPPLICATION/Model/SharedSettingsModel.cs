@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Author: Tobi van Helsinki
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -12,7 +14,7 @@ namespace TAPPLICATION.Model
 {
     public class SharedSettingsModel : INotifyPropertyChanged
     {
-        IEnumerable<PropertyInfo> Settings => ReflectionHelper.GetProperties(this, typeof(SettingAttribute));
+        private IEnumerable<PropertyInfo> Settings => ReflectionHelper.GetProperties(this, typeof(SettingAttribute));
 
         #region Attributes
 
@@ -20,6 +22,7 @@ namespace TAPPLICATION.Model
         {
             Roaming, Local, Nothing
         }
+
         [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
         protected sealed class SettingAttribute : Attribute
         {
@@ -36,10 +39,12 @@ namespace TAPPLICATION.Model
                 DeviatingType = deviatingType;
             }
         }
-        #endregion
+
+        #endregion Attributes
 
         #region Generic Set / Get
         public static IPlatformSettings PlatformSettings;
+
         protected dynamic Get([CallerMemberName] string Name = "")
         {
             var Setting = Settings?.FirstOrDefault(x => x.Name == Name);
@@ -89,6 +94,7 @@ namespace TAPPLICATION.Model
                 return Attribute?.DefaultValue;
             }
         }
+
         /// <summary>
         /// Saves an value under the key provided by their attribute
         /// supports: string, int, double, float, enum. (enum ist castet to ints)
@@ -115,15 +121,18 @@ namespace TAPPLICATION.Model
                 default:
                     break;
             }
-            dynamic newvalue = Setting.PropertyType.IsEnum ? Enum.ToObject(Setting.PropertyType, value): Convert.ChangeType(value, Setting.PropertyType);
+            dynamic newvalue = Setting.PropertyType.IsEnum ? Enum.ToObject(Setting.PropertyType, value) : Convert.ChangeType(value, Setting.PropertyType);
             if (oldvalue != newvalue)
             {
                 Instance.NotifyPropertyChanged(Name);
             }
         }
-        #endregion
+        #endregion Generic Set / Get
 
         #region Settings
+
+        [Setting("SETTINGS_FORMAT_SAVEFILE", false, SaveType.Roaming)]
+        public bool FORMAT_SAVEFILE { get => Get(); set => Set(value); }
 
         [Setting("SETTINGS_INTERN_SYNC", true, SaveType.Local)]
         public bool INTERN_SYNC { get => Get(); set => Set(value); }
@@ -160,8 +169,10 @@ namespace TAPPLICATION.Model
         [Setting("LAST_SAVE_INFO_PATH", "", SaveType.Local)]
         public string LAST_SAVE_INFO_PATH { get => Get(); set => Set(value); }
 
-        #endregion
+        #endregion Settings
+
         #region Methods
+
         public List<(string, object)> ExportAllSettings()
         {
             var propertyinfos = this.GetType().GetRuntimeProperties();
@@ -211,7 +222,8 @@ namespace TAPPLICATION.Model
             //    }
             //}
         }
-        #endregion
+        #endregion Methods
+
         #region Singleton Model Thigns
 
         public static SharedSettingsModel Initialize()
@@ -243,13 +255,12 @@ namespace TAPPLICATION.Model
 
         protected static SharedSettingsModel instance;
 
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PlatformHelper.CallPropertyChanged(PropertyChanged, this, propertyName);
         }
-        #endregion
-
+        #endregion Singleton Model Thigns
     }
 }
