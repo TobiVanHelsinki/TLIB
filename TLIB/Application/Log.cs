@@ -1,4 +1,6 @@
-﻿///Author: Tobi van Helsinki
+﻿//Author: Tobi van Helsinki
+
+///Author: Tobi van Helsinki
 
 using System;
 using System.Collections.Generic;
@@ -98,7 +100,7 @@ namespace TLIB
             {
                 _LogFile = value;
                 IsFileLogEnabled = value != null;
-                try { Directory.CreateDirectory(new FileInfo(LogFile).DirectoryName); }
+                try { Directory.CreateDirectory(new FileInfo(Environment.ExpandEnvironmentVariables(LogFile)).DirectoryName); }
                 catch (UnauthorizedAccessException) { }
                 catch (PathTooLongException) { }
                 catch (DirectoryNotFoundException) { }
@@ -281,7 +283,7 @@ namespace TLIB
             {
                 try
                 {
-                    File.AppendAllText(LogFile, log.CombinedMessage + Environment.NewLine);
+                    File.AppendAllText(Environment.ExpandEnvironmentVariables(LogFile), log.CombinedMessage + Environment.NewLine);
                 }
                 catch (Exception)
                 {
