@@ -169,14 +169,18 @@ namespace TLIB
         public static void Write(string msg, Exception ex, LogType logType = LogType.Info, bool InterruptUser = false, [CallerLineNumber] int Number = 0, [CallerMemberName] string Caller = "")
         {
             var ArrivedAt = DateTime.Now;
-            var CombinedMessage = logType + " \"" + msg + "\"";
-            if (Mode == LogMode.Moderat)
+            var CombinedMessage = msg;
+            if (Mode == LogMode.Minimal || Mode == LogMode.Moderat || Mode == LogMode.Verbose)
+            {
+                CombinedMessage = logType + " \"" + CombinedMessage + "\"";
+            }
+            if (Mode == LogMode.Moderat || Mode == LogMode.Verbose)
             {
                 CombinedMessage = ArrivedAt + " " + CombinedMessage;
             }
             else if (Mode == LogMode.Verbose)
             {
-                CombinedMessage = ArrivedAt + " " + CombinedMessage + " (" + Caller + ":" + Number + ")";
+                CombinedMessage = CombinedMessage + " (" + Caller + ":" + Number + ")";
             }
             if (ex != null)
             {
