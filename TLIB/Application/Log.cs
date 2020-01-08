@@ -239,8 +239,9 @@ namespace TLIB
         {
             CombinedMessage += Environment.NewLine
             + "\t\"" + ex.Message + "\""
+            + "\t\"" + ex.GetType().FullName + "\""
             + Environment.NewLine
-            + "\t" + ex.StackTrace;
+            + "\t" + ex.StackTrace.Replace("\n", "\n\t");
             if (ex.InnerException is Exception x2)
             {
                 AddDetails(x2, ref CombinedMessage);
