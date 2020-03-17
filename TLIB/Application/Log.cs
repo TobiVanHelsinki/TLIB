@@ -1,7 +1,5 @@
 ﻿//Author: Tobi van Helsinki
 
-///Author: Tobi van Helsinki
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -72,26 +70,24 @@ namespace TLIB
         /// </summary>
         public Presentation ButtonPresentation { get; set; }
 
-        int _ButtonColumns = 3;
+        private int _ButtonColumns = 3;
         /// <summary>
-        /// how many columns should there be
-        /// pay atten
+        /// how many columns should there be pay atten
         /// </summary>
         public int ButtonColumns { get => _ButtonColumns; set => _ButtonColumns = value.LowerB(3); }
     }
 
     /// <summary>
-    /// Provides a basic logsystem.
-    /// You can log to file or just hold the log messages in memory.
-    /// Use the "In*Enabled" Properties to choose, how to log.
-    /// Specify a LogFile
+    /// Provides a basic logsystem. You can log to file or just hold the log messages in memory. Use
+    /// the "In*Enabled" Properties to choose, how to log. Specify a LogFile
     /// </summary>
     public static class Log
     {
-        static string _LogFile;
+        private static string _LogFile;
         /// <summary>
-        /// The path to the file, the logs are written in. Note: You have to have access to this file. System.IO.File.AppendAllText is used for file operations.
-        /// If you set a filepath not null, the IsFileLogEnabled is automaticly set.
+        /// The path to the file, the logs are written in. Note: You have to have access to this
+        /// file. System.IO.File.AppendAllText is used for file operations. If you set a filepath
+        /// not null, the IsFileLogEnabled is automaticly set.
         /// </summary>
         public static string LogFile
         {
@@ -112,21 +108,22 @@ namespace TLIB
         /// <summary>
         /// How many items shall be stored in memory?
         /// </summary>
-        public static int InMemoryLogMaxCount { get; set; } = Int32.MaxValue;
+        public static int InMemoryLogMaxCount { get; set; } = int.MaxValue;
 
         /// <summary>
-        /// save place for the logs. if full, the earliest messages are removed. You can edit the list as you whish.
+        /// save place for the logs. if full, the earliest messages are removed. You can edit the
+        /// list as you whish.
         /// </summary>
         public static List<string> InMemoryLog { get; } = new List<string>();
 
-        static bool _IsFileLogEnabled;
+        private static bool _IsFileLogEnabled;
         /// <summary>
         /// Enables the file Log. Just possible if a Filepath is specified
         /// </summary>
         public static bool IsFileLogEnabled
         {
-            get { return _IsFileLogEnabled; }
-            set { _IsFileLogEnabled = LogFile != null ? value : false; }
+            get => _IsFileLogEnabled;
+            set => _IsFileLogEnabled = LogFile != null ? value : false;
         }
 
         /// <summary>
@@ -140,11 +137,13 @@ namespace TLIB
         public static bool IsConsoleLogEnabled { get; set; }
 
         /// <summary>
-        /// Occures, when a Question arrives. The handler then should give a user a choice and send the answere back to the .
+        /// Occures, when a Question arrives. The handler then should give a user a choice and send
+        /// the answere back to the .
         /// </summary>
         public static event ChoiceEventHandler DisplayChoiceRequested;
         /// <summary>
-        /// Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
+        /// Occures, when a log arrived, that needs to notify the user. You may display a
+        /// MessageBox, a PopUp or ignore it.
         /// </summary>
         public static event LogEventHandler DisplayMessageRequested;
         /// <summary>
@@ -297,7 +296,8 @@ namespace TLIB
         }
 
         /// <summary>
-        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass
+        /// the actions you want to have executed when the corrosponding choice is selected
         /// </summary>
         /// <param name="title">A short but strong text that describes your intend</param>
         /// <param name="text">The Question you have, the feedback you want, etc.</param>
@@ -308,7 +308,8 @@ namespace TLIB
         }
 
         /// <summary>
-        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass
+        /// the actions you want to have executed when the corrosponding choice is selected
         /// </summary>
         /// <param name="title">A short but strong text that describes your intend</param>
         /// <param name="text">The Question you have, the feedback you want, etc.</param>
@@ -320,7 +321,8 @@ namespace TLIB
         }
 
         /// <summary>
-        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+        /// Use this method to obtain feedback from a user. With the thrid parameter you can pass
+        /// the actions you want to have executed when the corrosponding choice is selected
         /// </summary>
         /// <param name="title">A short but strong text that describes your intend</param>
         /// <param name="text">The Question you have, the feedback you want, etc.</param>

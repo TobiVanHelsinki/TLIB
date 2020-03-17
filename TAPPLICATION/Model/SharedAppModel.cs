@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Author: Tobi van Helsinki
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,12 +13,13 @@ namespace TAPPLICATION.Model
     public class SharedAppModel : INotifyPropertyChanged
     {
         #region NotifyPropertyChanged
-		public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
+        #endregion NotifyPropertyChanged
 
         protected static SharedAppModel instance;
         public static SharedAppModel Instance
@@ -32,50 +35,30 @@ namespace TAPPLICATION.Model
         }
 
         public ObservableCollection<LogMessage> lstNotifications = new ObservableCollection<LogMessage>();
-        public SharedAppModel()
-        {
-            Log.NewLogArrived += (logmessage) => lstNotifications.Insert(0, logmessage);
-        }
+
+        public SharedAppModel() => Log.NewLogArrived += (logmessage) => lstNotifications.Insert(0, logmessage);
     }
+
     public class SharedAppModel<MainType> : SharedAppModel where MainType : IMainType, new()
     {
         public event EventHandler<IMainType> MainObjectSaved;
 
-        public static new SharedAppModel<MainType> Instance
-        {
-            get
-            {
-                return (SharedAppModel<MainType>)instance;
-            }
-        }
+        public static new SharedAppModel<MainType> Instance => (SharedAppModel<MainType>)instance;
+
         public MainType MainObject
         {
-            get { return this._MainObjects.FirstOrDefault(); }
+            get => _MainObjects.FirstOrDefault();
             set
             {
-
-                if (value != null)
+                foreach (var item in _MainObjects.ToArray())
                 {
-                    AddMainObject(value);
-                    //if (!value.Equals(_MainObject))
-                    //{
-                    //    this._MainObject = value;
-                    //    NotifyPropertyChanged();
-                    //}
-                }
-                else
-                {
-                    RemoveMainObject(value);
-                    //if (!_MainObject.Equals(value))
-                    //{
-                    //    this._MainObject = value;
-                    //    NotifyPropertyChanged();
-                    //}
-                }
+                    RemoveMainObject(item);
+                };
+                AddMainObject(value);
             }
         }
 
-        readonly List<MainType> _MainObjects = new List<MainType>();
+        private readonly List<MainType> _MainObjects = new List<MainType>();
         public IEnumerable<MainType> MainObjects => _MainObjects;
 
         public void AddMainObject(MainType sender)
@@ -98,10 +81,7 @@ namespace TAPPLICATION.Model
             }
         }
 
-        public SharedAppModel() : base()
-        {
-            PropertyChanged += SharedAppModel_PropertyChanged;
-        }
+        public SharedAppModel() : base() => PropertyChanged += SharedAppModel_PropertyChanged;
 
         private void SharedAppModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -117,7 +97,6 @@ namespace TAPPLICATION.Model
                 }
             }
         }
-
 
         public void SaveMainType(object sender2, IMainType MainObject)
         {
@@ -135,7 +114,6 @@ namespace TAPPLICATION.Model
                 Log.Write("Could not save mainmodel", ex, logType: LogType.Error);
             }
         }
-
 
         public MainType NewMainType()
         {

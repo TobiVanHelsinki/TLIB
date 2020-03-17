@@ -1,4 +1,6 @@
-﻿using Plugin.FilePicker;
+﻿//Author: Tobi van Helsinki
+
+using Plugin.FilePicker;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +42,7 @@ namespace TAPPLICATION_Xamarin
         {
             if (Cache.TryGetValue(Info.FullName, out var retval)) // use cached version
             {
-                //TODO Test
+                //TODO Test with external files
                 if (retval.CanRead)
                 {
                     using (var r = new StreamWriter(retval))
@@ -51,6 +53,8 @@ namespace TAPPLICATION_Xamarin
             }
             else
             {
+                System.Diagnostics.Debug.WriteLine("now saving: " + Info.FullName);
+                //File.WriteAllText(Info.FullName, saveChar);
                 await base.SaveFileContent(saveChar, Info);
             }
         }
@@ -69,7 +73,7 @@ namespace TAPPLICATION_Xamarin
             switch (place)
             {
                 case Place.Roaming:
-                    ret =  PCLStorage.FileSystem.Current.RoamingStorage?.Path ?? PCLStorage.FileSystem.Current.LocalStorage.Path;
+                    ret = PCLStorage.FileSystem.Current.RoamingStorage?.Path ?? PCLStorage.FileSystem.Current.LocalStorage.Path;
                     break;
                 case Place.Local:
                     ret = PCLStorage.FileSystem.Current.LocalStorage.Path;
@@ -87,13 +91,13 @@ namespace TAPPLICATION_Xamarin
             return ret.LastOrDefault() == Path.DirectorySeparatorChar ? ret : ret + Path.DirectorySeparatorChar;
         }
 
-
         public Task<bool> OpenFolder(DirectoryInfo Info)
         {
             throw new NotImplementedException();
         }
         static Dictionary<string, Stream> Cache = new Dictionary<string, Stream>();
-        static void AddToCache(string key, Stream data)
+
+        private static void AddToCache(string key, Stream data)
         {
             if (Cache.Count > 10)
             {
@@ -101,6 +105,7 @@ namespace TAPPLICATION_Xamarin
             }
             Cache.Add(key, data);
         }
+
         public async Task<FileInfo> PickFile(IEnumerable<string> lststrFileEndings, string Token = null)
         {
             var fileData = await CrossFilePicker.Current.PickFile();
@@ -137,6 +142,7 @@ namespace TAPPLICATION_Xamarin
                 return false;
             }
         }
+
         public async Task<bool> HasAccess(DirectoryInfo Path)
         {
             try

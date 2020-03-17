@@ -155,10 +155,7 @@ namespace TAPPLICATION.Model
         [Setting("LAST_SAVE_INFO", null, SaveType.Nothing)]
         public FileInfo LAST_SAVE_INFO
         {
-            get
-            {
-                return new FileInfo(LAST_SAVE_INFO_PATH);
-            }
+            get => new FileInfo(LAST_SAVE_INFO_PATH);
             set
             {
                 LAST_SAVE_INFO_PATH = value?.FullName ?? "";
@@ -175,11 +172,11 @@ namespace TAPPLICATION.Model
 
         public List<(string, object)> ExportAllSettings()
         {
-            var propertyinfos = this.GetType().GetRuntimeProperties();
+            var propertyinfos = GetType().GetRuntimeProperties();
             var ret = new List<(string, object)>();
             foreach (var item in propertyinfos)
             {
-                object result = item.GetValue(this);
+                var result = item.GetValue(this);
                 ret.Add((item.Name, result));
             }
             return ret;
@@ -237,21 +234,9 @@ namespace TAPPLICATION.Model
             }
             return Instance;
         }
-        public static SharedSettingsModel Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static SharedSettingsModel Instance => instance;
 
-        public static SharedSettingsModel I
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static SharedSettingsModel I => instance;
 
         protected static SharedSettingsModel instance;
 
