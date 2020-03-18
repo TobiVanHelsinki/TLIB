@@ -42,7 +42,7 @@ namespace TAPPLICATION_Xamarin
         {
             if (Cache.TryGetValue(Info.FullName, out var retval)) // use cached version
             {
-                //TODO Test with external files
+                //TODO Test with external files, opened with FileClick
                 if (retval.CanRead)
                 {
                     using (var r = new StreamWriter(retval))
@@ -54,7 +54,6 @@ namespace TAPPLICATION_Xamarin
             else
             {
                 System.Diagnostics.Debug.WriteLine("now saving: " + Info.FullName);
-                //File.WriteAllText(Info.FullName, saveChar);
                 await base.SaveFileContent(saveChar, Info);
             }
         }
