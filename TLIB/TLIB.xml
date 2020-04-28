@@ -129,22 +129,20 @@
         </member>
         <member name="P:TLIB.Options.ButtonColumns">
             <summary>
-            how many columns should there be
-            pay atten
+            how many columns should there be pay atten
             </summary>
         </member>
         <member name="T:TLIB.Log">
             <summary>
-            Provides a basic logsystem.
-            You can log to file or just hold the log messages in memory.
-            Use the "In*Enabled" Properties to choose, how to log.
-            Specify a LogFile
+            Provides a basic logsystem. You can log to file or just hold the log messages in memory. Use
+            the "In*Enabled" Properties to choose, how to log. Specify a LogFile
             </summary>
         </member>
         <member name="P:TLIB.Log.LogFile">
             <summary>
-            The path to the file, the logs are written in. Note: You have to have access to this file. System.IO.File.AppendAllText is used for file operations.
-            If you set a filepath not null, the IsFileLogEnabled is automaticly set.
+            The path to the file, the logs are written in. Note: You have to have access to this
+            file. System.IO.File.AppendAllText is used for file operations. If you set a filepath
+            not null, the IsFileLogEnabled is automaticly set.
             </summary>
         </member>
         <member name="P:TLIB.Log.InMemoryLogMaxCount">
@@ -154,7 +152,8 @@
         </member>
         <member name="P:TLIB.Log.InMemoryLog">
             <summary>
-            save place for the logs. if full, the earliest messages are removed. You can edit the list as you whish.
+            save place for the logs. if full, the earliest messages are removed. You can edit the
+            list as you whish.
             </summary>
         </member>
         <member name="P:TLIB.Log.IsFileLogEnabled">
@@ -174,12 +173,14 @@
         </member>
         <member name="E:TLIB.Log.DisplayChoiceRequested">
             <summary>
-            Occures, when a Question arrives. The handler then should give a user a choice and send the answere back to the .
+            Occures, when a Question arrives. The handler then should give a user a choice and send
+            the answere back to the .
             </summary>
         </member>
         <member name="E:TLIB.Log.DisplayMessageRequested">
             <summary>
-            Occures, when a log arrived, that needs to notify the user. You may display a MessageBox, a PopUp or ignore it.
+            Occures, when a log arrived, that needs to notify the user. You may display a
+            MessageBox, a PopUp or ignore it.
             </summary>
         </member>
         <member name="E:TLIB.Log.NewLogArrived">
@@ -224,7 +225,8 @@
         </member>
         <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,System.ValueTuple{System.Object,System.Action}[])">
             <summary>
-            Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+            Use this method to obtain feedback from a user. With the thrid parameter you can pass
+            the actions you want to have executed when the corrosponding choice is selected
             </summary>
             <param name="title">A short but strong text that describes your intend</param>
             <param name="text">The Question you have, the feedback you want, etc.</param>
@@ -232,7 +234,8 @@
         </member>
         <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.Collections.Generic.IEnumerable{System.ValueTuple{System.Object,System.Action}})">
             <summary>
-            Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+            Use this method to obtain feedback from a user. With the thrid parameter you can pass
+            the actions you want to have executed when the corrosponding choice is selected
             </summary>
             <param name="title">A short but strong text that describes your intend</param>
             <param name="text">The Question you have, the feedback you want, etc.</param>
@@ -241,7 +244,8 @@
         </member>
         <member name="M:TLIB.Log.DisplayChoice(System.String,System.String,TLIB.Options,System.ValueTuple{System.Object,System.Action}[])">
             <summary>
-            Use this method to obtain feedback from a user. With the thrid parameter you can pass the actions you want to have executed when the corrosponding choice is selected
+            Use this method to obtain feedback from a user. With the thrid parameter you can pass
+            the actions you want to have executed when the corrosponding choice is selected
             </summary>
             <param name="title">A short but strong text that describes your intend</param>
             <param name="text">The Question you have, the feedback you want, etc.</param>
@@ -540,9 +544,8 @@
         </member>
         <member name="M:TLIB.NumberHelper.CalcToDouble(System.String,System.Boolean)">
             <summary>
-            Converts a string to a double
-            this string can contain simple formulas like "-6.5+3,4" (=-3.1)
-            Never throws exceptions, parts that can not be interpret as numbers are removed. (43a.4+1=44.4)
+            Converts a string to a double this string can contain simple formulas like "-6.5+3,4"
+            (=-3.1) Never throws exceptions, parts that can not be interpret as numbers are removed. (43a.4+1=44.4)
             </summary>
             <param name="FormulaString">e.g. "3.1+4,2"</param>
             <param name="treatKommataAsPoints">, is seen as .</param>

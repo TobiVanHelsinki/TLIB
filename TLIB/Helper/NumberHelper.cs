@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Author: Tobi van Helsinki
+
+using System;
 using System.Globalization;
 
 namespace TLIB
@@ -9,9 +11,8 @@ namespace TLIB
     public static class NumberHelper
     {
         /// <summary>
-        /// Converts a string to a double
-        /// this string can contain simple formulas like "-6.5+3,4" (=-3.1)
-        /// Never throws exceptions, parts that can not be interpret as numbers are removed. (43a.4+1=44.4)
+        /// Converts a string to a double this string can contain simple formulas like "-6.5+3,4"
+        /// (=-3.1) Never throws exceptions, parts that can not be interpret as numbers are removed. (43a.4+1=44.4)
         /// </summary>
         /// <param name="FormulaString">e.g. "3.1+4,2"</param>
         /// <param name="treatKommataAsPoints">, is seen as .</param>
@@ -29,6 +30,7 @@ namespace TLIB
             {
                 FormulaString = FormulaString.Replace(',', '.');
             }
+            FormulaString = "0" + FormulaString;
             foreach (char item in FormulaString)
             {
                 //filter out letters or special chars
@@ -51,10 +53,10 @@ namespace TLIB
                     }
                     Temp += item;
                 }
-
             }
             return Ret;
         }
+
         /// <summary>
         /// see CalcToDouble
         /// </summary>
@@ -65,6 +67,5 @@ namespace TLIB
         {
             return (int)CalcToDouble(FormulaString, treatKommataAsPoints);
         }
-
     }
 }
