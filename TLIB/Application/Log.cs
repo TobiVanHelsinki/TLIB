@@ -114,7 +114,7 @@ namespace TLIB
         /// save place for the logs. if full, the earliest messages are removed. You can edit the
         /// list as you whish.
         /// </summary>
-        public static List<string> InMemoryLog { get; } = new List<string>();
+        public static List<LogMessage> InMemoryLog { get; } = new List<LogMessage>();
 
         private static bool _IsFileLogEnabled;
         /// <summary>
@@ -253,7 +253,7 @@ namespace TLIB
             {
                 try
                 {
-                    InMemoryLog.Add(log.CombinedMessage);
+                    InMemoryLog.Add(log);
                     if (InMemoryLog.Count > InMemoryLogMaxCount)
                     {
                         InMemoryLog.RemoveAt(0);

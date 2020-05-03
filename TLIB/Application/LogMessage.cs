@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Author: Tobi van Helsinki
+
+using System;
 
 namespace TLIB
 {
@@ -11,24 +13,30 @@ namespace TLIB
         /// What kind of log is this
         /// </summary>
         public LogType LogType { get; set; }
+
         /// <summary>
         /// What does it say
         /// </summary>
         public string Message { get; set; }
+
         /// <summary>
         /// When did it arrived
         /// </summary>
         public DateTime ArrivedAt { get; set; }
+
         /// <summary>
         /// Who send this log
         /// </summary>
         public string Caller { get; set; }
+
         /// <summary>
         /// Had it have an exception
         /// </summary>
         public Exception ThrownException { get; set; }
+
         /// <summary>
-        /// A string containing the message and for example the arrivetime or the priority. depends at the LogType
+        /// A string containing the message and for example the arrivetime or the priority. depends
+        /// at the LogType
         /// </summary>
         public string CombinedMessage { get; set; }
 
@@ -49,6 +57,16 @@ namespace TLIB
             Caller = caller;
             ThrownException = thrownException;
             CombinedMessage = combinedMessage;
+        }
+
+        /// <summary>
+        /// This custom ToString Mehtod returns the CombinedMessage, to maintain compatibility with
+        /// prior Versions
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return CombinedMessage;
         }
     }
 }

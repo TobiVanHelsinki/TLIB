@@ -6,13 +6,13 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>tlibkey.snk</AssemblyOriginatorKeyFile>
-    <Version>3.3.8</Version>
+    <Version>3.3.9</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>TobiVanHelsinki</Authors>
     <RepositoryUrl>https://github.com/Tobivanhelsinki/TLIB</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Tobivanhelsinki/TLIB</PackageProjectUrl>
-    <AssemblyVersion>3.3.8.0</AssemblyVersion>
-    <FileVersion>3.3.8.0</FileVersion>
+    <AssemblyVersion>3.3.9.0</AssemblyVersion>
+    <FileVersion>3.3.9.0</FileVersion>
     <Description>Library with some usefull extension to standard types.
 
 With Extension Methods for IEnumerable (Random Element, Max-/MinOrDefault), FileInfo (DirPath), DirectoryInfo, 
@@ -23,9 +23,11 @@ With a interactive low level log system.
 With new Exceptions.</Description>
     <PackageTags>tlib</PackageTags>
     <PackageReleaseNotes>
-      3.7.8
+      3.3.9
+      [change] in Memory Log is now of tye LogMessage instead of string 
+      3.3.8
       [fix] Error if Formula startet with '-'
-      3.7.7
+      3.3.7
       [New] Use Env Vars in LogFile
       [New] New Log Mode
       [New] Added new Reflection Helper Methods
