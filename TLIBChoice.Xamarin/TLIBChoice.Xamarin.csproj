@@ -5,10 +5,10 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.2" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.6" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-    <PackageReference Include="TLIB" Version="3.3.8" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
+    <PackageReference Include="TLIB" Version="3.3.9" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />
   </ItemGroup>
 
   <ItemGroup>
