@@ -5,10 +5,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.6" />
+    <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox" Version="1.1.1" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.13" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
     <PackageReference Include="TLIB" Version="3.3.9" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
   </ItemGroup>
 
   <ItemGroup>
